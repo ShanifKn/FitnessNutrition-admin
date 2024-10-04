@@ -1,0 +1,152 @@
+<div
+  class="fixed flex flex-col top-14 left-0 w-14 hover:w-64 md:w-64 bg-[#2A2F42] h-full text-white transition-all duration-300 border-none z-10 sidebar"
+>
+  <h1 class="text-white text-base font-medium px-5 pt-4">Menu</h1>
+
+  <div
+    class="overflow-y-auto overflow-x-hidden flex flex-col justify-between flex-grow"
+  >
+    <ul class="flex flex-col py-4 space-y-4">
+      <li>
+        <a
+          href="#"
+          class="relative mx-4 rounded-lg flex flex-row items-center h-11 focus:outline-none hover:bg-[#825092] text-white font-medium border-l-4 border-transparent"
+        >
+          <!-- Icono Home de Font Awesome -->
+          <span class="inline-flex justify-center items-center ml-4">
+            <i class="pi pi-qrcode"></i>
+          </span>
+          <span class="ml-4 text-lg tracking-wide truncate">Dashboard</span>
+        </a>
+      </li>
+      <li>
+        <div
+          class="relative flex flex-row mx-4 rounded-lg items-center h-11 focus:outline-none hover:bg-[#825092] text-white font-medium border-l-4 border-transparent"
+          (click)="toggleDropdown()"
+        >
+          <span class="inline-flex justify-center items-center ml-4">
+            <i class="pi pi-book"></i>
+          </span>
+          <span class="ml-4 text-lg tracking-wide truncate">Catalogue</span>
+          <span class="ml-6">
+            <i
+              [ngClass]="{
+                'pi-chevron-up': isDropdownOpen,
+                'pi-chevron-down': !isDropdownOpen
+              }"
+              class="pi"
+              style="font-size: 1rem"
+            ></i>
+          </span>
+        </div>
+
+        <!-- Dropdown Menu -->
+        <ul *ngIf="isDropdownOpen" class="ml-12 space-y-3 mx-4 mt-2">
+          <li>
+            <a
+              href="#"
+              class="flex flex-row items-center h-8 pl-4 text-[#E3E3E3] font-medium hover:bg-[#7d3c8c] rounded-md"
+            >
+              <span class="inline-flex justify-center items-center ">
+                <i class="pi pi-circle-on" style="font-size: 0.5rem"></i>
+              </span>
+              <span class="ml-2 text-base font-normal tracking-wide truncate">Banners</span>
+            </a>
+          </li>
+
+
+          <li>
+            <a
+              href="#"
+              class="flex flex-row items-center h-8 pl-4 text-[#E3E3E3] font-medium hover:bg-[#7d3c8c] rounded-md"
+            >
+              <span class="inline-flex justify-center items-center ">
+                <i class="pi pi-circle-on" style="font-size: 0.5rem"></i>
+              </span>
+              <span class="ml-2 text-base font-normal tracking-wide truncate">Categories</span>
+            </a>
+          </li>
+
+
+
+          <li>
+            <a
+              href="#"
+              class="flex flex-row items-center h-8 pl-4 text-[#E3E3E3] font-medium hover:bg-[#7d3c8c] rounded-md"
+            >
+              <span class="inline-flex justify-center items-center ">
+                <i class="pi pi-circle-on" style="font-size: 0.5rem"></i>
+              </span>
+              <span class="ml-2 text-base font-normal tracking-wide truncate">Products</span>
+            </a>
+          </li>
+
+
+
+          <li>
+            <a
+              href="#"
+              class="flex flex-row items-center h-8 pl-4 text-[#E3E3E3] font-medium hover:bg-[#7d3c8c] rounded-md"
+            >
+              <span class="inline-flex justify-center items-center ">
+                <i class="pi pi-circle-on" style="font-size: 0.5rem"></i>
+              </span>
+              <span class="ml-2 text-base font-normal tracking-wide truncate">Coupons</span>
+            </a>
+          </li>
+
+
+        </ul>
+      </li>
+      <li>
+        <a
+          href="#"
+          class="relative flex flex-row mx-4 rounded-lg items-center h-11 focus:outline-none hover:bg-[#825092] text-white font-mediun border-l-4 border-transparent"
+        >
+          <!-- Icono Users de Font Awesome -->
+          <span class="inline-flex justify-center items-center ml-4">
+            <i class="pi pi-users"></i>
+          </span>
+          <span class="ml-4 text-lg tracking-wide truncate">Customers</span>
+        </a>
+      </li>
+      <li>
+        <a
+          href="#"
+          class="relative flex flex-row mx-4 rounded-lg items-center h-11 focus:outline-none hover:bg-[#825092] text-white font-mediun border-l-4 border-transparent"
+        >
+          <!-- Icono Store de Font Awesome -->
+          <span class="inline-flex justify-center items-center ml-4">
+            <i class="pi pi-cart-plus"></i>
+          </span>
+          <span class="ml-4 text-lg tracking-wide truncate">Orders</span>
+        </a>
+      </li>
+      <li>
+        <a
+          href="#"
+          class="relative flex flex-row mx-4 rounded-lg items-center h-11 focus:outline-none hover:bg-[#825092] text-white font-mediun border-l-4 border-transparent"
+        >
+          <!-- Icono Sign Out de Font Awesome -->
+          <span class="inline-flex justify-center items-center ml-4">
+            <i class="pi pi-truck"></i>
+          </span>
+          <span class="ml-4 text-lg tracking-wide truncate">Drivers</span>
+        </a>
+      </li>
+
+      <li>
+        <a
+          href="#"
+          class="relative flex flex-row mx-4 rounded-lg items-center h-11 focus:outline-none hover:bg-[#825092] text-white font-mediun border-l-4 border-transparent"
+        >
+          <!-- Icono Sign Out de Font Awesome -->
+          <span class="inline-flex justify-center items-center ml-4">
+            <i class="pi pi-cog"></i>
+          </span>
+          <span class="ml-4 text-lg tracking-wide truncate">Settings</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>

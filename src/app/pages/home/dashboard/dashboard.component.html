@@ -1,0 +1,208 @@
+<div class="grid gap-6">
+  <div class="grid grid-cols-3 2xl:grid-cols-4 gap-7">
+    <div class="p-5 bg-gradient-to-r from-[#D623FE] to-[#A530F2] rounded-2xl">
+      <div class="flex flex-col space-y-4">
+        <h1 class="text-white font-semibold text-lg">New Users</h1>
+        <div class="flex space-x-1 items-center">
+          <img
+            src="/assets/images/dashboard/users.svg"
+            alt=""
+            class="w-12 h-12"
+          />
+          <p class="text-white text-4xl font-semibold">106</p>
+        </div>
+      </div>
+    </div>
+    <div class="p-5 bg-gradient-to-r from-[#6BAAFC] to-[#305FEC] rounded-2xl">
+      <div class="flex flex-col space-y-4">
+        <h1 class="text-white font-semibold text-lg">Products</h1>
+        <div class="flex space-x-1 items-center">
+          <img
+            src="/assets/images/dashboard/product.svg"
+            alt=""
+            class="w-12 h-12"
+          />
+          <p class="text-white text-4xl font-semibold">1,026</p>
+        </div>
+      </div>
+    </div>
+    <div class="p-5 bg-gradient-to-r from-[#EF5E7A] to-[#D35385] rounded-2xl">
+      <div class="flex flex-col space-y-4">
+        <h1 class="text-white font-semibold text-lg">Total Orders</h1>
+        <div class="flex space-x-1 items-center">
+          <img
+            src="/assets/images/dashboard/orders.svg"
+            alt=""
+            class="w-12 h-12"
+          />
+          <p class="text-white text-4xl font-semibold">3,620</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="h-56 bg-white rounded"></div>
+
+  <div class="">
+    <h1 class="text-black text-lg font-bold pb-4">Recent orders</h1>
+
+    <div class="p-3 py-5 bg-white rounded grid gap-5">
+      <div
+        class="flex items-center border border-gray-300 bg-white rounded-xl px-4 py-2"
+      >
+        <span class="pi pi-search"></span>
+        <input
+          type="text"
+          placeholder="Search Orders"
+          class="ml-3 w-full focus:outline-none text-gray-700"
+        />
+      </div>
+
+      <!-- table  -->
+
+      <p-table [value]="products" [rowsPerPageOptions]="[5, 10, 20]" [rows]="7"  [paginator]="true" paginatorStyleClass="text-red-500">
+        <ng-template pTemplate="header">
+          <tr class="flex">
+            <th
+              pSortableColumn="orderId"
+              class="flex items-center w-full text-white bg-[#825092]"
+            >
+              Order Id <p-sortIcon field="orderId" />
+            </th>
+
+            <th
+              pSortableColumn="customer"
+              class="flex items-center w-full text-white bg-[#825092]"
+            >
+              Customer <p-sortIcon field="customer" />
+            </th>
+
+            <!-- -->
+            <th
+              pSortableColumn="date"
+              class="flex items-center w-full text-white bg-[#825092]"
+            >
+              Date <p-sortIcon field="date" />
+            </th>
+            <th
+              pSortableColumn="paid"
+              class="flex items-center w-full text-white bg-[#825092]"
+            >
+              Paid<p-sortIcon field="paid" />
+            </th>
+
+            <th
+              pSortableColumn="status"
+              class="flex items-center w-full text-white bg-[#825092]"
+            >
+              Status<p-sortIcon field="status" />
+            </th>
+
+            <th
+              pSortableColumn="items"
+              class="flex items-center w-full text-white bg-[#825092]"
+            >
+              Items<p-sortIcon field="items" />
+            </th>
+
+            <th
+              pSortableColumn="paymentMode"
+              class="flex items-center w-full text-white bg-[#825092]"
+            >
+              Payment mode<p-sortIcon field="paymentMode" />
+            </th>
+
+            <th
+              pSortableColumn="total"
+              class="flex items-center w-full text-white bg-[#825092]"
+            >
+              Total<p-sortIcon field="total" />
+            </th>
+
+            <th class="flex items-center w-full text-white bg-[#825092]">
+              Action
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-product>
+          <tr class="flex">
+            <td class="w-full">{{ product.orderId }}</td>
+            <td class="w-full">{{ product.customer }}</td>
+            <td class="w-full">{{ product.date }}</td>
+            <td class="w-full">
+              <ng-container *ngIf="product.paid === 'Yes'; else notPaid">
+                <p
+                  class="bg-green-100 text-green-500 px-4 py-1 rounded text-sm w-fit"
+                >
+                  Paid
+                </p>
+              </ng-container>
+              <ng-template #notPaid>
+                <p
+                  class="bg-red-100 text-red-500 px-4 py-1 rounded text-sm w-fit"
+                >
+                  Not paid
+                </p>
+              </ng-template>
+            </td>
+
+            <td class="w-full">
+              <div [ngSwitch]="product.status">
+                <!-- Case: Delivered -->
+                <p
+                  *ngSwitchCase="'Delivered'"
+                  class="bg-green-100 text-green-600 px-4 py-1 rounded text-sm tracking-wide w-fit"
+                >
+                  Delivered
+                </p>
+
+                <!-- Case: Pending -->
+                <p
+                  *ngSwitchCase="'Pending'"
+                  class="bg-red-100 text-red-600 px-4 py-1 rounded text-sm tracking-wide w-fit"
+                >
+                  Pending
+                </p>
+
+                <!-- Case: Cancelled -->
+                <p
+                  *ngSwitchCase="'Cancelled'"
+                  class="bg-gray-100 text-gray-600 px-4 py-1 rounded text-sm tracking-wide w-fit"
+                >
+                  Cancelled
+                </p>
+
+                <!-- Case: Returned -->
+                <p
+                  *ngSwitchCase="'Returned'"
+                  class="bg-yellow-100 text-yellow-600 px-4 py-1 rounded text-sm tracking-wide w-fit"
+                >
+                  Returned
+                </p>
+
+                <!-- Default case (if status doesn't match any cases) -->
+                <button
+                  *ngSwitchDefault
+                  class="bg-gray-500 text-white px-4 py-2 rounded"
+                >
+                  Unknown Status
+                </button>
+              </div>
+            </td>
+            <td class="w-full">{{ product.items }}</td>
+            <td class="w-full">{{ product.paymentMode }}</td>
+            <td class="w-full">{{ product.total }}</td>
+            <td class="w-full">
+              <button
+                pButton
+                class="px-3 py-1 text-sm font-medium text-white bg-[#825092] rounded-md"
+              >
+                View Details
+              </button>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>

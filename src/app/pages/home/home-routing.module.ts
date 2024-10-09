@@ -14,6 +14,10 @@ const routes: Routes = [
             (m) => m.DashboardComponent
           ),
       },
+      {
+        path: 'banners',
+        loadComponent: () => import('./catalogue/banners/banners.component').then((m) => m.BannersComponent),
+      },
     ],
   },
 ];

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home.component';
+import { BannersComponent } from './catalogue/banners/banners.component';
 
 const routes: Routes = [
   {
@@ -16,7 +17,7 @@ const routes: Routes = [
       },
       {
         path: 'banners',
-        loadComponent: () => import('./catalogue/banners/banners.component').then((m) => m.BannersComponent),
+        component:BannersComponent,
       },
     ],
   },

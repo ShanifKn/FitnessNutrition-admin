@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { SidebarComponent } from './theme/components/sidebar/sidebar.component';
-import { NavbarComponent } from './theme/components/navbar/navbar.component';
+import { SidebarComponent } from './shared/components/sidebar/sidebar.component';
+import { NavbarComponent } from './shared/components/navbar/navbar.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-root',
@@ -12,6 +13,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     SidebarComponent,
     NavbarComponent,
     ReactiveFormsModule,
+    ToastModule,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

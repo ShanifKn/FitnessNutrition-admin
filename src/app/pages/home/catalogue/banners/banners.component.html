@@ -13,197 +13,182 @@
 <div class="grid mt-5">
   <h1 class="text-xl pb-3 font-medium text-[#7E7E7E]">Main Banners</h1>
 
-  <div class=" grid gap-3">
-    <div class="flex items-center justify-between space-x-4 bg-white rounded-lg shadow-md p-4">
-      <!-- Left: Banner Image -->
-      <div class="w-1/4">
-        <img
-          class="rounded-lg"
-          src="https://via.placeholder.com/550x240"
-          alt="Banner Image"
-        />
-      </div>
-
-      <!-- Middle: Banner Details -->
-      <div class="w-3/4 grid gap-2">
-        <!-- Title -->
-        <div class="flex">
-          <span class="font-bold">TITLE :</span>
-          <span class="ml-2">Banner Title</span>
-        </div>
-        <!-- Tag -->
-        <div class="flex">
-          <span class="font-bold">Tag :</span>
-          <span class="ml-2">#Alt</span>
-        </div>
-        <!-- Type -->
-        <div class="flex">
-          <span class="font-bold">Type :</span>
-          <span class="ml-2">Main Banner</span>
-        </div>
-        <!-- Published -->
-        <div class="flex">
-          <span class="font-bold">Published :</span>
-          <span class="ml-2 text-green-600">Published</span>
-        </div>
-      </div>
-
-      <!-- Right: Delete Icon -->
-      <div class="text-red-500 cursor-pointer">
-        <i class="pi pi-trash" style="font-size: 2rem"></i>
-      </div>
+  <div *ngIf="banners?.mainBanners?.length !== 0; else noDataTemplate">
+    <div class="grid my-2" *ngFor="let banner of banners?.mainBanners">
+      <ng-container
+        [ngTemplateOutlet]="MainBanner"
+        [ngTemplateOutletContext]="{ $implicit: banner }"
+      ></ng-container>
     </div>
-
-    <div class="flex items-center justify-between space-x-4 bg-white rounded-lg shadow-md p-4">
-      <!-- Left: Banner Image -->
-      <div class="w-1/4">
-        <img
-          class="rounded-lg"
-          src="https://via.placeholder.com/550x240"
-          alt="Banner Image"
-        />
-      </div>
-
-      <!-- Middle: Banner Details -->
-      <div class="w-3/4 grid gap-2">
-        <!-- Title -->
-        <div class="flex">
-          <span class="font-bold">TITLE :</span>
-          <span class="ml-2">Banner Title</span>
-        </div>
-        <!-- Tag -->
-        <div class="flex">
-          <span class="font-bold">Tag :</span>
-          <span class="ml-2">#Alt</span>
-        </div>
-        <!-- Type -->
-        <div class="flex">
-          <span class="font-bold">Type :</span>
-          <span class="ml-2">Main Banner</span>
-        </div>
-        <!-- Published -->
-        <div class="flex">
-          <span class="font-bold">Published :</span>
-          <span class="ml-2 text-green-600">Published</span>
-        </div>
-      </div>
-
-      <!-- Right: Delete Icon -->
-      <div class="text-red-500 cursor-pointer">
-        <i class="pi pi-trash" style="font-size: 2rem"></i>
-      </div>
-    </div>
-
-
   </div>
 </div>
 
 <div class="grid mt-5">
   <h1 class="text-xl pb-3 font-medium text-[#7E7E7E]">Sub Banners</h1>
-
-  <div class=" grid gap-3">
-    <div class="flex items-center justify-between space-x-4 bg-white rounded-lg shadow-md p-4">
-
-      <div class="flex items-center w-4/5">
-      <!-- Left: Banner Image -->
-      <div class="w-1/4 " >
-        <img
-          class="rounded-lg"
-          src="https://via.placeholder.com/300x190"
-          alt="Banner Image"
-        />
-      </div>
-
-      <!-- Middle: Banner Details -->
-      <div class="w-1/4 grid gap-2 ">
-        <!-- Title -->
-        <div class="flex">
-          <span class="font-bold">TITLE :</span>
-          <span class="ml-2">Banner Title</span>
-        </div>
-        <!-- Tag -->
-        <div class="flex">
-          <span class="font-bold">Tag :</span>
-          <span class="ml-2">#Alt</span>
-        </div>
-        <!-- Type -->
-        <div class="flex">
-          <span class="font-bold">Type :</span>
-          <span class="ml-2">Main Banner</span>
-        </div>
-        <!-- Published -->
-        <div class="flex">
-          <span class="font-bold">Published :</span>
-          <span class="ml-2 text-green-600">Published</span>
-        </div>
-      </div>
+  <div *ngIf="banners?.subBanners?.length !== 0; else noDataTemplate">
+    <div class="grid my-2" *ngFor="let banner of banners?.subBanners">
+      <ng-container
+        [ngTemplateOutlet]="subBanner"
+        [ngTemplateOutletContext]="{ $implicit: banner }"
+      ></ng-container>
     </div>
-      <!-- Right: Delete Icon -->
-      <div class="text-red-500 cursor-pointer">
-        <i class="pi pi-trash" style="font-size: 2rem"></i>
-      </div>
-    </div>
-
-    <div class="flex items-center justify-between space-x-4 bg-white rounded-lg shadow-md p-4">
-
-      <div class="flex items-center w-4/5">
-      <!-- Left: Banner Image -->
-      <div class="w-1/4 " >
-        <img
-          class="rounded-lg"
-          src="https://via.placeholder.com/300x190"
-          alt="Banner Image"
-        />
-      </div>
-
-      <!-- Middle: Banner Details -->
-      <div class="w-1/4 grid gap-2 ">
-        <!-- Title -->
-        <div class="flex">
-          <span class="font-bold">TITLE :</span>
-          <span class="ml-2">Banner Title</span>
-        </div>
-        <!-- Tag -->
-        <div class="flex">
-          <span class="font-bold">Tag :</span>
-          <span class="ml-2">#Alt</span>
-        </div>
-        <!-- Type -->
-        <div class="flex">
-          <span class="font-bold">Type :</span>
-          <span class="ml-2">Main Banner</span>
-        </div>
-        <!-- Published -->
-        <div class="flex">
-          <span class="font-bold">Published :</span>
-          <span class="ml-2 text-green-600">Published</span>
-        </div>
-      </div>
-    </div>
-      <!-- Right: Delete Icon -->
-      <div class="text-red-500 cursor-pointer">
-        <i class="pi pi-trash" style="font-size: 2rem"></i>
-      </div>
-    </div>
-
-
   </div>
 </div>
 
+<div class="grid mt-5">
+  <h1 class="text-xl pb-3 font-medium text-[#7E7E7E]">Offers Banners</h1>
 
+  <div *ngIf="banners?.offerBanners?.length !== 0; else noDataTemplate">
+    <div class="grid my-2" *ngFor="let banner of banners?.offerBanners">
+      <ng-container
+        [ngTemplateOutlet]="subBanner"
+        [ngTemplateOutletContext]="{ $implicit: banner }"
+      ></ng-container>
+    </div>
+  </div>
+</div>
 
+<div class="grid mt-5">
+  <h1 class="text-xl pb-3 font-medium text-[#7E7E7E]">Bottom Banners</h1>
+  <div *ngIf="banners?.bottomBanners?.length !== 0; else noDataTemplate">
+    <div class="grid my-2" *ngFor="let banner of banners?.bottomBanners">
+      <ng-container
+        [ngTemplateOutlet]="MainBanner"
+        [ngTemplateOutletContext]="{ $implicit: banner }"
+      ></ng-container>
+    </div>
+  </div>
+</div>
 
+<ng-template #MainBanner let-banner>
+  <div class="grid gap-3">
+    <div
+      class="flex items-center justify-between space-x-4 bg-white rounded-lg shadow-md p-4"
+    >
+      <div class="w-1/4">
+        <!-- Skeleton loader for image -->
+        <div *ngIf="!imageLoaded" class="w-96 h-full">
+          <p-skeleton
+            class="rounded-lg"
+            styleClass="w-full h-full"
+            height="11rem"
+          ></p-skeleton>
+        </div>
 
+        <!-- Image element -->
+        <img
+          class="rounded-lg h-44 w-96"
+          [src]="banner.image || 'https://via.placeholder.com/550x240'"
+          alt="Banner Image"
+          (load)="onImageLoad()"
+          [hidden]="!imageLoaded"
+        />
+      </div>
+      <div class="w-3/4 grid gap-2 ml-3">
+        <div class="flex">
+          <span class="font-bold">TITLE :</span>
+          <span class="ml-2">{{ banner.title }}</span>
+        </div>
+        <div class="flex">
+          <span class="font-bold">Type :</span>
+          <span class="ml-2">{{ banner.bannerType }}</span>
+        </div>
+        <div class="flex">
+          <span class="font-bold">Published :</span>
+          <span class="ml-2 text-green-600">Published</span>
+        </div>
+        <div class="flex">
+          <span class="font-bold">CreatedAt :</span>
+          <span class="ml-2 text-green-600">{{
+            banner.createdAt | date : "MMM d yyyy"
+          }}</span>
+        </div>
+        <div class="flex">
+          <span class="font-bold">Expire At :</span>
+          <span class="ml-2 text-red-500">{{
+            banner.expDate | date : "MMM d yyyy"
+          }}</span>
+        </div>
+      </div>
+      <div
+        class="text-red-500 cursor-pointer"
+        (click)="removeBanner(banner._id)"
+      >
+        <i class="pi pi-trash" style="font-size: 2rem"></i>
+      </div>
+    </div>
+  </div>
+</ng-template>
 
+<ng-template #subBanner let-banner>
+  <div class="grid gap-3">
+    <div
+      class="flex items-center justify-between space-x-4 bg-white rounded-lg shadow-md p-4"
+    >
+      <div class="flex items-center w-4/5 gap-5">
+        <!-- Left: Banner Image -->
+        <div class="w-1/4">
+          <div *ngIf="!imageLoaded" class="w-80 h-full">
+            <p-skeleton
+              class="rounded-lg"
+              styleClass="w-full h-full"
+              height="11rem"
+            ></p-skeleton>
+          </div>
 
+          <img
+            class="rounded-lg h-48 w-80"
+            [src]="banner.image || 'https://via.placeholder.com/300x190'"
+            alt="Banner Image"
+            (load)="onImageLoad()"
+            [hidden]="!imageLoaded"
+          />
+        </div>
 
-
-
-
-
-
-
-
+        <!-- Middle: Banner Details -->
+        <div class="w-1/4 grid gap-2">
+          <!-- Title -->
+          <div class="flex">
+            <span class="font-bold">TITLE :</span>
+            <span class="ml-2">{{ banner.title }}</span>
+          </div>
+          <div class="flex">
+            <span class="font-bold">Type :</span>
+            <span class="ml-2">{{ banner.bannerType }}</span>
+          </div>
+          <div class="flex">
+            <span class="font-bold">Published :</span>
+            <span class="ml-2 text-green-600">Published</span>
+          </div>
+          <!-- Published -->
+          <div class="flex">
+            <span class="font-bold">Published :</span>
+            <span class="ml-2 text-green-600">Published</span>
+          </div>
+          <div class="flex">
+            <span class="font-bold">CreatedAt :</span>
+            <span class="ml-2 text-green-600">{{
+              banner.createdAt | date : "MMM d yyyy"
+            }}</span>
+          </div>
+          <div class="flex">
+            <span class="font-bold">Expire At :</span>
+            <span class="ml-2 text-red-500">{{
+              banner.expDate | date : "MMM d yyyy"
+            }}</span>
+          </div>
+        </div>
+      </div>
+      <!-- Right: Delete Icon -->
+      <div
+        class="text-red-500 cursor-pointer"
+        (click)="removeBanner(banner._id)"
+      >
+        <i class="pi pi-trash" style="font-size: 2rem"></i>
+      </div>
+    </div>
+  </div>
+</ng-template>
 
 <p-sidebar
   [(visible)]="sidebarVisible"
@@ -211,96 +196,172 @@
   [style]="{ width: '50rem' }"
 >
   <h3 class="text-black text-4xl pb-4">Add Banner</h3>
-  <div class="grid gap-6 mt-3 p-2">
-    <div class="">
-      <h1 class="text-black text-lg pb-3">Title</h1>
+  <form [formGroup]="bannerForm" (ngSubmit)="onSubmit()">
+    <div class="grid gap-6 mt-3 p-2">
+      <div class="grid grid-cols-4 gap-3">
+        <div class="col-span-3">
+          <h1 class="text-black text-lg pb-3">Title</h1>
 
-      <input
-        type="text"
-        class="bg-[#F6F7F9] h-12 w-4/5 pl-5 rounded placeholder:text-gray-500 border border-gray-200"
-        pInput
-        placeholder="Banner Title"
-      />
-    </div>
+          <input
+            type="text"
+            class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
+            pInput
+            placeholder="Banner Title"
+            formControlName="title"
+          />
+        </div>
 
-    <div class="grid grid-cols-4 items-end gap-3">
-      <div class="col-span-2">
-        <h1 class="text-black text-lg pb-3">Banner Type</h1>
+        <div class="col-span-1">
+          <h1 class="text-black text-lg pb-3">Exp Date</h1>
 
-        <p-dropdown
-          [options]="type"
-          optionLabel="name"
-          placeholder="Select type"
-          styleClass="bg-[#F6F7F9] w-full h-12 border border-gray-200"
-          appendTo="body"
-          class="col-span-2 h-16"
-        />
+          <p-calendar
+            formControlName="expDate"
+            dateFormat="yy-mm-dd"
+            showIcon="true"
+            class="w-full"
+            placeholder="Select Date"
+            inputStyleClass="  bg-[#F6F7F9] border border-gray-200 rounded-lg placeholder:text-gray-500 w-full p-2.5 h-12"
+            styleClass=""
+          >
+          </p-calendar>
+        </div>
       </div>
+      <div class="grid grid-cols-4 items-end gap-3">
+        <div class="col-span-2">
+          <h1 class="text-black text-lg pb-3">Banner Type</h1>
 
-      <div class="">
-        <h1 class="text-black text-lg pb-3">visibility</h1>
+          <p-dropdown
+            [options]="type"
+            optionLabel="name"
+            placeholder="Select type"
+            styleClass="bg-[#F6F7F9] w-full h-12 border border-gray-200 rounded-lg"
+            appendTo="body"
+            class="col-span-2 h-16"
+            formControlName="bannerType"
+            optionValue="name"
+          />
+        </div>
 
-        <div class="flex items-center space-x-4">
-          <!-- Hidden option -->
-          <div
-            [ngClass]="
-              selectedVisibility === 'hidden'
-                ? 'border-2 border-[#854D94] text-[#854D94]'
-                : 'text-[#6E6E6E] bg-[#F6F7F9] border border-gray-200'
-            "
-            class="inline-flex items-center px-4 py-[10px] text-sm font-medium rounded-md"
-          >
-            <label for="hidden" class="flex items-center cursor-pointer">
-              <span class="pr-2 text-base font-medium">Hidden</span>
-              <input
-                id="hidden"
-                type="radio"
-                name="visibility"
-                value="hidden"
-                (change)="onVisibilityChange($event)"
-                class="appearance-none peer h-3 w-3 border-2 border-gray-300 rounded-full checked:bg-[#854D94] checked:border-2"
-              />
-            </label>
-          </div>
-
-          <!-- Published option -->
-          <div
-            [ngClass]="
-              selectedVisibility === 'published'
-                ? 'border-2 border-[#854D94] text-[#854D94]'
-                : 'text-[#6E6E6E] bg-[#F6F7F9] border border-gray-200'
-            "
-            class="inline-flex items-center px-4 py-[10px] text-sm font-medium rounded-md"
-          >
-            <label for="published" class="flex items-center cursor-pointer">
-              <span class="pr-2 text-base font-medium">Published</span>
-              <input
-                id="published"
-                type="radio"
-                name="visibility"
-                value="published"
-                (change)="onVisibilityChange($event)"
-                class="appearance-none peer h-3 w-3 border-2 border-gray-300 rounded-full checked:bg-[#854D94] checked:border-2"
-              />
-            </label>
+        <div class="">
+          <h1 class="text-black text-lg pb-3">Visibility</h1>
+          <div class="flex items-center space-x-4">
+            <div
+              [ngClass]="
+                bannerForm.get('visibility')?.value === true
+                  ? 'border-2 border-[#854D94] text-[#854D94]'
+                  : 'text-[#6E6E6E] bg-[#F6F7F9] border border-gray-200'
+              "
+              class="inline-flex items-center px-4 py-[10px] text-sm font-medium rounded-md"
+            >
+              <label for="hidden" class="flex items-center cursor-pointer">
+                <span class="pr-2 text-base font-medium">Hidden</span>
+                <input
+                  id="hidden"
+                  type="radio"
+                  formControlName="visibility"
+                  [value]="true"
+                  [checked]="bannerForm.get('visibility')?.value === true"
+                  class="appearance-none peer h-3 w-3 border-2 border-gray-300 rounded-full checked:bg-[#854D94] checked:border-2"
+                />
+              </label>
+            </div>
+            <div
+              [ngClass]="
+                bannerForm.get('visibility')?.value === false
+                  ? 'border-2 border-[#854D94] text-[#854D94]'
+                  : 'text-[#6E6E6E] bg-[#F6F7F9] border border-gray-200'
+              "
+              class="inline-flex items-center px-4 py-[10px] text-sm font-medium rounded-md"
+            >
+              <label for="published" class="flex items-center cursor-pointer">
+                <span class="pr-2 text-base font-medium">Published</span>
+                <input
+                  id="published"
+                  type="radio"
+                  formControlName="visibility"
+                  [value]="false"
+                  [checked]="bannerForm.get('visibility')?.value === false"
+                  class="appearance-none peer h-3 w-3 border-2 border-gray-300 rounded-full checked:bg-[#854D94] checked:border-2"
+                />
+              </label>
+            </div>
           </div>
         </div>
       </div>
-    </div>
 
-    <div class="flex gap-3 w-full">
+      <div class="flex gap-3 w-full">
+        <!-- Category Multiselect Dropdown -->
+        <div class="w-full">
+          <h1 class="text-black text-lg pb-3">Category</h1>
+          <p-multiSelect
+            [options]="categories"
+            optionLabel="name"
+            formControlName="category"
+            [filter]="true"
+            filterBy="name"
+            [showClear]="true"
+            placeholder="Select a Category"
+            styleClass="bg-[#F6F7F9] w-full h-12 border border-gray-200 rounded-lg"
+            appendTo="body"
+            optionValue="_id"
+            (onChange)="onCategoryChange($event)"
+          >
+            <ng-template pTemplate="selectedItem" let-selectedOption>
+              <div class="flex align-items-center gap-2">
+                <div>{{ selectedOption.name }}</div>
+              </div>
+            </ng-template>
+            <ng-template let-category pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <div>{{ category.name }}</div>
+              </div>
+            </ng-template>
+          </p-multiSelect>
+        </div>
+
+        <!-- Sub Category Multiselect Dropdown -->
+        <div class="w-full">
+          <h1 class="text-black text-lg pb-3">Sub Category</h1>
+          <p-multiSelect
+            [options]="subCategories"
+            optionLabel="name"
+            formControlName="subCategory"
+            [filter]="true"
+            filterBy="name"
+            [showClear]="true"
+            placeholder="Select a SubCategory"
+            styleClass="bg-[#F6F7F9] w-full h-12 border border-gray-200 rounded-lg"
+            appendTo="body"
+            optionValue="_id"
+          >
+            <ng-template pTemplate="selectedItem" let-selectedOption>
+              <div class="flex align-items-center gap-2">
+                <div>{{ selectedOption.name }}</div>
+              </div>
+            </ng-template>
+            <ng-template let-subCategory pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <div>{{ subCategory.name }}</div>
+              </div>
+            </ng-template>
+          </p-multiSelect>
+        </div>
+      </div>
+
       <div class="w-full">
-        <h1 class="text-black text-lg pb-3">Category</h1>
+        <h1 class="text-black text-lg pb-3">Select Product</h1>
 
         <p-dropdown
           [options]="categories"
           optionLabel="name"
           [filter]="true"
           filterBy="name"
+          formControlName="product"
           [showClear]="true"
-          placeholder="Select a Category"
-          styleClass="bg-[#F6F7F9] w-full h-12 border border-gray-200"
+          placeholder="Select a Product"
+          styleClass="bg-[#F6F7F9] w-full h-12 border border-gray-200 rounded-lg"
           appendTo="body"
+          optionValue="_id"
         >
           <ng-template pTemplate="selectedItem" let-selectedOption>
             <div class="flex align-items-center gap-2">
@@ -314,88 +375,46 @@
           </ng-template>
         </p-dropdown>
       </div>
-      <div class="w-full">
-        <h1 class="text-black text-lg pb-3">Sub Category</h1>
 
-        <p-dropdown
-          [options]="subCategories"
-          optionLabel="name"
-          [filter]="true"
-          filterBy="name"
-          [showClear]="true"
-          placeholder="Select a SubCategory"
-          styleClass="bg-[#F6F7F9] w-full h-12 border border-gray-200"
-          class=""
-          appendTo="body"
-        >
-          <ng-template pTemplate="selectedItem" let-selectedOption>
-            <div class="flex align-items-center gap-2">
-              <div>{{ selectedOption.name }}</div>
-            </div>
-          </ng-template>
-          <ng-template let-subCategory pTemplate="item">
-            <div class="flex align-items-center gap-2">
-              <div>{{ subCategory.name }}</div>
-            </div>
-          </ng-template>
-        </p-dropdown>
+      <div>
+        <h1 class="text-black text-lg pb-3">Upload image</h1>
+        <!-- Button to upload image -->
+        <input type="file" (change)="onFileSelected($event)" accept="image/*" />
+
+        <!-- Preview the uploaded image -->
+        <div *ngIf="imagePreview">
+          <img
+            [src]="imagePreview"
+            alt="Image Preview"
+            class="w-96 h-44"
+            style="max-width: 500px; max-height: 500px; margin-top: 10px"
+          />
+        </div>
+      </div>
+
+      <div class="flex gap-3 justify-end">
+        <button
+          pButton
+          class="px-5 py-2 bg-slate-400 text-lg text-white"
+          label="cancel"
+          (click)="sidebarVisible = false"
+        ></button>
+        <button
+          pButton
+          class="px-5 py-2 bg-[#825092] text-lg text-white"
+          label="Add"
+          [disabled]="bannerForm.invalid"
+          type="submit"
+        ></button>
       </div>
     </div>
-
-    <div class="w-full">
-      <h1 class="text-black text-lg pb-3">Select Product</h1>
-
-      <p-dropdown
-        [options]="categories"
-        optionLabel="name"
-        [filter]="true"
-        filterBy="name"
-        [showClear]="true"
-        placeholder="Select a Product"
-        styleClass="bg-[#F6F7F9] w-full h-12 border border-gray-200"
-        appendTo="body"
-      >
-        <ng-template pTemplate="selectedItem" let-selectedOption>
-          <div class="flex align-items-center gap-2">
-            <div>{{ selectedOption.name }}</div>
-          </div>
-        </ng-template>
-        <ng-template let-category pTemplate="item">
-          <div class="flex align-items-center gap-2">
-            <div>{{ category.name }}</div>
-          </div>
-        </ng-template>
-      </p-dropdown>
-    </div>
-
-    <div>
-      <h1 class="text-black text-lg pb-3">Upload image</h1>
-      <!-- Button to upload image -->
-      <input type="file" (change)="onFileSelected($event)" accept="image/*" />
-
-      <!-- Preview the uploaded image -->
-      <div *ngIf="imagePreview">
-        <img
-          [src]="imagePreview"
-          alt="Image Preview"
-          class="w-96 h-44"
-          style="max-width: 500px; max-height: 500px; margin-top: 10px"
-        />
-      </div>
-    </div>
-
-    <div class="flex gap-3 justify-end">
-      <button
-        pButton
-        class="px-5 py-2 bg-slate-400 text-lg text-white"
-        label="cancel"
-        (click)="sidebarVisible = false"
-      ></button>
-      <button
-        pButton
-        class="px-5 py-2 bg-[#825092] text-lg text-white"
-        label="Add"
-      ></button>
-    </div>
-  </div>
+  </form>
 </p-sidebar>
+
+<ng-template #noDataTemplate>
+  <div
+    class="flex items-center justify-center space-x-4 bg-white rounded-lg shadow-md p-4 h-48"
+  >
+    <p>No banners available at the moment.</p>
+  </div>
+</ng-template>

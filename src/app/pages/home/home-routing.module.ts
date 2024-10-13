@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home.component';
+import { BannersComponent } from './catalogue/banners/banners.component';
 
 const routes: Routes = [
   {
@@ -13,6 +14,10 @@ const routes: Routes = [
           import('./dashboard/dashboard.component').then(
             (m) => m.DashboardComponent
           ),
+      },
+      {
+        path: 'banners',
+        component:BannersComponent,
       },
     ],
   },

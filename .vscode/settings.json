@@ -1,0 +1,6 @@
+{
+  "editor.wordWrapColumn": 100,
+  "prettier.printWidth": 200,
+  "notebook.output.textLineLimit": 60,
+  "html.format.maxPreserveNewLines": 150
+}

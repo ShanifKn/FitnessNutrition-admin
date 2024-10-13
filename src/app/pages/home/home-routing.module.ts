@@ -28,6 +28,22 @@ const routes: Routes = [
           import('./customers/customers.component').then(
             (m) => m.CustomersComponent
           ),
+        children: [
+          {
+            path: '', // Default route for customers
+            loadComponent: () =>
+              import(
+                './customers/customers-list/customers-list.component'
+              ).then((m) => m.CustomersListComponent),
+          },
+          {
+            path: 'customer-details/:id', // Dynamic route for customer details
+            loadComponent: () =>
+              import(
+                './customers/customer-detail/customer-detail.component'
+              ).then((m) => m.CustomerDetailComponent),
+          },
+        ],
       },
     ],
   },

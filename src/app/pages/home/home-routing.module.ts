@@ -17,7 +17,17 @@ const routes: Routes = [
       },
       {
         path: 'banners',
-        component:BannersComponent,
+        loadComponent: () =>
+          import('./catalogue/banners/banners.component').then(
+            (m) => m.BannersComponent
+          ),
+      },
+      {
+        path: 'customers',
+        loadComponent: () =>
+          import('./customers/customers.component').then(
+            (m) => m.CustomersComponent
+          ),
       },
     ],
   },

@@ -137,16 +137,43 @@
       </li>
 
       <li>
-        <a
-          href="#"
-          class="relative flex flex-row mx-4 rounded-lg items-center h-11 focus:outline-none hover:bg-[#825092] text-white font-mediun border-l-4 border-transparent"
+        <div
+          class="relative flex flex-row mx-4 rounded-lg items-center h-11 focus:outline-none hover:bg-[#825092] text-white font-medium border-l-4 border-transparent"
+          (click)="toggleSettings()"
         >
-          <!-- Icono Sign Out de Font Awesome -->
           <span class="inline-flex justify-center items-center ml-4">
             <i class="pi pi-cog"></i>
           </span>
           <span class="ml-4 text-lg tracking-wide truncate">Settings</span>
-        </a>
+          <span class="ml-6">
+            <i
+              [ngClass]="{
+                'pi-chevron-up': isDropdownSettings,
+                'pi-chevron-down': !isDropdownSettings
+              }"
+              class="pi"
+              style="font-size: 1rem"
+            ></i>
+          </span>
+        </div>
+
+
+        <ul *ngIf="isDropdownSettings" class="ml-12 space-y-3 mx-4 mt-2">
+          <li>
+            <a
+            
+              [routerLink]="'settings/faqs'"
+              class="flex flex-row items-center h-8 pl-4 text-[#E3E3E3] font-medium hover:bg-[#7d3c8c] rounded-md"
+            >
+              <span class="inline-flex justify-center items-center ">
+                <i class="pi pi-circle-on" style="font-size: 0.5rem"></i>
+              </span>
+              <span class="ml-2 text-base font-normal tracking-wide truncate">FAQs</span>
+            </a>
+          </li>
+
+        </ul>
+        
       </li>
     </ul>
   </div>

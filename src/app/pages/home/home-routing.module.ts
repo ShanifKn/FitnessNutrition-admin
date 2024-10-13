@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home.component';
 import { BannersComponent } from './catalogue/banners/banners.component';
+import { FaqComponent } from './settings/faq/faq.component';
 
 const routes: Routes = [
   {
@@ -19,6 +20,13 @@ const routes: Routes = [
         path: 'banners',
         component:BannersComponent,
       },
+      {
+        path: 'settings',
+        loadChildren: () => 
+          import('./settings/settings.routes').then(
+            (m) => m.settingRoutes
+          )
+      }
     ],
   },
 ];

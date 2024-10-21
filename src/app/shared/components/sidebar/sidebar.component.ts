@@ -11,8 +11,14 @@ import { RouterModule } from '@angular/router';
 })
 export class SidebarComponent {
   isDropdownOpen = false;
+  isDropdownSettings = false;
 
   toggleDropdown() {
     this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
+
+  toggleSettings() {
+    this.isDropdownSettings = !this.isDropdownSettings;
   }
 }

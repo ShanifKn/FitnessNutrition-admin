@@ -12,7 +12,9 @@ export const routes: Routes = [
   },
   {
     path: 'auth',
-    component: AuthComponent,
+    loadChildren: () => import('./pages/auth/auth.routes').then(
+      (m) => m.authRoutes
+    )
   },
   { path: '**', redirectTo: '', pathMatch: 'full' },
 ];

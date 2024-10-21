@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { AccordionModule } from 'primeng/accordion';
 import { DialogService, DynamicDialogModule, DynamicDialogRef } from 'primeng/dynamicdialog';
 import { AddModalComponent } from './modals/add-modal/add-modal.component';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-faq',
   standalone: true,
-  imports: [AccordionModule, DynamicDialogModule],
+  imports: [AccordionModule, DynamicDialogModule, ButtonModule],
   templateUrl: './faq.component.html',
   styleUrl: './faq.component.scss',
   providers: [DialogService]

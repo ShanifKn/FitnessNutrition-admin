@@ -17,8 +17,12 @@ const routes: Routes = [
           ),
       },
       {
-        path: 'banners',
-        component:BannersComponent,
+        path: 'catalogue',
+        loadChildren: () => 
+          import('./catalogue/catalouge.routes').then(
+            (m) => m.catalogueRoutes
+          )
+        
       },
       {
         path: 'settings',

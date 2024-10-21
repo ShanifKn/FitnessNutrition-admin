@@ -1,1 +1,445 @@
-<p>customer-detail works!</p>
+<div class="grid grid-cols-3 gap-5">
+  <div class="w-full h-32 bg-white rounded-3xl p-5">
+    <div class="flex gap-5 items-center">
+      <div class="bg-[#F5D4FF] rounded-full p-6 w-20 h-20 flex items-center">
+        <img src="/assets/images/customer/invoice.svg" class="w-16 h-16" />
+      </div>
+
+      <div class="">
+        <h1 class="text-xl text-[#A3AED0] font-medium">Total invoice</h1>
+        <span class="text-black font-bold text-2xl">450</span>
+      </div>
+    </div>
+  </div>
+  <div class="w-full h-32 bg-white rounded-3xl p-5">
+    <div class="flex gap-5 items-center">
+      <div class="bg-[#F5D4FF] rounded-full p-6 w-20 h-20 flex items-center">
+        <img src="/assets/images/customer/avg.svg" class="w-16 h-16" />
+      </div>
+
+      <div class="">
+        <h1 class="text-xl text-[#A3AED0] font-medium">Total Orders</h1>
+        <span class="text-black font-bold text-2xl">955</span>
+      </div>
+    </div>
+  </div>
+  <div class="w-full h-32 bg-white rounded-3xl p-5">
+    <div class="flex gap-5 items-center">
+      <div class="bg-[#F5D4FF] rounded-full p-6 w-20 h-20 flex items-center">
+        <img src="/assets/images/customer/value.svg" class="w-16 h-16" />
+      </div>
+
+      <div class="">
+        <h1 class="text-xl text-[#A3AED0] font-medium">Average Basket Value</h1>
+        <span class="text-black font-bold text-2xl">AED 1050.00</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="grid mt-7">
+  <h1 class="text-black text-[24px] font-bold pb-4">Customers</h1>
+
+  <div class="grid grid-cols-3 gap-3">
+    <div class="col-span-1 bg-white rounded-lg shadow-md overflow-hidden">
+      <div class="bg-[#825092] py-4 px-9">
+        <div class="flex items-center space-x-4">
+          <img
+            class="w-20 h-20 rounded-full"
+            src="/assets/images/customer/user.svg"
+            alt="Customer avatar"
+          />
+          <div>
+            <h3 class="text-white text-lg font-semibold">Customer name</h3>
+
+            <p class="text-[#F0E6FA]">Useroogmail.com</p>
+            <p class="text-[#F0E6FA]">+971 98945623</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="py-4 px-10">
+        <div class="mb-2">
+          <p class="text-lg text-[#1A1A1A] font-medium">Last Order</p>
+          <p class="text-base text-gray-500">
+            2 Days Ago- <a href="#" class="text-blue-600">#45784</a>
+          </p>
+        </div>
+        <div class="mb-4">
+          <p class="text-lg text-[#1A1A1A] font-medium">Average Order Value</p>
+          <p class="text-base text-gray-500">AED 1050.00</p>
+        </div>
+        <div class="mb-4">
+          <p class="text-lg text-[#1A1A1A] font-medium">Registered</p>
+          <p class="text-base text-gray-500">13 Sep 2024</p>
+        </div>
+        <div class="mb-4">
+          <p class="text-lg text-[#1A1A1A] font-medium">Email Marketing</p>
+          <p class="text-base text-gray-500">Subscribed</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-span-2 rounded-lg">
+      <div class="p-3 py-5 bg-white rounded grid gap-5">
+        <div
+          class="flex items-center border border-gray-300 bg-white rounded-xl px-4 py-2"
+        >
+          <span class="pi pi-search"></span>
+          <input
+            type="text"
+            placeholder="Search Orders"
+            class="ml-3 w-full focus:outline-none text-gray-700"
+          />
+        </div>
+      </div>
+
+      <div class="mt-2">
+        <div class="flex justify-between">
+          <h1 class="text-black text-lg font-bold pb-2">Recent orders</h1>
+
+          <span class="text-black text-base"
+            >Total Spend on
+            <span class="text-black font-semibold"
+              >AED 7024.00 - 8 Ordes</span
+            ></span
+          >
+        </div>
+      </div>
+
+      <p-table
+        [value]="users"
+        [rows]="3"
+        [paginator]="true"
+        paginatorStyleClass="text-[#825092]"
+        [tableStyle]="{ 'min-width': '50rem' }"
+      >
+        <ng-template pTemplate="header">
+          <tr class="flex">
+            <th
+              pSortableColumn="orderId"
+              class="flex items-center w-full text-white bg-[#825092] rounded-l-lg"
+            >
+              Order ID <p-sortIcon field="orderId" />
+            </th>
+
+            <th
+              pSortableColumn="date"
+              class="flex items-center w-full text-white bg-[#825092]"
+            >
+              Date <p-sortIcon field="date" />
+            </th>
+
+            <!-- -->
+            <th
+              pSortableColumn="paid"
+              class="flex items-center w-full text-white bg-[#825092]"
+            >
+              Paid <p-sortIcon field="paid" />
+            </th>
+            <th
+              pSortableColumn="status"
+              class="flex items-center w-full text-white bg-[#825092]"
+            >
+              Status <p-sortIcon field="status" />
+            </th>
+
+            <th
+              pSortableColumn="items"
+              class="flex items-center w-full text-white bg-[#825092]"
+            >
+              Items<p-sortIcon field="items" />
+            </th>
+
+            <th
+              class="flex items-center w-full text-white bg-[#825092] rounded-r-lg"
+              pSortableColumn="total"
+            >
+              Total <p-sortIcon field="total" />
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-product>
+          <tr class="flex">
+            <td class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium">
+              {{ product.orderId }}
+            </td>
+            <td class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium">
+              {{ product.date }}
+            </td>
+            <td class="w-full">
+              <ng-container *ngIf="product.paid === 'Yes'; else notPaid">
+                <p
+                  class="bg-green-100 text-green-500 px-4 py-1 rounded text-sm w-fit"
+                >
+                  Paid
+                </p>
+              </ng-container>
+              <ng-template #notPaid>
+                <p
+                  class="bg-red-100 text-red-500 px-4 py-1 rounded text-sm w-fit"
+                >
+                  Not paid
+                </p>
+              </ng-template>
+            </td>
+
+            <td class="w-full">
+              <div [ngSwitch]="product.status">
+                <!-- Case: Delivered -->
+                <p
+                  *ngSwitchCase="'Delivered'"
+                  class="bg-green-100 text-green-600 px-4 py-1 rounded text-sm tracking-wide w-fit"
+                >
+                  Delivered
+                </p>
+
+                <!-- Case: Pending -->
+                <p
+                  *ngSwitchCase="'Pending'"
+                  class="bg-red-100 text-red-600 px-4 py-1 rounded text-sm tracking-wide w-fit"
+                >
+                  Pending
+                </p>
+
+                <!-- Case: Cancelled -->
+                <p
+                  *ngSwitchCase="'Cancelled'"
+                  class="bg-gray-100 text-gray-600 px-4 py-1 rounded text-sm tracking-wide w-fit"
+                >
+                  Cancelled
+                </p>
+
+                <!-- Case: Returned -->
+                <p
+                  *ngSwitchCase="'Returned'"
+                  class="bg-yellow-100 text-yellow-600 px-4 py-1 rounded text-sm tracking-wide w-fit"
+                >
+                  Returned
+                </p>
+
+                <!-- Default case (if status doesn't match any cases) -->
+                <button
+                  *ngSwitchDefault
+                  class="bg-gray-500 text-white px-4 py-2 rounded"
+                >
+                  Unknown Status
+                </button>
+              </div>
+            </td>
+
+            <td class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium">
+              {{ product.total }}
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
+</div>
+
+<div class="grid mt-7">
+  <h1 class="text-black text-[24px] font-bold pb-4">Delivery Addresses</h1>
+
+  <div class="bg-white rounded-md">
+    <div class="p-4 border-b border-[#EAEAEA] flex gap-5 items-center">
+      <h1 class="text-lg font-semibold text-black">1</h1>
+      <span class="text-base font-medium text-black tracking-wider"
+        >skyline villas 124, Karama,Uae near lulmall, 87956</span
+      >
+    </div>
+    <div class="p-4 border-b border-[#EAEAEA] flex gap-5 items-center">
+      <h1 class="text-lg font-semibold text-black">2</h1>
+      <span class="text-base font-medium text-black tracking-wider"
+        >skyline villas 124, Karama,Uae near lulmall, 87956</span
+      >
+    </div>
+  </div>
+</div>
+
+<div class="grid mt-7">
+  <h1 class="text-black text-[24px] font-bold pb-4">Wishlist</h1>
+
+  <div class="bg-white rounded-md">
+    <div class="p-4 border-b border-[#EAEAEA] flex gap-5 items-center">
+      <img src="/assets/images/customer/product1.svg" class="w-10 h-10" />
+      <span class="text-base font-medium text-black tracking-wider w-96"
+        >Optimum Nutrition Gold Standard 100% Whey Protein</span
+      >
+    </div>
+    <div class="p-4 border-b border-[#EAEAEA] flex gap-5 items-center">
+      <img src="/assets/images/customer/product1.svg" class="w-10 h-10" />
+      <span class="text-base font-medium text-black tracking-wider w-96"
+        >Optimum Nutrition Gold Standard 100% Whey Protein</span
+      >
+    </div>
+  </div>
+</div>
+
+<div class="grid mt-7">
+  <h1 class="text-black text-[24px] font-bold pb-4">Cart</h1>
+
+  <div class="bg-white rounded-md">
+    <div class="p-4 border-b border-[#EAEAEA] flex gap-5 items-center">
+      <img src="/assets/images/customer/product1.svg" class="w-10 h-10" />
+      <span class="text-base font-medium text-black tracking-wider w-96"
+        >Optimum Nutrition Gold Standard 100% Whey Protein</span
+      >
+      <h1 class="text-black text-base font-semibold">Quantity : 01</h1>
+    </div>
+    <div class="p-4 border-b border-[#EAEAEA] flex gap-5 items-center">
+      <img src="/assets/images/customer/product1.svg" class="w-10 h-10" />
+      <span class="text-base font-medium text-black tracking-wider w-96"
+        >Optimum Nutrition Gold Standard 100% Whey Protein</span
+      >
+
+      <h1 class="text-black text-base font-semibold">Quantity : 01</h1>
+    </div>
+  </div>
+</div>
+
+<div class="grid mt-7">
+  <h1 class="text-black text-[24px] font-bold pb-4">Redeem History</h1>
+  <div class="bg-white rounded-lg">
+    <div class="p-3 py-5 rounded grid gap-5">
+      <div
+        class="flex items-center border border-gray-300 bg-white rounded-xl px-4 py-2"
+      >
+        <span class="pi pi-search"></span>
+        <input
+          type="text"
+          placeholder="Search Orders"
+          class="ml-3 w-full focus:outline-none text-gray-700"
+        />
+      </div>
+    </div>
+
+    <p-table
+      [value]="users"
+      [rows]="3"
+      [paginator]="true"
+      paginatorStyleClass="text-[#825092]"
+      [tableStyle]="{ 'min-width': '50rem' }"
+    >
+      <ng-template pTemplate="header">
+        <tr class="flex">
+          <th
+            pSortableColumn="orderId"
+            class="flex items-center w-full text-white bg-[#825092] rounded-l-lg"
+          >
+            Order ID <p-sortIcon field="orderId" />
+          </th>
+
+          <th
+            pSortableColumn="date"
+            class="flex items-center w-full text-white bg-[#825092]"
+          >
+            Date <p-sortIcon field="date" />
+          </th>
+
+          <!-- -->
+          <th
+            pSortableColumn="paid"
+            class="flex items-center w-full text-white bg-[#825092]"
+          >
+            Paid <p-sortIcon field="paid" />
+          </th>
+          <th
+            pSortableColumn="status"
+            class="flex items-center w-full text-white bg-[#825092]"
+          >
+            Status <p-sortIcon field="status" />
+          </th>
+
+          <th
+            pSortableColumn="items"
+            class="flex items-center w-full text-white bg-[#825092]"
+          >
+            Items<p-sortIcon field="items" />
+          </th>
+
+          <th
+            class="flex items-center w-full text-white bg-[#825092] rounded-r-lg"
+            pSortableColumn="total"
+          >
+            Total <p-sortIcon field="total" />
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-product>
+        <tr class="flex">
+          <td class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium">
+            {{ product.orderId }}
+          </td>
+          <td class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium">
+            {{ product.date }}
+          </td>
+          <td class="w-full">
+            <ng-container *ngIf="product.paid === 'Yes'; else notPaid">
+              <p
+                class="bg-green-100 text-green-500 px-4 py-1 rounded text-sm w-fit"
+              >
+                Paid
+              </p>
+            </ng-container>
+            <ng-template #notPaid>
+              <p
+                class="bg-red-100 text-red-500 px-4 py-1 rounded text-sm w-fit"
+              >
+                Not paid
+              </p>
+            </ng-template>
+          </td>
+
+          <td class="w-full">
+            <div [ngSwitch]="product.status">
+              <!-- Case: Delivered -->
+              <p
+                *ngSwitchCase="'Delivered'"
+                class="bg-green-100 text-green-600 px-4 py-1 rounded text-sm tracking-wide w-fit"
+              >
+                Delivered
+              </p>
+
+              <!-- Case: Pending -->
+              <p
+                *ngSwitchCase="'Pending'"
+                class="bg-red-100 text-red-600 px-4 py-1 rounded text-sm tracking-wide w-fit"
+              >
+                Pending
+              </p>
+
+              <!-- Case: Cancelled -->
+              <p
+                *ngSwitchCase="'Cancelled'"
+                class="bg-gray-100 text-gray-600 px-4 py-1 rounded text-sm tracking-wide w-fit"
+              >
+                Cancelled
+              </p>
+
+              <!-- Case: Returned -->
+              <p
+                *ngSwitchCase="'Returned'"
+                class="bg-yellow-100 text-yellow-600 px-4 py-1 rounded text-sm tracking-wide w-fit"
+              >
+                Returned
+              </p>
+
+              <!-- Default case (if status doesn't match any cases) -->
+              <button
+                *ngSwitchDefault
+                class="bg-gray-500 text-white px-4 py-2 rounded"
+              >
+                Unknown Status
+              </button>
+            </div>
+          </td>
+
+          <td class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium">
+            {{ product.total }}
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

@@ -19,6 +19,7 @@
     [rows]="10"
     [paginator]="true"
     paginatorStyleClass="text-[#825092]"
+    [tableStyle]="{'min-width': '50rem'}"
   >
     <ng-template pTemplate="header">
       <tr class="flex">
@@ -54,7 +55,7 @@
           pSortableColumn="status"
           class="flex items-center w-full text-white bg-[#825092]"
         >
-          Status<p-sortIcon field="status" />
+         Subscription Status<p-sortIcon field="status" />
         </th>
 
         <th class="flex items-center w-full text-white bg-[#825092]">Action</th>
@@ -62,27 +63,27 @@
     </ng-template>
     <ng-template pTemplate="body" let-product>
       <tr class="flex">
-        <td class="w-full text-[#1A1A1A] text-base font-medium">
+        <td class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium">
           {{ product.name }}
         </td>
-        <td class="w-full text-[#1A1A1A] text-base font-medium">
+        <td class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium">
           {{ product.email }}
         </td>
-        <td class="w-full text-[#1A1A1A] text-base font-medium">
+        <td class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium">
           {{ product.registered }}
         </td>
-        <td class="w-full text-[#1A1A1A] text-base font-medium">
+        <td class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium">
           {{ product.total }}
         </td>
-        <td class="w-full text-[#1A1A1A] text-base font-medium">
+        <td class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium">
           <ng-container *ngIf="product.status === true; else notPaid">
-            <p class="text-[#1A1A1A] text-base font-medium">
-              Newsletter Registered
+            <p class="text-[#1A1A1A] text-sm 2xl:text-base font-medium">
+              Registered
             </p>
           </ng-container>
           <ng-template #notPaid>
-            <p class="text-[#1A1A1A] text-base font-medium">
-              Newsletter Not Registered
+            <p class="text-[#1A1A1A] text-sm 2xl:text-base font-medium">
+            Not Registered
             </p>
           </ng-template>
         </td>

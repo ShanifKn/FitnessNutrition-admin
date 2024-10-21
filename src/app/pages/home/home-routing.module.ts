@@ -18,19 +18,37 @@ const routes: Routes = [
       },
       {
         path: 'catalogue',
-        loadChildren: () => 
-          import('./catalogue/catalouge.routes').then(
-            (m) => m.catalogueRoutes
-          )
-        
+        loadChildren: () =>
+          import('./catalogue/catalouge.routes').then((m) => m.catalogueRoutes),
+      },
+      {
+        path: 'customers',
+        loadComponent: () =>
+          import('./customers/customers.component').then(
+            (m) => m.CustomersComponent
+          ),
+        children: [
+          {
+            path: '', // Default route for customers
+            loadComponent: () =>
+              import(
+                './customers/customers-list/customers-list.component'
+              ).then((m) => m.CustomersListComponent),
+          },
+          {
+            path: 'customer-details/:id', // Dynamic route for customer details
+            loadComponent: () =>
+              import(
+                './customers/customer-detail/customer-detail.component'
+              ).then((m) => m.CustomerDetailComponent),
+          },
+        ],
       },
       {
         path: 'settings',
-        loadChildren: () => 
-          import('./settings/settings.routes').then(
-            (m) => m.settingRoutes
-          )
-      }
+        loadChildren: () =>
+          import('./settings/settings.routes').then((m) => m.settingRoutes),
+      },
     ],
   },
 ];

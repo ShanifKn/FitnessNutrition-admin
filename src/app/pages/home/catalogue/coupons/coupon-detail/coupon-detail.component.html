@@ -1,0 +1,410 @@
+<div class="flex justify-between items-start">
+  <h1 class="text-black text-[24px] font-bold">Edit coupon</h1>
+</div>
+
+<div class="grid grid-cols-3 gap-3 mt-7">
+  <div class="px-4 py-5 rounded-lg bg-white col-span-2 grid gap-4">
+    <div class="">
+      <h1 class="text-black text-lg pb-3 font-medium">Code</h1>
+
+      <input
+        type="text"
+        class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
+        pInput
+        placeholder="Coupon code"
+        formControlName="code"
+      />
+    </div>
+
+    <div class="">
+      <h1 class="text-black text-lg pb-3 font-medium">Description</h1>
+
+      <textarea
+        rows="4"
+        cols="30"
+        pInputTextarea
+        class="bg-[#F6F7F9] w-full pl-5 pt-2 rounded-lg placeholder:text-gray-500 border border-gray-200"
+        pInput
+        placeholder="Coupon code"
+        autoResize="false"
+      >
+      </textarea>
+    </div>
+
+    <div class="">
+      <h1 class="text-black text-lg pb-3 font-medium">Type</h1>
+
+      <label for="hidden" class="flex items-center cursor-pointer pb-3">
+        <input
+          id="hidden"
+          type="radio"
+          formControlName="visibility"
+          [value]="true"
+          class="appearance-none peer h-4 w-4 border-2 border-gray-300 rounded-full checked:bg-[#854D94] checked:border-2"
+        />
+        <span class="pl-3 text-lg font-medium text-[#854D94]">Percentage</span>
+      </label>
+
+      <label for="hidden" class="flex items-center cursor-pointer pb-3">
+        <input
+          id="hidden"
+          type="radio"
+          formControlName="visibility"
+          [value]="true"
+          class="appearance-none peer h-4 w-4 border-2 border-gray-300 rounded-full checked:bg-[#854D94] checked:border-2"
+        />
+        <span class="pl-3 text-lg font-medium">Fixed Amount</span>
+      </label>
+    </div>
+
+    <div class="">
+      <h1 class="text-black text-lg pb-3 font-medium">Coupon Value</h1>
+
+      <input
+        type="text"
+        class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
+        pInput
+        placeholder="AED 1000.0"
+        formControlName="code"
+      />
+    </div>
+
+    <div class="">
+      <h1 class="text-black text-lg pb-3 font-medium">Usage Limit</h1>
+
+      <input
+        type="text"
+        class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
+        pInput
+        placeholder="50"
+        formControlName="code"
+      />
+    </div>
+
+    <div class="mt-5">
+      <label for="hidden" class="flex items-center cursor-pointer pb-3">
+        <input
+          id="hidden"
+          type="checkbox"
+          formControlName="visibility"
+          [value]="true"
+          class="h-5 w-5 border-2 border-gray-300 rounded-full checked:bg-[#854D94] checked:border-2"
+        />
+        <span class="pl-3 text-lg font-medium text-black"
+          >Only for registered customers</span
+        >
+      </label>
+    </div>
+  </div>
+
+  <div class="p-4 py-5 rounded-lg bg-white col-span-1 flex flex-col gap-4">
+    <div class="">
+      <h1 class="text-black text-lg pb-3">Status</h1>
+
+      <label for="hidden" class="flex items-center cursor-pointer pb-3">
+        <input
+          id="hidden"
+          type="radio"
+          formControlName="visibility"
+          [value]="true"
+          class="appearance-none peer h-4 w-4 border-2 border-gray-300 rounded-full checked:bg-[#854D94] checked:border-2"
+        />
+        <span class="pl-3 text-lg font-medium text-[#854D94]">Enabled</span>
+      </label>
+
+      <label for="hidden" class="flex items-center cursor-pointer pb-3">
+        <input
+          id="hidden"
+          type="radio"
+          formControlName="visibility"
+          [value]="true"
+          class="appearance-none peer h-4 w-4 border-2 border-gray-300 rounded-full checked:bg-[#854D94] checked:border-2"
+        />
+        <span class="pl-3 text-lg font-medium">Disabled</span>
+      </label>
+    </div>
+
+    <div class="">
+      <h1 class="text-black text-lg pb-2 font-medium">Schedule</h1>
+
+      <span class="text-base text-[#6E6E6E] font-medium"
+        >Use this settings to limit the coupon expiration date</span
+      >
+    </div>
+
+    <div class="">
+      <h1 class="text-black text-lg pb-3 font-medium">Start date</h1>
+
+      <input
+        type="date"
+        class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
+        pInput
+        placeholder="Coupon code"
+        formControlName="code"
+      />
+    </div>
+
+    <div class="">
+      <h1 class="text-black text-lg pb-3 font-medium">End date</h1>
+
+      <input
+        type="date"
+        class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
+        pInput
+        placeholder="Coupon code"
+        formControlName="code"
+      />
+    </div>
+
+    <div class="flex gap-3 w-full">
+      <div class="w-full">
+        <h1 class="text-black text-lg pb-3 font-medium">Start time</h1>
+
+        <input
+          type="time"
+          class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
+          pInput
+          placeholder="Coupon code"
+          formControlName="code"
+        />
+      </div>
+
+      <div class="w-full">
+        <h1 class="text-black text-lg pb-3 font-medium">End time</h1>
+
+        <input
+          type="time"
+          class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
+          pInput
+          placeholder="Coupon code"
+          formControlName="code"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="mt-7">
+  <h1 class="text-black text-[24px] font-bold pb-4">Assign Category</h1>
+
+  <div class="px-4 py-5 rounded-lg bg-white col-span-2 grid gap-4">
+    <div class="grid grid-cols-4 gap-3">
+      <div class="grid col-span-2">
+        <h1 class="text-black text-lg pb-3">Assigning to</h1>
+
+        <div class="flex gap-5">
+          <label for="hidden" class="flex items-center cursor-pointer pb-3">
+            <input
+              id="hidden"
+              type="checkbox"
+              formControlName="visibility"
+              [value]="true"
+              class="h-5 w-5 border-2 border-gray-300 rounded-full checked:bg-[#854D94] checked:border-2"
+            />
+            <span class="pl-3 text-lg font-semibold text-black">Category</span>
+          </label>
+
+          <label for="hidden" class="flex items-center cursor-pointer pb-3">
+            <input
+              id="hidden"
+              type="checkbox"
+              formControlName="visibility"
+              [value]="true"
+              class="h-5 w-5 border-2 border-gray-300 rounded-full checked:bg-[#854D94] checked:border-2"
+            />
+            <span class="pl-3 text-lg font-semibold text-black">Product</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="grid col-span-1">
+        <h1 class="text-lg pb-3 text-[#007EF2]">Remaining Value</h1>
+
+        <div
+          class="px-3 py-3 font-bold text-xl text-white bg-[#007EF2] w-3/5 rounded-lg"
+        >
+          AED 250.00
+        </div>
+      </div>
+
+      <div class="grid col-span-1">
+        <h1 class="text-lg pb-3 text-black">Choose Category Level</h1>
+
+        <p-multiSelect
+          [options]="categoryLevels"
+          [group]="true"
+          placeholder="Select Category"
+          scrollHeight="250px"
+          display="chip"
+          class="bg-[#F6F7F9] w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
+          styleClass=" w-full bg-[#F6F7F9]"
+          panelStyleClass="w-full"
+          appendTo="body"
+        >
+        </p-multiSelect>
+      </div>
+    </div>
+
+    <div class="">
+      <h1 class="text-black text-lg pb-3 font-medium">
+        Select parent Category
+      </h1>
+      <p-multiSelect
+        [options]="groupedCities"
+        [group]="true"
+        placeholder="Select Category"
+        scrollHeight="250px"
+        display="chip"
+        class="bg-[#F6F7F9] w-full"
+        styleClass=" w-full bg-[#F6F7F9] pl-3 pt-2 h-14 rounded-lg placeholder:text-gray-500 border border-gray-200"
+        panelStyleClass="w-full h-14"
+        appendTo="body"
+        [maxSelectedLabels]="25"
+      >
+        <ng-template let-group pTemplate="group">
+          <div class="flex align-items-center">
+            <span>{{ group.label }}</span>
+          </div>
+        </ng-template>
+      </p-multiSelect>
+    </div>
+
+    <div class="">
+      <h1 class="text-black text-lg pb-3 font-medium">Select Category</h1>
+      <p-multiSelect
+        [options]="groupedCities"
+        [group]="true"
+        placeholder="Select Category"
+        scrollHeight="250px"
+        display="chip"
+        class="bg-[#F6F7F9] w-full"
+        styleClass=" w-full bg-[#F6F7F9] pl-3 pt-2 h-14 rounded-lg placeholder:text-gray-500 border border-gray-200"
+        panelStyleClass="w-full h-14"
+        appendTo="body"
+        [maxSelectedLabels]="25"
+      >
+        <ng-template let-group pTemplate="group">
+          <div class="flex align-items-center">
+            <span>{{ group.label }}</span>
+          </div>
+        </ng-template>
+      </p-multiSelect>
+    </div>
+
+    <div class="">
+      <h1 class="text-black text-lg pb-3 font-medium">Select Product</h1>
+      <p-multiSelect
+        [options]="categoryLevels2"
+        [group]="true"
+        placeholder="Select Product"
+        scrollHeight="250px"
+        display="chip"
+        class="bg-[#F6F7F9] w-full"
+        styleClass=" w-full bg-[#F6F7F9] pl-3 pt-2 h-14 rounded-lg placeholder:text-gray-500 border border-gray-200"
+        panelStyleClass="w-full h-14"
+        appendTo="body"
+        [maxSelectedLabels]="25"
+      >
+        <ng-template let-group pTemplate="group">
+          <div class="flex align-items-center">
+            <span>{{ group.label }}</span>
+          </div>
+        </ng-template>
+      </p-multiSelect>
+    </div>
+  </div>
+</div>
+
+<div class="mt-7">
+  <h1 class="text-black text-[24px] font-bold pb-4">Assign Products</h1>
+
+  <p-table
+    [value]="product"
+    [rows]="3"
+    [paginator]="true"
+    paginatorStyleClass="text-[#825092]"
+    [tableStyle]="{ 'min-width': '50rem' }"
+  >
+    <ng-template pTemplate="header">
+      <tr class="flex">
+        <th
+          pSortableColumn="no"
+          class="flex w-56 items-center text-white bg-[#825092] rounded-l-lg"
+        >
+          S.no <p-sortIcon field="no" />
+        </th>
+
+        <th
+          pSortableColumn="product"
+          class="flex items-center w-full text-white bg-[#825092]"
+        >
+          Product <p-sortIcon field="product" />
+        </th>
+
+        <!-- -->
+        <th
+          pSortableColumn="category"
+          class="flex items-center w-full text-white bg-[#825092]"
+        >
+          Category <p-sortIcon field="category" />
+        </th>
+
+        <th
+          pSortableColumn="stock"
+          class="flex items-center w-full text-white bg-[#825092]"
+        >
+          Stock<p-sortIcon field="stock" />
+        </th>
+
+        <th
+          pSortableColumn="splPrice"
+          class="flex items-center w-full text-white bg-[#825092]"
+        >
+          Special Price <p-sortIcon field="splPrice" />
+        </th>
+
+        <th
+          class="flex items-center w-full text-white bg-[#825092] rounded-r-lg"
+          pSortableColumn="ofPrice"
+        >
+          Offer Price <p-sortIcon field="ofPrice" />
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product>
+      <tr class="flex">
+        <td class="w-56 text-[#1A1A1A] text-sm 2xl:text-base font-medium">
+          {{ product.no }}
+        </td>
+        <td class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium">
+          {{ product.product }}
+        </td>
+        <td class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium">
+          {{ product.category }}
+        </td>
+        <td class="w-full">
+          <ng-container *ngIf="product.stock !== 'Out of stock'; else notPaid">
+            <p
+              class="bg-green-100 text-green-500 px-4 py-1 rounded text-sm w-fit"
+            >
+              {{ product.stock }}
+            </p>
+          </ng-container>
+          <ng-template #notPaid>
+            <p class="bg-red-100 text-red-500 px-4 py-1 rounded text-sm w-fit">
+              Out of stock
+            </p>
+          </ng-template>
+        </td>
+
+        <td class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium">
+          {{ product.splPrice }}
+        </td>
+
+        <td class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium">
+          {{ product.ofPrice }}
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

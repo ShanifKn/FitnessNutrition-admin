@@ -27,6 +27,11 @@ const routes: Routes = [
           import('./customers/customers.routes').then((m) => m.customerRoutes),
       },
       {
+        path: 'orders',
+        loadChildren: () =>
+          import('./orders/order.routes').then((m) => m.ordersRoutes),
+      },
+      {
         path: 'settings',
         loadChildren: () =>
           import('./settings/settings.routes').then((m) => m.settingRoutes),

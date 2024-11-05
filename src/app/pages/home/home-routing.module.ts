@@ -32,6 +32,11 @@ const routes: Routes = [
           import('./orders/order.routes').then((m) => m.ordersRoutes),
       },
       {
+        path: 'drivers',
+        loadChildren: () =>
+          import('./driver/driver.routes').then((m) => m.driverRoutes),
+      },
+      {
         path: 'settings',
         loadChildren: () =>
           import('./settings/settings.routes').then((m) => m.settingRoutes),

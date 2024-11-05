@@ -35,6 +35,7 @@ export class OrderDetailComponent {
   offerApplied = 30.0;
   deliveryCharge = 0.0;
   totalAmount = 403.0;
-
   orderTimeline = Timeline;
+
+
 }

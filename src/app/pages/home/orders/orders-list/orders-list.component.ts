@@ -2,15 +2,26 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TableModule } from 'primeng/table';
+import { DialogModule } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
 
 @Component({
   selector: 'app-orders-list',
   standalone: true,
-  imports: [TableModule, CommonModule, RouterModule],
+  imports: [
+    TableModule,
+    CommonModule,
+    RouterModule,
+    DialogModule,
+    DropdownModule,
+  ],
   templateUrl: './orders-list.component.html',
   styleUrl: './orders-list.component.scss',
 })
 export class OrdersListComponent {
+  returnDialog: boolean = false;
+  returnMessageDialog: boolean = false;
+
   products: any[] = [
     {
       orderId: '#45784',
@@ -171,4 +182,20 @@ export class OrdersListComponent {
       paymentMode: 'Credit Card',
     },
   ];
+
+  driverList = [
+    { name: 'Babu', code: 'AU' },
+    { name: 'Kumar', code: 'BR' },
+    { name: 'China', code: 'CN' },
+    { name: 'Egypt', code: 'EG' },
+  ];
+
+  showDialog() {
+    this.returnDialog = true;
+  }
+
+
+  showMessageDialog() {
+    this.returnMessageDialog = true;
+  }
 }

@@ -100,7 +100,6 @@ export class BannersComponent implements OnInit, OnDestroy {
 
   onSubmit() {
     if (this.bannerForm.valid) {
-
       this.subscriptions.add(
         this.services
           .createBanners(this.bannerForm.value)
@@ -118,7 +117,7 @@ export class BannersComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.services.deleteBanner(_id).subscribe(({ message }) => {
         this.messageService.add({ severity: 'success', summary: message });
-        this.removeBannerData(_id)
+        this.removeBannerData(_id);
       })
     );
   }
@@ -192,19 +191,24 @@ export class BannersComponent implements OnInit, OnDestroy {
 
   removeBannerData(bannerId: string) {
     // Loop through each banner type in the banners object
-    for (const bannerType of ["mainBanners", "subBanners", "offerBanners", "bottomBanners"] as const) {
+    for (const bannerType of [
+      'mainBanners',
+      'subBanners',
+      'offerBanners',
+      'bottomBanners',
+    ] as const) {
       // Get the corresponding banners array
       const bannersArray = this.banners[bannerType];
-  
+
       // Check if the bannersArray exists
       if (bannersArray) {
         // Filter out the banner with the matching _id
-        this.banners[bannerType] = bannersArray.filter(banner => banner._id !== bannerId);
+        this.banners[bannerType] = bannersArray.filter(
+          (banner) => banner._id !== bannerId
+        );
       }
     }
   }
-  
-  
 
   ngOnDestroy() {
     this.subscriptions.unsubscribe();

@@ -1,0 +1,249 @@
+<div class="flex justify-between items-start">
+  <h1 class="text-black text-[24px] font-bold">Orders Details</h1>
+</div>
+
+<div class="grid grid-cols-3 gap-3 mt-7">
+  <div class="col-span-2 grid gap-4">
+    <div class="bg-white drop-shadow-lg py-4 px-5 rounded-md">
+      <!-- total -->
+      <div class="flex gap-5 items-center pb-2">
+        <h1 class="text-black font-bold text-xl">
+          Order ID
+          <span class="text-[#007EF2] text-lg font-semibold ml-1">#45785</span>
+        </h1>
+        <h5 class="text-[#00B03B] text-lg font-semibold">
+          Expected Delivery Date :
+          <span class="text-[#7E7E7E] font-bold text-xl"> 19 Sep 2024 </span>
+        </h5>
+      </div>
+
+      <!--  -->
+
+      <div class="flex gap-2 items-center">
+        <h1 class="text-[#000000] font-medium text-lg">16-08-2024</h1>
+        |
+        <h1 class="text-[#000000] font-medium text-lg">2 Items</h1>
+        |
+        <h1 class="text-[#000000] font-medium text-lg">Total AED 1050.00</h1>
+        |
+        <h1 class="text-[#000000] font-medium text-lg">Offer Applied 30%</h1>
+        |
+        <h1 class="text-[#000000] font-medium text-lg">Cash on delivery</h1>
+        |
+        <p class="bg-red-100 text-red-500 px-4 py-1 rounded text-sm w-fit">
+          Not paid
+        </p>
+      </div>
+    </div>
+
+    <!-- totallllllllllllll. -->
+
+    <div class="bg-white drop-shadow-lg rounded-lg overflow-hidden">
+      <table class="w-full table-auto border-collapse">
+        <thead>
+          <tr class="bg-[#825092] text-white">
+            <th class="px-4 py-3 text-left w-[50%]">Items</th>
+            <th class="px-4 py-3 text-center">Quantity</th>
+            <th class="px-4 py-3 text-center">Applied Offer</th>
+            <th class="px-4 py-3 text-right">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of items" class="border-b">
+            <td class="px-4 py-4 flex items-center space-x-4">
+              <img src="/assets/images/order/order2.svg" alt="Product Image"
+                class="w-12 h-12" />
+              <span class="line-clamp-2 tracking-wide">{{ item.name }}</span>
+            </td>
+            <td class="px-4 py-4 text-center">{{ item.quantity }}</td>
+            <td class="px-4 py-4 text-center">{{ item.offer }}%</td>
+            <td class="px-4 py-4 text-right">AED {{ item.amount }}</td>
+          </tr>
+        </tbody>
+        <tfoot class="">
+          <tr class="">
+            <td colspan="3" class="px-4 py-2 font-bold">Subtotal</td>
+            <td class="px-4 py-2 text-right">AED {{ subtotal }}</td>
+          </tr>
+          <tr>
+            <td colspan="3" class="px-4 py-2 font-bold">VAT (5%)</td>
+            <td class="px-4 py-2 text-right">AED {{ vat }}</td>
+          </tr>
+          <tr>
+            <td colspan="3" class="px-4 py-2 font-bold">Offer Applied</td>
+            <td class="px-4 py-2 text-right">AED {{ offerApplied }}</td>
+          </tr>
+          <tr>
+            <td colspan="3" class="px-4 py-2 font-bold">Delivery Charge</td>
+            <td class="px-4 py-2 text-right">AED {{ deliveryCharge }}</td>
+          </tr>
+          <tr class="border-b">
+            <td colspan="3" class="px-4 py-2 font-bold">Total Amount</td>
+            <td class="px-4 py-2 text-right font-bold">
+              AED {{ totalAmount }}
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+
+      <div class="flex justify-center items-center gap-3 my-5">
+        <button class="text-white bg-[#825092] text-lg px-5 py-2 rounded-lg">
+          Download Invoice
+        </button>
+        <button
+          class="text-[#825092] text-lg border border-[#825092] px-5 py-2 rounded-lg">
+          Download Sales Order
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-span-1 grid gap-4">
+    <div class="bg-white drop-shadow-lg py-4 px-5 rounded-md h-fit">
+      <h1 class="text-black font-bold text-xl">Customer</h1>
+
+      <div class="flex gap-3 mt-4 items-center">
+        <img class="w-20 h-20 rounded-full" src="/assets/images/customer/user.svg"
+          alt="Customer avatar" />
+
+        <div class="">
+          <h1 class="text-base font-semibold text-black">Customer name</h1>
+          <span class="text-black text-sm font-medium">27 orders</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white drop-shadow-lg py-4 px-5 rounded-md h-fit">
+      <h1 class="text-black font-bold text-xl">Contact Person</h1>
+
+      <div class="p-1 pt-3 flex flex-col items-start">
+        <h1 class="text-lg font-medium text-black tracking-normal">
+          Customer name
+        </h1>
+        <h4 class="text-[#007EF2] text-base font-medium tracking-normal">
+          useremail.com
+        </h4>
+        <h4 class="text-black text-base font-medium tracking-normal">
+          +971 98945623
+        </h4>
+      </div>
+    </div>
+
+    <div class="bg-white drop-shadow-lg rounded-md h-fit flex flex-col">
+      <div class="py-4 px-5">
+        <h1 class="text-black font-bold text-xl">Shipping Address</h1>
+
+        <div class="p-1 pt-3 flex flex-col items-start">
+          <h1 class="text-base font-medium text-black tracking-normal">
+            skyline villas 124, Karama,Uae
+          </h1>
+          <h1 class="text-base font-medium text-black tracking-normal">
+            near lulmall, 789456
+          </h1>
+        </div>
+      </div>
+
+      <div class="bg-[#825092] text-white px-3 py-2 rounded-b-md">
+        <h1 class="font-semibold text-sm">
+          Distance :<span>11 km away from the branch</span>
+        </h1>
+      </div>
+    </div>
+
+    <div class="bg-white drop-shadow-lg rounded-md h-fit py-4 px-5">
+      <h1 class="text-black font-bold text-xl">Billing Address</h1>
+
+      <div class="p-1 pt-3 flex flex-col items-start">
+        <h1 class="text-base font-medium text-black tracking-normal">
+          skyline villas 124, Karama,Uae
+        </h1>
+        <h1 class="text-base font-medium text-black tracking-normal">
+          near lulmall, 789456
+        </h1>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="grid mt-7">
+  <h1 class="text-black text-[24px] font-bold pb-4">Order Progress</h1>
+
+  <div class="grid grid-cols-3 gap-3">
+    <div class="bg-white col-span-2 drop-shadow-lg rounded-md py-10">
+      <app-order-tracking [timeline]="orderTimeline"></app-order-tracking>
+    </div>
+
+    <div class="bg-white drop-shadow-lg py-4 px-5 rounded-md h-fit">
+
+      <div class="flex justify-between items-center">
+
+
+        <h1 class="text-black font-bold text-xl">Driver Details</h1>
+
+
+        <p-button label="share location" icon="pi pi-map-marker"
+          class="bg-[#854D94] text-white px-3 py-1 rounded" />
+
+      </div>
+
+      <div class="p-1 pt-3 flex flex-col items-start">
+        <h1 class="text-lg font-medium text-black tracking-normal">
+          Driver name
+        </h1>
+        <h4 class="text-black text-base font-medium tracking-normal">
+          +971 98945623
+        </h4>
+        <h4 class="text-black text-base font-medium tracking-normal">
+          +971 98945623 <i class="pi pi-whatsapp ml-2" style="color: green"></i>
+        </h4>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class=" mt-7">
+
+  <h1 class="text-black text-[24px] font-bold pb-4">Order Progress</h1>
+
+  <div class="grid grid-cols-3">
+    <div class="col-span-2 bg-white rounded-lg drop-shadow-lg p-4">
+      <div class="grid grid-cols-4 py-3 border-b border-gray-200">
+        <div class="col-span-2">
+          <p class="text-base font-semibold text-black">Payment</p>
+          <p class="text-sm text-gray-500 tracking-wide">Via Payby</p>
+        </div>
+        <p class="text-sm text-gray-500">16-09-2024</p>
+
+        <div class="text-right">
+          <p class="text-base font-semibold text-black">AED 1050.00</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-4 py-3 border-b border-gray-200">
+        <div class="col-span-2">
+          <p class="text-base font-semibold text-black">Payment</p>
+          <p class="text-sm text-gray-500 tracking-wide">Cash on Delivery</p>
+        </div>
+        <p class="text-sm text-gray-500">14-09-2024</p>
+
+        <div class="text-right">
+          <p class="text-base font-semibold text-black">AED 199.00</p>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-4 py-3">
+        <div class="col-span-2">
+          <p class="text-base font-semibold text-black">Refund</p>
+          <p class="text-sm text-gray-500 tracking-wide">To Payby</p>
+        </div>
+        <p class="text-sm text-gray-500">01-05-2024</p>
+
+        <div class="text-right">
+          <p class="text-base font-semibold text-red-500">AED -350.00</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

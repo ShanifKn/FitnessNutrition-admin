@@ -1,7 +1,7 @@
 <div class="grid grid-cols-3 gap-5">
-  <div class="w-full h-32 bg-white rounded-3xl p-5">
+  <div class="w-full h-32 bg-white rounded-3xl p-5 drop-shadow-lg">
     <div class="flex gap-5 items-center">
-      <div class="bg-[#F5D4FF] rounded-full p-6 w-20 h-20 flex items-center">
+      <div class="bg-[#F5D4FF]  rounded-full p-6 w-20 h-20 flex items-center">
         <img src="/assets/images/customer/invoice.svg" class="w-16 h-16" />
       </div>
 
@@ -11,9 +11,9 @@
       </div>
     </div>
   </div>
-  <div class="w-full h-32 bg-white rounded-3xl p-5">
+  <div class="w-full h-32 bg-white rounded-3xl p-5 drop-shadow-lg">
     <div class="flex gap-5 items-center">
-      <div class="bg-[#F5D4FF] rounded-full p-6 w-20 h-20 flex items-center">
+      <div class="bg-[#F5D4FF]  rounded-full p-6 w-20 h-20 flex items-center">
         <img src="/assets/images/customer/avg.svg" class="w-16 h-16" />
       </div>
 
@@ -23,9 +23,9 @@
       </div>
     </div>
   </div>
-  <div class="w-full h-32 bg-white rounded-3xl p-5">
+  <div class="w-full h-32 bg-white rounded-3xl p-5 drop-shadow-lg">
     <div class="flex gap-5 items-center">
-      <div class="bg-[#F5D4FF] rounded-full p-6 w-20 h-20 flex items-center">
+      <div class="bg-[#F5D4FF]  rounded-full p-6 w-20 h-20 flex items-center">
         <img src="/assets/images/customer/value.svg" class="w-16 h-16" />
       </div>
 
@@ -37,7 +37,7 @@
   </div>
 </div>
 
-<div class="grid mt-7">
+<div class="grid mt-7 drop-shadow-lg">
   <h1 class="text-black text-[24px] font-bold pb-4">Customers</h1>
 
   <div class="grid grid-cols-3 gap-3">
@@ -81,7 +81,7 @@
     </div>
 
     <div class="col-span-2 rounded-lg">
-      <div class="p-3 py-5 bg-white rounded grid gap-5">
+      <div class="p-3 py-5 bg-white rounded grid gap-5 drop-shadow-lg">
         <div
           class="flex items-center border border-gray-300 bg-white rounded-xl px-4 py-2"
         >
@@ -94,7 +94,7 @@
         </div>
       </div>
 
-      <div class="mt-2">
+      <div class="mt-5">
         <div class="flex justify-between">
           <h1 class="text-black text-lg font-bold pb-2">Recent orders</h1>
 
@@ -113,6 +113,7 @@
         [paginator]="true"
         paginatorStyleClass="text-[#825092]"
         [tableStyle]="{ 'min-width': '50rem' }"
+        styleClass="drop-shadow-lg rounded-b-md"
       >
         <ng-template pTemplate="header">
           <tr class="flex">
@@ -241,7 +242,7 @@
 <div class="grid mt-7">
   <h1 class="text-black text-[24px] font-bold pb-4">Delivery Addresses</h1>
 
-  <div class="bg-white rounded-md">
+  <div class="bg-white rounded-md drop-shadow-lg">
     <div class="p-4 border-b border-[#EAEAEA] flex gap-5 items-center">
       <h1 class="text-lg font-semibold text-black">1</h1>
       <span class="text-base font-medium text-black tracking-wider"
@@ -260,7 +261,7 @@
 <div class="grid mt-7">
   <h1 class="text-black text-[24px] font-bold pb-4">Wishlist</h1>
 
-  <div class="bg-white rounded-md">
+  <div class="bg-white rounded-md drop-shadow-lg">
     <div class="p-4 border-b border-[#EAEAEA] flex gap-5 items-center">
       <img src="/assets/images/customer/product1.svg" class="w-10 h-10" />
       <span class="text-base font-medium text-black tracking-wider w-96"
@@ -279,7 +280,7 @@
 <div class="grid mt-7">
   <h1 class="text-black text-[24px] font-bold pb-4">Cart</h1>
 
-  <div class="bg-white rounded-md">
+  <div class="bg-white rounded-md drop-shadow-lg">
     <div class="p-4 border-b border-[#EAEAEA] flex gap-5 items-center">
       <img src="/assets/images/customer/product1.svg" class="w-10 h-10" />
       <span class="text-base font-medium text-black tracking-wider w-96"
@@ -300,7 +301,7 @@
 
 <div class="grid mt-7">
   <h1 class="text-black text-[24px] font-bold pb-4">Redeem History</h1>
-  <div class="bg-white rounded-lg">
+  <div class="bg-white rounded-lg drop-shadow-lg">
     <div class="p-3 py-5 rounded grid gap-5">
       <div
         class="flex items-center border border-gray-300 bg-white rounded-xl px-4 py-2"

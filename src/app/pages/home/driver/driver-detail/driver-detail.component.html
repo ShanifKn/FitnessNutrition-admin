@@ -1,1 +1,538 @@
-<p>driver-detail works!</p>
+<div class="grid grid-cols-4 gap-7 mt-7">
+  <div class="p-5 bg-white rounded-2xl drop-shadow-lg">
+    <div class="flex gap-5 items-center">
+      <div
+        class="w-24 h-24 bg-[#EEF7FF] rounded-full p-4 flex items-center justify-center"
+      >
+        <img
+          src="/assets/images/driver/driver1.svg"
+          alt=""
+          class="w-12 h-12 mx-auto mt-1"
+        />
+      </div>
+
+      <div class="flex flex-col items-start">
+        <h1 class="text-[#A3AED0] font-medium text-2xl">Received Orders</h1>
+        <p class="text-black text-2xl font-semibold">358</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-5 bg-white rounded-2xl drop-shadow-lg">
+    <div class="flex gap-5 items-center">
+      <div
+        class="w-24 h-24 bg-[#FEFBE8] rounded-full p-4 flex items-center justify-center"
+      >
+        <img
+          src="/assets/images/driver/driver2.svg"
+          alt=""
+          class="w-12 h-12 mx-auto mt-1"
+        />
+      </div>
+
+      <div class="flex flex-col items-start">
+        <h1 class="text-[#A3AED0] font-medium text-2xl">Pending Orders</h1>
+        <p class="text-black text-2xl font-semibold">25</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-5 bg-white rounded-2xl drop-shadow-lg">
+    <div class="flex gap-5 items-center">
+      <div
+        class="w-24 h-24 bg-[#FEF2F1] rounded-full p-4 flex justify-center items-center"
+      >
+        <img
+          src="/assets/images/driver/driver3.svg"
+          alt=""
+          class="w-12 h-12 mx-auto mt-1"
+        />
+      </div>
+
+      <div class="flex flex-col items-start">
+        <h1 class="text-[#A3AED0] font-medium text-2xl">Delivered Orders</h1>
+        <p class="text-black text-2xl font-semibold">30</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-5 bg-white rounded-2xl drop-shadow-lg">
+    <div class="flex gap-5 items-center">
+      <div
+        class="w-24 h-24 bg-[#F1F7F7] rounded-full p-4 flex justify-center items-center"
+      >
+        <img
+          src="/assets/images/driver/driver4.svg"
+          alt=""
+          class="w-14 h-14 mx-auto mt-1"
+        />
+      </div>
+
+      <div class="flex flex-col items-start">
+        <h1 class="text-[#A3AED0] font-medium text-2xl">Cash to be paid</h1>
+        <p class="text-black text-2xl font-semibold">30</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="grid mt-7 drop-shadow-lg">
+  <h1 class="text-black text-[24px] font-bold pb-4">Driver Details</h1>
+
+  <div class="grid grid-cols-3 gap-3">
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+      <!-- Header -->
+      <div
+        class="bg-[#825092] p-4 text-white flex items-center justify-between"
+      >
+        <div class="flex items-center">
+          <div class="w-14 h-14 flex items-center justify-center text-gray-500">
+            <img
+              class="w-full h-full rounded-full"
+              src="/assets/images/customer/user.svg"
+              alt="Customer avatar"
+            />
+          </div>
+          <div class="ml-3">
+            <h2 class="text-lg font-semibold text-white">Driver name</h2>
+            <p class="text-base tracking-wide text-[#F0E6FA]">Usergmail.com</p>
+            <p class="text-base tracking-wide text-[#F0E6FA]">+971 98945623</p>
+          </div>
+        </div>
+
+        <div class="grid gap-5 justify-between">
+          <button class="text-white" (click)="editDailog()">
+            <i class="pi pi-pen-to-square"></i> Edit
+          </button>
+
+          <p-button
+            label="Reset Password"
+            icon="pi pi-key"
+            class="bg-white text-[#825092] px-3 py-1 rounded-md"
+          />
+        </div>
+      </div>
+
+      <!-- Body -->
+      <div class="p-4 space-y-3">
+        <div class="flex justify-between">
+          <span class="font-medium text-black text-base">Total Orders</span>
+          <span class="text-[#736D6D] text-base">54</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="font-medium text-black text-base">Registered</span>
+          <span class="text-[#736D6D] text-base">13 Sep 2024</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="font-medium text-black text-base">WhatsApp Number</span>
+          <span class="flex items-center gap-1 text-[#736D6D] text-base">
+            <i class="pi pi-whatsapp text-green-500"></i> +971 87915624
+          </span>
+        </div>
+        <div class="flex justify-between">
+          <span class="font-medium text-black text-base"
+            >Total Distance Covered</span
+          >
+          <span class="text-blue-500 cursor-pointer">371 KM</span>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="border-t p-4">
+        <p class="mb-2 font-medium text-black text-base">Average rating</p>
+        <div class="flex items-center gap-1">
+          <span class="text-lg font-semibold text-[#545F71]">4.0</span>
+          <div class="flex items-center">
+            <i class="pi pi-star-fill text-yellow-500"></i>
+            <i class="pi pi-star-fill text-yellow-500"></i>
+            <i class="pi pi-star-fill text-yellow-500"></i>
+            <i class="pi pi-star-fill text-yellow-500"></i>
+            <i class="pi pi-star text-yellow-500"></i>
+          </div>
+          <a href="#" class="text-blue-500 text-sm">(658 ratings)</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid gap-3">
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <!-- Header -->
+        <h2 class="text-lg font-semibold mb-4 text-black">
+          Collection Details
+        </h2>
+
+        <!-- Total Collected Amount -->
+        <div class="flex justify-between py-2 border-b border-gray-200">
+          <span class="text-black font-medium text-base"
+            >Total collected amount</span
+          >
+          <span class="font-medium text-[#3F3F3F]">AED 1845.00</span>
+        </div>
+
+        <!-- Total Paid Amount -->
+        <div class="flex justify-between py-2 border-b border-gray-200">
+          <span class="text-black font-medium text-base"
+            >Total paid amount</span
+          >
+          <span class="font-medium text-[#3F3F3F]">AED 1640.00</span>
+        </div>
+
+        <!-- Remaining Amount -->
+        <div class="flex justify-between py-2">
+          <span class="text-black font-medium text-base">Remaining amount</span>
+          <span class="font-medium text-red-500">AED 205.00</span>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <!-- Header -->
+        <h2 class="text-lg font-semibold mb-4 text-black">
+          Assigned Branch Details
+        </h2>
+
+        <!-- Total Collected Amount -->
+        <div class="flex justify-between py-2 border-b border-gray-200">
+          <span class="text-black font-medium text-base">Branch name</span>
+          <span class="font-medium text-[#3F3F3F]">Town centre Al Ain</span>
+        </div>
+
+        <!-- Total Paid Amount -->
+        <div class="flex justify-between py-2 border-b border-gray-200">
+          <span class="text-black font-medium text-base">Contact info</span>
+          <span class="font-medium text-[#3F3F3F]">+971 98945623</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid gap-3">
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <!-- Header -->
+        <h2 class="text-lg font-semibold mb-4 text-black">Payment Modes</h2>
+
+        <!-- Total Collected Amount -->
+        <div class="flex justify-between py-2 border-b border-gray-200">
+          <span class="text-black font-medium text-base"
+            >Cash on delivery (50)</span
+          >
+          <span class="font-medium text-[#3F3F3F]">AED 1845.00</span>
+        </div>
+
+        <!-- Total Paid Amount -->
+        <div class="flex justify-between py-2 border-b border-gray-200">
+          <span class="text-black font-medium text-base"
+            >Card on delivery (36)</span
+          >
+          <span class="font-medium text-[#3F3F3F]">AED 1845.00</span>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-lg shadow-md p-4">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-lg font-semibold">Assigned location area details</h2>
+          <button
+            class="text-[#825092] flex items-center"
+            (click)="locationDailog()"
+          >
+            <i class="pi pi-pen-to-square mr-2"></i>Edit
+          </button>
+        </div>
+
+        <!-- Table -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="bg-[#825092] text-white">
+                <th class="p-2 font-medium">Location</th>
+                <th class="p-2 font-medium">Latitude</th>
+                <th class="p-2 font-medium">Longitude</th>
+                <th class="p-2 font-medium">Radius</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b">
+                <td class="p-2">Dubai</td>
+                <td class="p-2">38.8951°</td>
+                <td class="p-2">-77.0364°</td>
+                <td class="p-2">4 km</td>
+              </tr>
+              <tr class="bg-gray-50 border-b">
+                <td class="p-2">Al Ain</td>
+                <td class="p-2">38.8951°</td>
+                <td class="p-2">-77.0364°</td>
+                <td class="p-2">6 km</td>
+              </tr>
+              <tr class="border-b">
+                <td class="p-2">Abu Dhabi WEST</td>
+                <td class="p-2">38.8951°</td>
+                <td class="p-2">-77.0364°</td>
+                <td class="p-2">6 km</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="grid mt-7 drop-shadow-lg">
+  <h1 class="text-black text-[24px] font-bold pb-4">Received Orders</h1>
+
+  <p-table
+    [value]="receivedOrders"
+    [rowsPerPageOptions]="[5, 10, 20]"
+    [rows]="7"
+    [paginator]="true"
+    class="drop-shadow-lg"
+  >
+    <ng-template pTemplate="header">
+      <tr class="flex">
+        <th
+          pSortableColumn="orderId"
+          class="flex items-center w-full text-white bg-[#825092] rounded-t-md"
+        >
+          Order Id <p-sortIcon field="orderId" />
+        </th>
+
+        <th
+          pSortableColumn="date"
+          class="flex items-center w-full text-white bg-[#825092]"
+        >
+          Date <p-sortIcon field="date" />
+        </th>
+
+        <!-- -->
+        <th
+          pSortableColumn="payment"
+          class="flex items-center w-full text-white bg-[#825092]"
+        >
+          Payment mode <p-sortIcon field="payment" />
+        </th>
+        <th
+          pSortableColumn="status"
+          class="flex items-center w-full text-white bg-[#825092]"
+        >
+          Status<p-sortIcon field="status" />
+        </th>
+
+        <th
+          pSortableColumn="amount"
+          class="flex items-center w-full text-white bg-[#825092]"
+        >
+          Order Amount <p-sortIcon field="amount" />
+        </th>
+
+        <th
+          pSortableColumn="salesOrder"
+          class="flex items-center w-full text-white bg-[#825092]"
+        >
+          Sales Orders<p-sortIcon field="salesOrder" />
+        </th>
+
+        <th
+          pSortableColumn="invoiceNo"
+          class="flex items-center w-full text-white bg-[#825092]"
+        >
+          Invoice number<p-sortIcon field="invoiceNo" />
+        </th>
+
+        <th class="flex items-center w-full text-white bg-[#825092]">Share</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product>
+      <tr class="flex">
+        <td class="w-full text-[#007EF2] cursor-pointer">
+          {{ product.orderId }}
+        </td>
+        <td class="w-full">{{ product.date }}</td>
+        <td class="w-full">{{ product.payment }}</td>
+        <td class="w-full">{{ product.status }}</td>
+        <td class="w-full">AED {{ product.amount }}</td>
+        <td class="w-full">{{ product.salesOrder }}</td>
+        <td class="w-full">{{ product.invoiceNo }}</td>
+        <td class="w-full"><i class="pi pi-whatsapp text-green-500"></i></td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<p-dialog
+  header="Return Details"
+  [modal]="true"
+  [(visible)]="returnDailog"
+  [style]="{ width: '25rem' }"
+>
+  <div class="grid gap-3">
+    <div class="flex gap-3">
+      <img
+        src="/assets/images/customer/product1.svg"
+        class="w-20 h-20 border-4 border-gray-300 p-2"
+      />
+
+      <div class="flex flex-col">
+        <h1 class="text-base line-clamp-2 text-black">
+          Optimum Nutrition Gold Standard 100% Whey Protein
+        </h1>
+
+        <span class="text-[#20A1FF] text-base font-medium">AED 250.00</span>
+      </div>
+    </div>
+  </div>
+</p-dialog>
+
+<p-dialog
+  header="Edit Driver Details"
+  [modal]="true"
+  [(visible)]="editDriverDailog"
+  [style]="{ width: '35rem' }"
+>
+  <div class="grid gap-4 w-full">
+    <!-- Profile Image Container -->
+    <div class="gird items-center">
+      <!-- Profile Image Placeholder -->
+      <div
+        class="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center ml-3"
+      >
+        <img
+          class="w-full h-full rounded-full"
+          src="/assets/images/customer/user.svg"
+          alt="Customer avatar"
+        />
+      </div>
+
+      <!-- Change Image Button -->
+      <button
+        class="bg-[#825092] text-white text-sm px-3 py-1 rounded-full flex items-center space-x-1"
+      >
+        <i class="pi pi-camera text-xs"></i>
+        <span>Change Image</span>
+      </button>
+    </div>
+
+    <div class="">
+      <h1 class="text-black text-lg pb-3">Name</h1>
+
+      <input
+        type="text"
+        class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
+        pInput
+        placeholder="Driver name"
+      />
+    </div>
+
+    <div class="">
+      <h1 class="text-black text-lg pb-3">Email</h1>
+
+      <input
+        type="text"
+        class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
+        pInput
+        placeholder="example@example.com"
+      />
+    </div>
+
+    <div class="grid grid-cols-2 gap-3">
+      <div class="">
+        <h1 class="text-black text-lg pb-3">Mobile number</h1>
+
+        <input
+          type="text"
+          class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
+          pInput
+          placeholder="+123457890"
+        />
+      </div>
+
+      <div class="">
+        <h1 class="text-black text-lg pb-3">
+          <i class="pi pi-whatsapp text-green-500"></i> Whatapp number
+        </h1>
+
+        <input
+          type="text"
+          class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
+          pInput
+          placeholder="+123457890"
+        />
+      </div>
+    </div>
+
+    <div class="flex justify-end space-x-3 w-full mt-5">
+      <button
+        class="border border-[#854D94] text-[#854D94] font-bold px-4 py-2 rounded-lg"
+      >
+        Cancel
+      </button>
+      <button class="bg-[#854D94] text-white font-bold px-4 py-2 rounded-lg">
+        Update
+      </button>
+    </div>
+  </div>
+</p-dialog>
+
+<p-dialog
+  header="Edit Location Details"
+  [modal]="true"
+  [(visible)]="editLocationDailog"
+  [style]="{ width: '40rem' }"
+>
+  <div class="grid gap-4 w-full">
+    <div class="">
+      <h1 class="text-black text-lg pb-3">Location</h1>
+
+      <input
+        type="text"
+        class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
+        pInput
+        placeholder="Town centre Al Ain"
+      />
+    </div>
+
+    <div class="grid grid-cols-3 gap-2">
+      <div class="">
+        <h1 class="text-black text-lg pb-3">Latitude</h1>
+
+        <input
+          type="text"
+          class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
+          pInput
+          placeholder="38.8951°"
+        />
+      </div>
+
+      <div class="">
+        <h1 class="text-black text-lg pb-3">Longitude</h1>
+
+        <input
+          type="text"
+          class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
+          pInput
+          placeholder="38.8951°"
+        />
+      </div>
+
+      <div class="">
+        <h1 class="text-black text-lg pb-3">Radius</h1>
+
+        <input
+          type="text"
+          class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
+          pInput
+          placeholder="38.8951°"
+        />
+      </div>
+    </div>
+
+    <div class="flex justify-end space-x-3 w-full mt-5">
+      <button
+        class="border border-[#854D94] text-[#854D94] font-bold px-4 py-2 rounded-lg"
+      >
+        Cancel
+      </button>
+      <button class="bg-[#854D94] text-white font-bold px-4 py-2 rounded-lg">
+        Update
+      </button>
+    </div>
+  </div>
+</p-dialog>

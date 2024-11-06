@@ -1,0 +1,10 @@
+.no-focus-ring .p-dropdown:focus,
+.no-focus-ring .p-dropdown-label:focus,
+.no-focus-ring .p-dropdown-panel:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+::ng-deep .p-dialog .p-dialog-header {
+  padding: 0px !important;
+}

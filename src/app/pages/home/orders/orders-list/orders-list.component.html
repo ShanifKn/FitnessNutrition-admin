@@ -1,0 +1,546 @@
+<div class="flex justify-between items-start">
+  <h1 class="text-black text-[24px] font-bold">Orders</h1>
+</div>
+
+<div class="grid grid-cols-4 gap-7 mt-7">
+  <div class="p-5 bg-white rounded-2xl drop-shadow-lg">
+    <div class="flex gap-5 items-center">
+      <div
+        class="w-24 h-24 bg-[#EEF7FF] rounded-full p-4 flex items-center justify-center"
+      >
+        <img
+          src="/assets/images/order/order1.svg"
+          alt=""
+          class="w-12 h-12 mx-auto mt-1"
+        />
+      </div>
+
+      <div class="flex flex-col items-start">
+        <h1 class="text-[#A3AED0] font-medium text-2xl">Total Orders</h1>
+        <p class="text-black text-2xl font-semibold">3598</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-5 bg-white rounded-2xl drop-shadow-lg">
+    <div class="flex gap-5 items-center">
+      <div
+        class="w-24 h-24 bg-[#FEFBE8] rounded-full p-4 flex items-center justify-center"
+      >
+        <img
+          src="/assets/images/order/order2.svg"
+          alt=""
+          class="w-12 h-12 mx-auto mt-1"
+        />
+      </div>
+
+      <div class="flex flex-col items-start">
+        <h1 class="text-[#A3AED0] font-medium text-2xl">Pending Orders</h1>
+        <p class="text-black text-2xl font-semibold">955</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-5 bg-white rounded-2xl drop-shadow-lg">
+    <div class="flex gap-5 items-center">
+      <div
+        class="w-24 h-24 bg-[#FEF2F1] rounded-full p-4 flex justify-center items-center"
+      >
+        <img
+          src="/assets/images/order/order3.svg"
+          alt=""
+          class="w-12 h-12 mx-auto mt-1"
+        />
+      </div>
+
+      <div class="flex flex-col items-start">
+        <h1 class="text-[#A3AED0] font-medium text-2xl">Cancelled Orders</h1>
+        <p class="text-black text-2xl font-semibold">3598</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="p-5 bg-white rounded-2xl drop-shadow-lg">
+    <div class="flex gap-5 items-center">
+      <div
+        class="w-24 h-24 bg-[#F1F7F7] rounded-full p-4 flex justify-center items-center"
+      >
+        <img
+          src="/assets/images/order/order4.svg"
+          alt=""
+          class="w-14 h-14 mx-auto mt-1"
+        />
+      </div>
+
+      <div class="flex flex-col items-start">
+        <h1 class="text-[#A3AED0] font-medium text-2xl">Delivered Orders</h1>
+        <p class="text-black text-2xl font-semibold">3598</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="mt-7">
+  <h1 class="text-black text-xl font-bold pb-4">Order List</h1>
+
+  <div class="bg-white rounded-lg p-5 mb-5 drop-shadow-lg">
+    <div
+      class="flex items-center border border-gray-300 bg-white rounded-xl px-4 py-2"
+    >
+      <span class="pi pi-search"></span>
+      <input
+        type="text"
+        placeholder="Search Orders"
+        class="ml-3 w-full focus:outline-none text-gray-700"
+      />
+    </div>
+  </div>
+
+  <!-- table  -->
+
+  <p-table
+    [value]="products"
+    [rowsPerPageOptions]="[5, 10, 20]"
+    [rows]="7"
+    [paginator]="true"
+    class="drop-shadow-lg"
+  >
+    <ng-template pTemplate="header">
+      <tr class="flex">
+        <th
+          pSortableColumn="orderId"
+          class="flex items-center w-full text-white bg-[#825092] rounded-t-md"
+        >
+          Order Id <p-sortIcon field="orderId" />
+        </th>
+
+        <th
+          pSortableColumn="customer"
+          class="flex items-center w-full text-white bg-[#825092]"
+        >
+          Customer <p-sortIcon field="customer" />
+        </th>
+
+        <!-- -->
+        <th
+          pSortableColumn="date"
+          class="flex items-center w-full text-white bg-[#825092]"
+        >
+          Date <p-sortIcon field="date" />
+        </th>
+        <th
+          pSortableColumn="paid"
+          class="flex items-center w-full text-white bg-[#825092]"
+        >
+          Paid<p-sortIcon field="paid" />
+        </th>
+
+        <th
+          pSortableColumn="status"
+          class="flex items-center w-full text-white bg-[#825092]"
+        >
+          Status<p-sortIcon field="status" />
+        </th>
+
+        <th
+          pSortableColumn="items"
+          class="flex items-center w-full text-white bg-[#825092]"
+        >
+          Items<p-sortIcon field="items" />
+        </th>
+
+        <th
+          pSortableColumn="paymentMode"
+          class="flex items-center w-full text-white bg-[#825092]"
+        >
+          Payment mode<p-sortIcon field="paymentMode" />
+        </th>
+
+        <th
+          pSortableColumn="total"
+          class="flex items-center w-full text-white bg-[#825092]"
+        >
+          Total<p-sortIcon field="total" />
+        </th>
+
+        <th
+          class="flex items-center w-full text-white bg-[#825092] rounded-r-md"
+        >
+          Action
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product>
+      <tr class="flex">
+        <td class="w-full">{{ product.orderId }}</td>
+        <td class="w-full">{{ product.customer }}</td>
+        <td class="w-full">{{ product.date }}</td>
+        <td class="w-full">
+          <ng-container *ngIf="product.paid === 'Yes'; else notPaid">
+            <p
+              class="bg-green-100 text-green-500 px-4 py-1 rounded text-sm w-fit"
+            >
+              Paid
+            </p>
+          </ng-container>
+          <ng-template #notPaid>
+            <p class="bg-red-100 text-red-500 px-4 py-1 rounded text-sm w-fit">
+              Not paid
+            </p>
+          </ng-template>
+        </td>
+
+        <td class="w-full">
+          <div [ngSwitch]="product.status">
+            <!-- Case: Delivered -->
+            <p
+              *ngSwitchCase="'Delivered'"
+              class="bg-green-100 text-green-600 px-4 py-1 rounded text-sm tracking-wide w-fit"
+            >
+              Delivered
+            </p>
+
+            <!-- Case: Pending -->
+            <p
+              *ngSwitchCase="'Pending'"
+              class="bg-red-100 text-red-600 px-4 py-1 rounded text-sm tracking-wide w-fit"
+            >
+              Pending
+            </p>
+
+            <!-- Case: Cancelled -->
+            <p
+              *ngSwitchCase="'Cancelled'"
+              class="bg-gray-100 text-gray-600 px-4 py-1 rounded text-sm tracking-wide w-fit"
+            >
+              Cancelled
+            </p>
+
+            <!-- Case: Returned -->
+            <p
+              *ngSwitchCase="'Returned'"
+              class="bg-yellow-100 text-yellow-600 px-4 py-1 rounded text-sm tracking-wide w-fit"
+            >
+              Returned
+            </p>
+
+            <!-- Default case (if status doesn't match any cases) -->
+            <button
+              *ngSwitchDefault
+              class="bg-gray-500 text-white px-4 py-2 rounded"
+            >
+              Unknown Status
+            </button>
+          </div>
+        </td>
+        <td class="w-full">{{ product.items }}</td>
+        <td class="w-full">{{ product.paymentMode }}</td>
+        <td class="w-full">{{ product.total }}</td>
+        <td class="w-full">
+          <button
+            [routerLink]="['/orders/detail', product._id]"
+            pButton
+            class="px-3 py-1 text-sm font-medium text-white bg-[#825092] rounded-md"
+          >
+            View Details
+          </button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<div class="mt-7">
+  <h1 class="text-black text-xl font-bold pb-4">Return Requests</h1>
+
+  <div class="bg-white rounded-lg p-5 mb-5 drop-shadow-lg">
+    <div
+      class="flex items-center border border-gray-300 bg-white rounded-xl px-4 py-2"
+    >
+      <span class="pi pi-search"></span>
+      <input
+        type="text"
+        placeholder="Search Orders"
+        class="ml-3 w-full focus:outline-none text-gray-700"
+      />
+    </div>
+  </div>
+
+  <p-table
+    [value]="products"
+    [rowsPerPageOptions]="[5, 10, 20]"
+    [rows]="7"
+    [paginator]="true"
+    class="drop-shadow-lg"
+  >
+    <ng-template pTemplate="header">
+      <tr class="flex">
+        <th
+          pSortableColumn="orderId"
+          class="flex items-center w-full text-white bg-[#825092] rounded-t-md"
+        >
+          Order Id <p-sortIcon field="orderId" />
+        </th>
+
+        <th
+          pSortableColumn="customer"
+          class="flex items-center w-full text-white bg-[#825092]"
+        >
+          Customer <p-sortIcon field="customer" />
+        </th>
+
+        <!-- -->
+        <th
+          pSortableColumn="date"
+          class="flex items-center w-full text-white bg-[#825092]"
+        >
+          Ordered Date <p-sortIcon field="date" />
+        </th>
+        <th
+          pSortableColumn="returnDate"
+          class="flex items-center w-full text-white bg-[#825092]"
+        >
+          Return Date<p-sortIcon field="returnDate" />
+        </th>
+
+        <th
+          pSortableColumn="paid"
+          class="flex items-center w-full text-white bg-[#825092]"
+        >
+          Paid<p-sortIcon field="paid" />
+        </th>
+
+        <th
+          pSortableColumn="items"
+          class="flex items-center w-full text-white bg-[#825092]"
+        >
+          Items<p-sortIcon field="items" />
+        </th>
+
+        <th
+          pSortableColumn="paymentMode"
+          class="flex items-center w-full text-white bg-[#825092]"
+        >
+          Payment mode<p-sortIcon field="paymentMode" />
+        </th>
+
+        <th
+          pSortableColumn="total"
+          class="flex items-center w-full text-white bg-[#825092]"
+        >
+          Total<p-sortIcon field="total" />
+        </th>
+
+        <th
+          class="flex items-center w-full text-white bg-[#825092] rounded-r-md"
+        >
+          Action
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product>
+      <tr class="flex">
+        <td class="w-full">{{ product.orderId }}</td>
+        <td class="w-full">{{ product.customer }}</td>
+        <td class="w-full">{{ product.date }}</td>
+        <td class="w-full">{{ product.returnDate }}</td>
+
+        <td class="w-full">
+          <ng-container *ngIf="product.paid === 'Yes'; else notPaid">
+            <p
+              class="bg-green-100 text-green-500 px-4 py-1 rounded text-sm w-fit"
+            >
+              yes
+            </p>
+          </ng-container>
+          <ng-template #notPaid>
+            <p class="bg-red-100 text-red-500 px-4 py-1 rounded text-sm w-fit">
+              No
+            </p>
+          </ng-template>
+        </td>
+
+        <td class="w-full">{{ product.items }}</td>
+        <td class="w-full">{{ product.paymentMode }}</td>
+        <td class="w-full">{{ product.total }}</td>
+        <td class="w-full flex gap-5">
+          <div
+            class="w-9 h-9 rounded-full flex justify-center items-center bg-[#20A1FF] cursor-pointer"
+            (click)="showMessageDialog()"
+          >
+            <i class="pi pi-comments text-white" style="font-size: 1.2rem"></i>
+          </div>
+
+          <div
+            class="w-9 h-9 rounded-full flex justify-center items-center bg-[#FA3E62] cursor-pointer"
+          >
+            <i class="pi pi-times text-white" style="font-size: 1.2rem"></i>
+          </div>
+
+          <div
+            class="w-9 h-9 rounded-full flex justify-center items-center bg-[#05CA40] cursor-pointer"
+            (click)="showDialog()"
+          >
+            <i class="pi pi-check text-white" style="font-size: 1.2rem"></i>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<!-- return dialog bx -->
+<p-dialog
+  header=""
+  [(visible)]="returnDialog"
+  [style]="{ width: '25rem' }"
+  class="p-0"
+>
+  <h1
+    class="flex justify-center font-semibold text-center w-full text-black text-2xl"
+  >
+    Are You Sure to Accept the return?
+  </h1>
+
+  <div class="flex justify-center w-full mt-4">
+    <p-dropdown
+      [options]="driverList"
+      optionLabel="name"
+      [filter]="true"
+      filterBy="name"
+      [showClear]="true"
+      placeholder="Select  Driver"
+      styleClass="bg-[#F6F7F9] w-full h-12 border border-gray-200 rounded-lg no-focus-ring"
+      appendTo="body"
+      class="w-full mt-5"
+    >
+      <ng-template pTemplate="selectedItem" let-selectedOption>
+        <div class="flex align-items-center gap-2">
+          <div>{{ selectedOption.name }}</div>
+        </div>
+      </ng-template>
+    </p-dropdown>
+  </div>
+
+  <div class="flex gap-1 mx-auto w-full justify-center mt-5">
+    <button
+      class="text-[#825092] text-lg border border-[#825092] px-5 py-1 w-24 rounded-lg"
+    >
+      Cancel
+    </button>
+    <button class="text-white bg-[#825092] text-lg px-5 py-1 w-24 rounded-lg">
+      Sure
+    </button>
+  </div>
+</p-dialog>
+
+<!-- return message box -->
+<p-dialog
+  header=""
+  [(visible)]="returnMessageDialog"
+  [style]="{ width: '55rem', backgroundColor: 'red' }"
+  styleClass="p-0 bg-red-500"
+>
+  <div class="grid grid-cols-2">
+    <!-- Customer Information Card -->
+    <div class="bg-white rounded-lg shadow p-6 w-full border">
+      <div class="bg-[#825092] p-4 text-white rounded-t-lg">
+        <div class="flex items-center space-x-4">
+          <div class="w-12 h-12 bg-gray-200 rounded-full">
+            <img
+              class="w-full h-full rounded-full"
+              src="/assets/images/customer/user.svg"
+              alt="Customer avatar"
+            />
+          </div>
+          <div>
+            <h3 class="font-bold">Customer name</h3>
+            <p class="text-sm">Usergmail.com</p>
+            <p class="text-sm">+971 98945623</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-4 py-4">
+        <img
+          src="/assets/images/customer/product1.svg"
+          alt="Product Image"
+          class="w-14 h-14 object-cover rounded"
+        />
+        <div>
+          <p class="font-semibold text-base">
+            Optimum Nutrition Gold Standard 100% Whey Protein
+          </p>
+        </div>
+      </div>
+
+      <div class="space-y-2 text-gray-700">
+        <div class="flex justify-between">
+          <span>Order ID</span>
+          <a href="#" class="text-blue-500">#45784</a>
+        </div>
+        <div class="flex justify-between">
+          <span>Order Date</span>
+          <span>16-08-2024</span>
+        </div>
+        <div class="flex justify-between">
+          <span>Return Date</span>
+          <span>20-08-2024</span>
+        </div>
+        <div class="flex justify-between">
+          <span>Payment</span>
+          <span class="text-green-500">Yes</span>
+        </div>
+        <div class="flex justify-between">
+          <span>Items</span>
+          <span>1</span>
+        </div>
+        <div class="flex justify-between">
+          <span>Payment method</span>
+          <span>Cash on delivery</span>
+        </div>
+        <div class="flex justify-between">
+          <span>Total Amount</span>
+          <span class="text-blue-500">AED 128.00</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Comment and Reply Section -->
+    <div class="bg-white rounded-lg shadow p-6 w-full space-y-4">
+      <h3 class="font-bold text-gray-800">Customer Comment</h3>
+      <p class="border border-[#854D94] p-3 rounded-lg text-gray-700">
+        Designed to meet the need for sustainable, high-quality products that
+        reduce environmental impact while offering great value.
+      </p>
+
+      <div class="flex space-x-4">
+        <button class="bg-red-500 text-white font-bold px-4 py-2 rounded-lg">
+          Reject
+        </button>
+        <button class="bg-green-500 text-white font-bold px-4 py-2 rounded-lg">
+          Accept
+        </button>
+      </div>
+
+      <div class="space-y-2">
+        <h3 class="font-bold text-gray-800">Reply</h3>
+        <textarea
+          placeholder="Reply..."
+          class="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:border-[#854D94]"
+        ></textarea>
+      </div>
+
+      <div class="flex justify-end space-x-4">
+        <button
+          class="border border-[#854D94] text-[#854D94] font-bold px-4 py-2 rounded-lg"
+        >
+          Cancel
+        </button>
+        <button class="bg-[#854D94] text-white font-bold px-4 py-2 rounded-lg">
+          Send
+        </button>
+      </div>
+    </div>
+  </div>
+</p-dialog>

@@ -1,0 +1,113 @@
+<div class="flex justify-between items-start">
+  <h1 class="text-black text-[24px] font-bold">Products</h1>
+</div>
+
+<div class="mt-7">
+  <div class="bg-white rounded-lg p-5 mb-5 drop-shadow-lg">
+    <div
+      class="flex items-center border border-gray-300 bg-white rounded-xl px-4 py-2"
+    >
+      <span class="pi pi-search"></span>
+      <input
+        type="text"
+        placeholder="Search Orders"
+        class="ml-3 w-full focus:outline-none text-gray-700"
+      />
+    </div>
+  </div>
+
+  <p-table
+    [value]="products"
+    [rowsPerPageOptions]="[5, 10, 20]"
+    [rows]="7"
+    [paginator]="true"
+    class="drop-shadow-lg"
+  >
+    <ng-template pTemplate="header">
+      <tr class="flex">
+        <th
+          pSortableColumn="no"
+          class="flex items-center w-56 text-white bg-[#825092] rounded-t-md"
+        >
+          S.no <p-sortIcon field="no" />
+        </th>
+
+        <th
+          pSortableColumn="name"
+          class="flex items-center w-full justify-center text-white bg-[#825092]"
+        >
+          Product <p-sortIcon field="name" />
+        </th>
+
+        <!-- -->
+        <th
+          pSortableColumn="category"
+          class="flex items-center justify-center w-full text-white bg-[#825092]"
+        >
+          Category <p-sortIcon field="category" />
+        </th>
+        <th
+          pSortableColumn="stock"
+          class="flex items-center w-full justify-center text-white bg-[#825092]"
+        >
+          Stock<p-sortIcon field="stock" />
+        </th>
+
+        <th
+          pSortableColumn="price"
+          class="flex items-center w-full justify-center text-white bg-[#825092]"
+        >
+          Special Price<p-sortIcon field="price" />
+        </th>
+
+        <th
+          class="flex items-center w-full justify-center text-white bg-[#825092]"
+        >
+          Edit
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product>
+      <tr class="flex">
+        <td class="w-56 text-black cursor-pointer flex justify-center">
+          {{ product.no }}
+        </td>
+        <td class="w-full flex line-clamp-2">
+          <img
+            src="{{ product.image }}"
+            alt="{{ product.name }}"
+            class="w-10 h-10 mr-2 rounded"
+          />{{ product.name }}
+        </td>
+        <td class="w-full flex justify-center">{{ product.category }}</td>
+        <td class="w-full flex justify-center">
+          <div [ngSwitch]="product.stock">
+            <p
+              *ngSwitchCase="'0'"
+              class="bg-red-100 text-red-600 px-4 py-1 rounded-full text-sm tracking-wide w-fit"
+            >
+              Out of stock
+            </p>
+
+            <p
+              *ngSwitchDefault
+              class="bg-green-100 text-green-600 px-4 py-1 rounded-full text-sm tracking-wide w-fit"
+            >
+              {{ product.stock }} of stock
+            </p>
+          </div>
+        </td>
+        <td class="w-full flex justify-center">AED {{ product.price }}</td>
+        <td
+          class="w-full flex justify-center cursor-pointer"
+          [routerLink]="['/catalogue/products/detail', product.no]"
+        >
+          <i
+            class="pi pi-pen-to-square text-[#007EF2]"
+            style="font-size: 1.4rem"
+          ></i>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

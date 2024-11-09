@@ -1,1 +1,414 @@
-<p>product-detail works!</p>
+<div class="grid mt-7 drop-shadow-lg">
+  <h1 class="text-black text-[24px] font-bold pb-4">Edit Product</h1>
+
+  <div class="grid grid-cols-3 gap-3">
+    <div class="col-span-2 grid gap-2">
+      <div class="bg-white rounded-lg shadow-md overflow-hidden p-5">
+        <app-image-uploader></app-image-uploader>
+
+        <div class="grid gap-4 mt-5">
+          <div class="">
+            <h1 class="text-black text-lg pb-3 font-medium">Name</h1>
+
+            <input
+              type="text"
+              class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
+              pInput
+              placeholder="Product Name"
+              formControlName="code"
+            />
+          </div>
+
+          <div class="">
+            <h1 class="text-black text-lg pb-3 font-medium">Description</h1>
+
+            <textarea
+              rows="4"
+              cols="30"
+              pInputTextarea
+              class="bg-[#F6F7F9] w-full pl-3 pt-2 rounded-lg placeholder:text-gray-500 border border-gray-200"
+              pInput
+              placeholder="Product description"
+              autoResize="false"
+            >
+            </textarea>
+          </div>
+
+          <div class="">
+            <h1 class="text-black text-lg pb-3 font-medium">
+              Short Description
+            </h1>
+
+            <textarea
+              rows="4"
+              cols="30"
+              pInputTextarea
+              class="bg-[#F6F7F9] w-full pl-5 pt-2 rounded-lg placeholder:text-gray-500 border border-gray-200"
+              pInput
+              placeholder="Short description"
+              autoResize="false"
+            >
+            </textarea>
+          </div>
+
+          <div class="">
+            <h1 class="text-black text-lg pb-3 font-medium">Select Brand</h1>
+
+            <input
+              type="text"
+              class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
+              pInput
+              placeholder="Select brand"
+              formControlName="code"
+            />
+          </div>
+
+          <div class="">
+            <h1 class="text-black text-lg pb-3 font-medium">Buffer Count</h1>
+
+            <input
+              type="text"
+              class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
+              pInput
+              placeholder="count"
+              formControlName="code"
+            />
+          </div>
+
+          <div class="flex gap-4"></div>
+        </div>
+      </div>
+
+      <p-table
+        [value]="branchList"
+        [rowsPerPageOptions]="[5, 10, 20]"
+        [rows]="7"
+        class="drop-shadow-lg"
+      >
+        <ng-template pTemplate="header">
+          <tr class="flex">
+            <th
+              pSortableColumn="branchName"
+              class="flex items-center w-full text-white bg-[#825092] rounded-t-md justify-center"
+            >
+              Branch <p-sortIcon field="branchName" />
+            </th>
+
+            <th
+              pSortableColumn="count"
+              class="flex items-center w-full text-white bg-[#825092] justify-center"
+            >
+              Stock Count <p-sortIcon field="count" />
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-product>
+          <tr class="flex">
+            <td class="w-full text-black cursor-pointer flex justify-center">
+              {{ product.branchName }}
+            </td>
+
+            <td class="w-full text-black cursor-pointer flex justify-center">
+              {{ product.count }}
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+
+    <div
+      class="col-span-1 bg-white rounded-lg shadow-md overflow-hidden p-5 flex flex-col gap-5"
+    >
+      <div class="">
+        <h1 class="text-black text-lg pb-3 font-medium">Select Category</h1>
+        <p-multiSelect
+          [options]="cities"
+          placeholder="Select Cities"
+          optionLabel="name"
+          display="chip"
+          class="bg-[#F6F7F9] w-full"
+          styleClass=" w-full bg-[#F6F7F9] pl-3 pt-2 h-14 rounded-lg placeholder:text-gray-500 border border-gray-200"
+          appendTo="body"
+          [showClear]="true"
+        />
+      </div>
+
+      <div class="">
+        <h1 class="text-black text-lg pb-3">Visibility</h1>
+        <div class="flex items-center space-x-4">
+          <div
+            class="inline-flex items-center px-4 py-[10px] text-sm font-medium rounded-md border-2 border-[#854D94] text-[#854D94]"
+          >
+            <label for="hidden" class="flex items-center cursor-pointer">
+              <span class="pr-2 text-base font-medium">Hidden</span>
+              <input
+                id="hidden"
+                type="radio"
+                formControlName="visibility"
+                [value]="true"
+                class="appearance-none peer h-3 w-3 border-2 border-gray-300 rounded-full checked:bg-[#854D94] checked:border-2"
+              />
+            </label>
+          </div>
+          <div
+            class="inline-flex items-center px-4 py-[10px] text-sm font-medium rounded-md text-[#6E6E6E] bg-[#F6F7F9] border border-gray-200"
+          >
+            <label for="published" class="flex items-center cursor-pointer">
+              <span class="pr-2 text-base font-medium">Published</span>
+              <input
+                id="published"
+                type="radio"
+                formControlName="visibility"
+                [value]="false"
+                class="appearance-none peer h-3 w-3 border-2 border-gray-300 rounded-full checked:bg-[#854D94] checked:border-2"
+              />
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="">
+        <h1 class="text-black text-lg pb-3 font-medium">Publish date</h1>
+
+        <input
+          type="date"
+          class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
+          pInput
+          placeholder="16 Sep 2024"
+          formControlName="code"
+        />
+
+        <h3 class="text-[#6E6E6E] font-medium text-base pt-2">
+          The category will not be visible until the specified date
+        </h3>
+      </div>
+
+      <div class="">
+        <h1 class="text-black text-lg pb-3 font-medium">Product Count</h1>
+
+        <input
+          type="text"
+          class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
+          pInput
+          placeholder="125"
+          formControlName="code"
+        />
+      </div>
+
+      <div class="">
+        <h1 class="text-black text-lg pb-3 font-medium">Payment</h1>
+        <p-multiSelect
+          [options]="payment"
+          placeholder="Select available payment methods"
+          optionLabel="name"
+          display="chip"
+          class="bg-[#F6F7F9] w-full"
+          styleClass=" w-full bg-[#F6F7F9] pl-3 pt-2 h-14 rounded-lg placeholder:text-gray-500 border border-gray-200"
+          appendTo="body"
+          [showClear]="true"
+        />
+      </div>
+
+      <div class="">
+        <h1 class="text-black text-lg pb-3 font-medium">
+          Maximum discount for the prodcut
+        </h1>
+
+        <input
+          type="text"
+          class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
+          pInput
+          placeholder="25%"
+          formControlName="code"
+        />
+      </div>
+
+      <div class="">
+        <p class="text-black text-lg pb-3 font-medium">Average rating</p>
+        <div class="flex items-center gap-1">
+          <span class="text-lg font-semibold text-[#545F71] mr-2">4.0</span>
+          <div class="flex items-center gap-1 cursor-pointer">
+            <i
+              class="pi pi-star-fill text-yellow-500"
+              style="font-size: 2rem"
+            ></i>
+            <i
+              class="pi pi-star-fill text-yellow-500"
+              style="font-size: 2rem"
+            ></i>
+            <i
+              class="pi pi-star-fill text-yellow-500"
+              style="font-size: 2rem"
+            ></i>
+            <i
+              class="pi pi-star-fill text-yellow-500"
+              style="font-size: 2rem"
+            ></i>
+            <i class="pi pi-star text-yellow-500" style="font-size: 2rem"></i>
+          </div>
+          <a href="#" class="text-blue-500 text-sm">(658 ratings)</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="grid mt-7">
+  <div class="bg-white rounded-md drop-shadow-lg p-4 h-40">
+    <h1 class="text-black text-[24px] font-bold pb-4">Analytics</h1>
+    <p-multiSelect
+      [options]="analytics"
+      placeholder="Select Analytics"
+      optionLabel="name"
+      display="chip"
+      class="bg-[#F6F7F9] w-full"
+      styleClass=" w-96 bg-[#F6F7F9] pl-3 pt-2 h-14 rounded-lg placeholder:text-gray-500 border border-gray-200"
+      appendTo="body"
+      [showClear]="true"
+    />
+  </div>
+</div>
+
+<div class="grid mt-7">
+  <h1 class="text-black text-[24px] font-bold pb-4">Product Category</h1>
+
+  <div class="bg-white rounded-md drop-shadow-lg p-5 flex gap-4">
+    <div class="grid">
+      <h1 class="text-lg pb-3 text-black">Parent</h1>
+
+      <p-dropdown
+        [options]="cities"
+        optionLabel="name"
+        placeholder="Select a Category"
+        class="bg-[#F6F7F9] w-full"
+        styleClass=" w-96 bg-[#F6F7F9] pl-3 pt-2 h-14 rounded-lg placeholder:text-gray-500 border border-gray-200"
+        appendTo="body"
+      />
+    </div>
+
+    <div class="grid">
+      <h1 class="text-lg pb-3 text-black">Category</h1>
+
+      <p-dropdown
+        [options]="cities"
+        optionLabel="name"
+        placeholder="Select a Category"
+        class="bg-[#F6F7F9] w-full"
+        styleClass=" w-96 bg-[#F6F7F9] pl-3 pt-2 h-14 rounded-lg placeholder:text-gray-500 border border-gray-200"
+        appendTo="body"
+      />
+    </div>
+
+    <div class="grid">
+      <h1 class="text-lg pb-3 text-black">Sub Category</h1>
+
+      <p-dropdown
+        [options]="cities"
+        optionLabel="name"
+        placeholder="Select a Category"
+        class="bg-[#F6F7F9] w-full"
+        styleClass=" w-96 bg-[#F6F7F9] pl-3 pt-2 h-14 rounded-lg placeholder:text-gray-500 border border-gray-200"
+        appendTo="body"
+      />
+    </div>
+  </div>
+</div>
+
+<div class="grid mt-7">
+  <h1 class="text-black text-[24px] font-bold pb-4">Product Category</h1>
+
+  <div class="bg-white rounded-md drop-shadow-lg p-5 grid gap-4">
+    <input
+      type="text"
+      class="bg-[#F6F7F9] h-12 w-96 pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
+      pInput
+      placeholder="Title"
+      formControlName="code"
+    />
+
+    <p-editor [style]="{ height: '320px' }" />
+  </div>
+  <div class="flex justify-end space-x-3 w-full mt-5">
+    <button
+      class="border border-[#854D94] text-[#854D94] font-bold px-4 py-2 rounded-lg"
+    >
+      Cancel
+    </button>
+    <button class="bg-[#854D94] text-white font-bold px-4 py-2 rounded-lg">
+      Save
+    </button>
+  </div>
+</div>
+
+<div class="grid mt-7">
+  <h1 class="text-black text-[24px] font-bold pb-4">Available Variants</h1>
+
+  <p-table
+    [value]="variants"
+    [rowsPerPageOptions]="[5, 10, 20]"
+    [rows]="7"
+    class="drop-shadow-lg"
+  >
+    <ng-template pTemplate="header">
+      <tr class="flex">
+        <th
+          pSortableColumn="price"
+          class="flex items-center w-full text-white bg-[#825092] rounded-t-md justify-center"
+        >
+          Price <p-sortIcon field="price" />
+        </th>
+
+        <th
+          pSortableColumn="size"
+          class="flex items-center w-full text-white bg-[#825092] justify-center"
+        >
+          Size <p-sortIcon field="size" />
+        </th>
+
+        <th
+          pSortableColumn="flavour"
+          class="flex items-center w-full text-white bg-[#825092] justify-center"
+        >
+          Flavour <p-sortIcon field="flavour" />
+        </th>
+
+        <th
+          pSortableColumn="stock"
+          class="flex items-center w-full text-white bg-[#825092] justify-center"
+        >
+          Stock <p-sortIcon field="stock" />
+        </th>
+
+        <th
+          pSortableColumn="exp"
+          class="flex items-center w-full text-white bg-[#825092] justify-center"
+        >
+          Exp Date <p-sortIcon field="exp" />
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product>
+      <tr class="flex">
+        <td class="w-full text-black cursor-pointer flex justify-center">
+          {{ product.price }}
+        </td>
+
+        <td class="w-full text-black cursor-pointer flex justify-center">
+          {{ product.size }}
+        </td>
+
+        <td class="w-full text-black cursor-pointer flex justify-center">
+          {{ product.flavour }}
+        </td>
+
+        <td class="w-full text-black cursor-pointer flex justify-center">
+          {{ product.stock }}
+        </td>
+
+        <td class="w-full text-black cursor-pointer flex justify-center">
+          {{ product.exp }}
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

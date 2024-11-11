@@ -1,8 +1,28 @@
 <p-tabView>
     <p-tabPanel header="Categories">
-        <p>
-            Lorem ipsum dolor sit amet...
-        </p>
+        <div class="p-4 bg-gray-100 min-h-screen">
+            <!-- Button to Add a Top-Level Parent -->
+            <button
+              class="px-4 py-2 bg-blue-500 text-white rounded shadow hover:bg-blue-600"
+              (click)="addParent()"
+            >
+              Add Parent
+            </button>
+          
+            <!-- Render Top-Level Nodes -->
+            <ul class="mt-4 space-y-4">
+              <li *ngFor="let node of tree; let i = index">
+                <app-tree-node
+                  [node]="node"
+                  (addChild)="addChild($event)" 
+                  (removeNode)="removeNode(i)"
+                ></app-tree-node>
+              </li>
+            </ul>
+          </div>
+          
+          
+          
     </p-tabPanel>
     <p-tabPanel header="Featured Categories">
         <p>

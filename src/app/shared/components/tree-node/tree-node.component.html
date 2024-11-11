@@ -1,0 +1,36 @@
+<div class="flex items-center space-x-2">
+      <!-- Editable Node Name -->
+      <input
+        class="border p-1 rounded focus:outline-blue-500"
+        [(ngModel)]="node.name"
+        placeholder="Node Name"
+      />
+    
+      <!-- Add Child Button -->
+      <button
+        class="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600"
+        (click)="addChild.emit(node)"
+      >
+        Add Child
+      </button>
+    
+      <!-- Remove Node Button -->
+      <button
+        class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
+        (click)="removeNode.emit()"
+      >
+        Remove
+      </button>
+    </div>
+    
+    <!-- Recursive Rendering of Child Nodes -->
+    <ul class="pl-6 mt-2 space-y-2">
+      <li *ngFor="let child of node.children; let i = index">
+        <app-tree-node
+          [node]="child"
+          (addChild)="addChild.emit($event)" 
+          (removeNode)="removeChild(i)"    
+        ></app-tree-node>
+      </li>
+    </ul>
+    

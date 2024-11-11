@@ -1,36 +1,56 @@
 <div class="flex items-center space-x-2">
-      <!-- Editable Node Name -->
-      <input
-        class="border p-1 rounded focus:outline-blue-500"
-        [(ngModel)]="node.name"
-        placeholder="Node Name"
-      />
-    
-      <!-- Add Child Button -->
-      <button
-        class="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600"
-        (click)="addChild.emit(node)"
-      >
-        Add Child
-      </button>
-    
-      <!-- Remove Node Button -->
-      <button
-        class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600"
-        (click)="removeNode.emit()"
-      >
-        Remove
-      </button>
-    </div>
-    
-    <!-- Recursive Rendering of Child Nodes -->
-    <ul class="pl-6 mt-2 space-y-2">
-      <li *ngFor="let child of node.children; let i = index">
-        <app-tree-node
-          [node]="child"
-          (addChild)="addChild.emit($event)" 
-          (removeNode)="removeChild(i)"    
-        ></app-tree-node>
-      </li>
-    </ul>
-    
+  <!-- Expand/Collapse Button -->
+  <button class="text-xl focus:outline-none" (click)="toggleExpand()">
+    {{ isExpanded ? "▾" : "▸" }}
+  </button>
+
+  <!-- Checkbox -->
+  <input type="checkbox" [(ngModel)]="node.selected" class="mr-2" />
+
+  <!-- Editable Node Name -->
+  <span *ngIf="!isEditing; else editTemplate" (click)="editNode()" class="text-black">
+    {{ node.name }}
+  </span>
+
+  <!-- Edit Node Name -->
+  <ng-template #editTemplate>
+    <input
+      [(ngModel)]="node.name"
+      class="border p-1 rounded focus:outline-blue-500 text-black"
+      (blur)="isEditing = false"
+    />
+  </ng-template>
+
+  <!-- Add Child Button -->
+  <button
+    class="text-green-500 hover:text-green-700 text-lg"
+    (click)="showAddChildInput = !showAddChildInput"
+  >
+    +
+  </button>
+</div>
+
+<!-- Input to Add Child -->
+<div *ngIf="showAddChildInput" class="ml-6 mt-2">
+  <input
+    [(ngModel)]="newChildName"
+    class="border p-1 rounded focus:outline-blue-500 text-black"
+    placeholder="New Item..."
+  />
+  <button
+    (click)="addChilds()"
+    class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 ml-2"
+  >
+    Save
+  </button>
+</div>
+
+<!-- Recursive Rendering of Children -->
+<ul *ngIf="isExpanded" class="pl-6 mt-4 space-y-3">
+  <li *ngFor="let child of node.children" class="space-y-4">
+    <app-tree-node
+      [node]="child"
+      (addChild)="addChild.emit($event)"
+    ></app-tree-node>
+  </li>
+</ul>

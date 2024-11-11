@@ -1,32 +1,35 @@
-<p-tabView>
-    <p-tabPanel header="Categories">
-        <div class="p-4 bg-gray-100 min-h-screen">
-            <!-- Button to Add a Top-Level Parent -->
-            <button
-              class="px-4 py-2 bg-blue-500 text-white rounded shadow hover:bg-blue-600"
-              (click)="addParent()"
-            >
-              Add Parent
-            </button>
-          
-            <!-- Render Top-Level Nodes -->
-            <ul class="mt-4 space-y-4">
-              <li *ngFor="let node of tree; let i = index">
-                <app-tree-node
-                  [node]="node"
-                  (addChild)="addChild($event)" 
-                  (removeNode)="removeNode(i)"
-                ></app-tree-node>
-              </li>
-            </ul>
-          </div>
-          
-          
-          
-    </p-tabPanel>
-    <p-tabPanel header="Featured Categories">
-        <p>
-            Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium...
-        </p>
-    </p-tabPanel>
-</p-tabView>
+<div class="grid grid-cols-3 gap-4">
+
+
+    <div class="col-span-2 bg-white">
+        <p-tabView>
+            <p-tabPanel header="Categories">
+                <div class="p-4 bg-white">
+                    <button class="bg-blue-500 text-white px-4 py-2 rounded mb-4"
+                        (click)="addRootNode()">
+                        Add Parent
+                    </button>
+
+                    <ul>
+                        <li *ngFor="let node of tree" class="mt-3">
+                            <app-tree-node [node]="node"
+                                (addChild)="addChildToNode($event)"></app-tree-node>
+                        </li>
+                    </ul>
+                </div>
+
+
+            </p-tabPanel>
+            <p-tabPanel header="Featured Categories">
+                <p>
+                    Sed ut perspiciatis unde omnis iste natus error sit voluptatem
+                    accusantium...
+                </p>
+            </p-tabPanel>
+        </p-tabView>
+
+
+    </div>
+
+    <div class="bg-white"></div>
+</div>

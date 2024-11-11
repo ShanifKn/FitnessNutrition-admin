@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 interface TreeNode {
   name: string;
   children: TreeNode[];
+  selected?: boolean;
 }
 
 @Component({
@@ -15,12 +16,30 @@ interface TreeNode {
   styleUrl: './tree-node.component.scss',
 })
 export class TreeNodeComponent {
-  @Input() node!: TreeNode; // The current node being rendered
-  @Output() addChild = new EventEmitter<TreeNode>(); // Emit event to add a child
-  @Output() removeNode = new EventEmitter<void>(); // Emit event to remove the node
+  @Input() node!: TreeNode;
+  @Output() addChild = new EventEmitter<{ parentNode: TreeNode; childName: string }>();
 
-  // Remove a specific child from the current node
-  removeChild(index: number) {
-    this.node.children.splice(index, 1);
+  isExpanded = false;
+  isEditing = false;
+  showAddChildInput = false;
+  newChildName = '';
+
+  // Expand or collapse children
+  toggleExpand() {
+    this.isExpanded = !this.isExpanded;
+  }
+
+  // Enable in-place editing
+  editNode() {
+    this.isEditing = true;
+  }
+
+  // Add a child node
+  addChilds() {
+    if (this.newChildName.trim()) {
+      this.addChild.emit({ parentNode: this.node, childName: this.newChildName.trim() });
+      this.newChildName = '';
+      this.showAddChildInput = false;
+    }
   }
 }

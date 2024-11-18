@@ -3,6 +3,8 @@ import { TabViewModule } from 'primeng/tabview';
 import { TreeNodeComponent } from '../../../../shared/components/tree-node/tree-node.component';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
+import { FeaturedCategoriesComponent } from '../../../../shared/components/featured-categories/featured-categories.component';
+import { DialogModule } from 'primeng/dialog';
 
 interface TreeNode {
   name: string;
@@ -12,12 +14,20 @@ interface TreeNode {
 @Component({
   selector: 'app-categories',
   standalone: true,
-  imports: [TabViewModule, TreeNodeComponent, CommonModule, ButtonModule],
+  imports: [
+    TabViewModule,
+    TreeNodeComponent,
+    CommonModule,
+    ButtonModule,
+    FeaturedCategoriesComponent,
+    DialogModule,
+  ],
   templateUrl: './categories.component.html',
   styleUrl: './categories.component.scss',
 })
 export class CategoriesComponent {
   mainImage: string | null = null; // Main image URL
+  cancelDialog: boolean = false;
   tree: TreeNode[] = [
     {
       name: 'Parent 1',

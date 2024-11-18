@@ -20,7 +20,17 @@
           </ul>
         </div>
       </p-tabPanel>
-      <p-tabPanel header="Featured Categories"> </p-tabPanel>
+      <p-tabPanel header="Featured Categories">
+        <div class="px-5 py-5 bg-white">
+
+          <div class="flex justify-between items-start mb-5">
+            <h1 class="text-black text-[24px] font-bold">Featured Categories</h1>
+          </div>
+
+
+          <app-featured-categories></app-featured-categories>
+        </div>
+      </p-tabPanel>
     </p-tabView>
   </div>
 
@@ -150,9 +160,10 @@
         />
       </div>
 
-
       <div class="">
-        <h1 class="text-black text-lg pb-3 font-medium">Maximum discount for the Category</h1>
+        <h1 class="text-black text-lg pb-3 font-medium">
+          Maximum discount for the Category
+        </h1>
 
         <input
           type="text"
@@ -162,7 +173,6 @@
           formControlName="code"
         />
       </div>
-
 
       <div class="mt-5">
         <label for="hidden" class="flex items-center cursor-pointer pb-3">
@@ -179,7 +189,6 @@
         </label>
       </div>
 
-
       <div class="flex justify-end space-x-3 w-full mt-5">
         <button
           class="border border-[#854D94] text-[#854D94] font-bold px-4 py-2 rounded-lg"
@@ -190,7 +199,15 @@
           Save
         </button>
       </div>
-
     </div>
   </div>
 </div>
+
+
+<p-dialog
+  header=""
+  [(visible)]="cancelDialog"
+  [style]="{ width: '25rem' }"
+  class="p-0"
+>
+</p-dialog>

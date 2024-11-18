@@ -8,9 +8,8 @@ import {
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-
-import { CookieService } from 'ngx-cookie-service';
 import { environment } from '../../../environments/environment';
+import { CredentialsService } from '../services/credentials.service';
 
 /**
  * Prefixes all requests not starting with `http[s]` with `environment.serverUrl`.
@@ -19,7 +18,7 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root',
 })
 export class ApiPrefixInterceptor implements HttpInterceptor {
-  constructor(private cookieService: CookieService) {}
+  constructor(private cookieService: CredentialsService) {}
 
   intercept(
     request: HttpRequest<any>,
@@ -37,7 +36,7 @@ export class ApiPrefixInterceptor implements HttpInterceptor {
   }
 
   getHeaders() {
-    const savedCredentials = this.cookieService.get(environment.cookieName);
+    const savedCredentials = this.cookieService.getCookie(environment.cookieName);
 
     if (!savedCredentials)
       return new HttpHeaders({

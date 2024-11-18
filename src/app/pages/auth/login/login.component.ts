@@ -4,33 +4,80 @@ import { OtpComponent } from '../otp/otp.component';
 import { CommonModule } from '@angular/common';
 import { CredentialsService } from '../../../shared/services/credentials.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { AuthService } from '../auth.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ButtonModule, OtpComponent, CommonModule],
+  imports: [ButtonModule, OtpComponent, CommonModule, ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
 export class LoginComponent {
+  private subscriptions: Subscription = new Subscription();
+
+  loginForm!: FormGroup;
   isSubmitted = false;
-  token =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkR1bW15IFRva2VuIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36PO';
+  submitted = false;
+  email!: string;
 
   constructor(
-    private credentialsService: CredentialsService,
-    private router: Router,
-    private route: ActivatedRoute
-  ) {}
+
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private messageService: MessageService
+  ) {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+    });
+  }
+
+  get f() {
+    return this.loginForm.controls;
+  }
+
+  isError(controlName: string, error: string): boolean {
+    const control = this.loginForm.get(controlName);
+    return !!(
+      control?.errors &&
+      control.errors[error] &&
+      (this.submitted || control.touched)
+    );
+  }
 
   onLogin() {
-    // this.isSubmitted = true;
-    this.credentialsService.setCredentials(this.token);
+    this.submitted = true;
 
-    console.log("heelo");
+    if (this.loginForm.invalid) {
+      return;
+    }
 
-    this.router.navigate([this.route.snapshot.queryParams['redirect'] || '/'], {
-      replaceUrl: true,
-    });
+    const sub = this.authService
+      .userLogin(this.loginForm.value)
+      .subscribe(({ message }) => {
+        this.messageService.add({ severity: 'success', summary: message });
+        this.email = this.loginForm.value.email;
+        this.isSubmitted = true;
+      });
+
+    this.subscriptions.add(sub);
+
+    // 
+    // console.log("heelo");
+
+  }
+
+  ngOnDestroy() {
+    // Unsubscribe to avoid memory leaks
+    this.subscriptions.unsubscribe();
   }
 }

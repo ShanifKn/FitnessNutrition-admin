@@ -1,26 +1,53 @@
 <div *ngIf="!isSubmitted">
   <div class="flex flex-col gap-5">
     <h2 class="text-3xl font-semibold text-center text-white">Login to your Account</h2>
-    <div class="flex flex-col gap-1">
-      <label for="email" class="text-white font-semibold">Email</label>
-      <div class="text-white border border-white rounded-md px-2">
+
+    <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="flex flex-col gap-5">
+      <!-- Email Field -->
+      <div class="flex flex-col gap-1">
+        <label for="email" class="text-white font-semibold">Email</label>
+        <div class="text-white border border-white rounded-md px-2 flex items-center">
           <span class="pi pi-user"></span>
-          <input type="text" placeholder="Enter your mail" class="p-2  bg-[#825092] placeholder-white outline-none" />
+          <input type="text" id="email" formControlName="email"
+            placeholder="Enter your email"
+            class="p-2 bg-[#825092] placeholder-white outline-none flex-1" />
+        </div>
+        <div *ngIf="isError('email', 'required')" class="text-red-500 text-sm">
+          Email is required.
+        </div>
+        <div *ngIf="isError('email', 'email')" class="text-red-500 text-sm">
+          Enter a valid email.
+        </div>
       </div>
-    </div>
-    <div class="flex flex-col gap-1">
-      <label for="password" class="text-white font-semibold">Password</label>
-      <div class="text-white border border-white rounded-md px-2">
-        <span class="pi pi-lock"></span>
-        <input type="password" placeholder="Enter your password" class="p-2 text-white bg-[#825092] placeholder-white outline-none"/>
+
+      <!-- Password Field -->
+      <div class="flex flex-col gap-1">
+        <label for="password" class="text-white font-semibold">Password</label>
+        <div class="text-white border border-white rounded-md px-2 flex items-center">
+          <span class="pi pi-lock"></span>
+          <input type="password" id="password" formControlName="password"
+            placeholder="Enter your password"
+            class="p-2 bg-[#825092] text-white placeholder-white outline-none flex-1" />
+        </div>
+        <div *ngIf="isError('password', 'required')" class="text-red-500 text-sm">
+          Password is required.
+        </div>
+        <div *ngIf="isError('password', 'minlength')" class="text-red-500 text-sm">
+          Password must be at least 6 characters.
+        </div>
       </div>
-    </div>
-    <div class="w-full text-center rounded-md bg-white">
-      <button class="p-2 font-semibold" (click)="onLogin()">Login</button>
-    </div>
+
+      <!-- Submit Button -->
+      <div class="w-full text-center rounded-md bg-white">
+        <button type="submit" class="p-2 font-semibold w-full">
+          Login
+        </button>
+      </div>
+    </form>
   </div>
+
 </div>
 
 <div *ngIf="isSubmitted">
-    <app-otp></app-otp>
+  <app-otp [email]="email"></app-otp>
 </div>

@@ -1,4 +1,8 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import {
+  ApplicationConfig,
+  InjectionToken,
+  provideZoneChangeDetection,
+} from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimations } from '@angular/platform-browser/animations';
@@ -11,6 +15,12 @@ import { ErrorHandlerInterceptor } from './shared/http/error-handler.interceptor
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
 import { routes } from './app.routes';
+import { PLATFORM_ID, inject } from '@angular/core';
+import { isPlatformServer } from '@angular/common';
+import { FileUploadService } from './shared/services/file-upload.service';
+
+
+export const COOKIE_OPTIONS = new InjectionToken('COOKIE_OPTIONS');
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -38,5 +48,6 @@ export const appConfig: ApplicationConfig = {
 
     // Provide services required by interceptors
     MessageService,
+    FileUploadService
   ],
 };

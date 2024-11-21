@@ -1,0 +1,57 @@
+<div class="flex items-center space-x-2">
+  <!-- Expand/Collapse Button -->
+  <button class="text-xl focus:outline-none" (click)="toggleExpand()">
+    {{ isExpanded ? "▾" : "▸" }}
+  </button>
+
+  <!-- Checkbox -->
+  <input type="checkbox" [(ngModel)]="node.selected" class="mr-2" />
+
+  <!-- Editable Node Name -->
+  <span *ngIf="!isEditing; else editTemplate" (click)="editNode()" class="text-black">
+    {{ node.title }}
+  </span>
+
+  <!-- Edit Node Name -->
+  <ng-template #editTemplate>
+    <input
+      [(ngModel)]="node.title"
+      class="border p-1 rounded focus:outline-blue-500 text-black"
+      (blur)="isEditing = false"
+    />
+  </ng-template>
+
+  <!-- Add Child Button -->
+  <button
+  *ngIf="node.level < 2"
+    class="text-green-500 hover:text-green-700 text-lg"
+    (click)="showAddChildInput = !showAddChildInput"
+  >
+    +
+  </button>
+</div>
+
+<!-- Input to Add Child -->
+<div *ngIf="showAddChildInput" class="ml-6 mt-2">
+  <input
+    [(ngModel)]="newChildName"
+    class="border p-1 rounded focus:outline-blue-500 text-black"
+    placeholder="New Item..."
+  />
+  <button
+    (click)="addChilds()"
+    class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 ml-2"
+  >
+    Save
+  </button>
+</div>
+
+<!-- Recursive Rendering of Children -->
+<ul *ngIf="isExpanded" class="pl-6 mt-4 space-y-3">
+  <li *ngFor="let child of node.subCategory" class="space-y-4">
+    <app-tree-node
+      [node]="child"
+      (addChild)="addChild.emit($event)"
+    ></app-tree-node>
+  </li>
+</ul>

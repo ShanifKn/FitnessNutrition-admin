@@ -1,0 +1,364 @@
+<button
+  pButton
+  icon="pi pi-angle-left"
+  class="p-button-sm rounded-full text-xs px-3 py-2 bg-white text-black border-2 border-black mb-3"
+  label="BACK"
+  (click)="_location.back()"
+></button>
+
+<div class="grid grid-cols-3 gap-4">
+  <div class="col-span-2 bg-white">
+    <div class="px-7 py-5 bg-white">
+      <div class="flex justify-end gap-3">
+        <button
+          class="bg-blue-500 text-white px-4 py-2 rounded mb-4 float-right"
+          (click)="addRootNode()"
+        >
+          Add Sub-Category
+        </button>
+
+        <!-- Button to get all data from nodes -->
+        <button
+          (click)="getAllData()"
+          class="get-data-button bg-green-500 text-white px-4 py-2 rounded mb-4 float-right"
+          pButton
+        >
+          Save
+        </button>
+      </div>
+
+      <div class="" *ngIf="tree.length > 0; else noDataTemplate">
+        <ul>
+          <li *ngFor="let node of tree" class="mt-3">
+            <app-tree-node
+              [node]="node"
+              (addChild)="addChildToNode($event)"
+            ></app-tree-node>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-white px-5 py-5">
+    <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+      <div class="grid justify-center">
+        <div class="relative w-32 h-32 border rounded-lg overflow-hidden">
+          <!-- Display uploaded image or placeholder -->
+          <img
+            [src]="
+              categoryForm.get('image')?.value ||
+              'https://via.placeholder.com/550x240'
+            "
+            alt="Main Image"
+            class="w-full h-full object-cover"
+          />
+          <!-- Show "No Image" text when no image is uploaded -->
+          <div
+            *ngIf="!uploadedImage"
+            class="flex items-center justify-center w-full h-full text-gray-400"
+          >
+            No Image
+          </div>
+        </div>
+
+        <!-- Hidden file input -->
+        <input
+          type="file"
+          accept="image/*"
+          id="imageInput"
+          class="hidden"
+          (change)="onImageSelected($event)"
+        />
+
+        <!-- Trigger the file input on button click -->
+        <button
+          (click)="triggerFileInput()"
+          pButton
+          icon="pi pi-camera"
+          class="mt-2 px-4 py-1 text-sm font-semibold text-white bg-purple-500 rounded-lg hover:bg-purple-600"
+        >
+          Change Image
+        </button>
+      </div>
+
+      <div class="bg-white px-5 py-5">
+        <div class="grid gap-4 mt-5">
+          <!-- Title Input -->
+          <div>
+            <h1 class="text-black text-lg pb-3 font-medium">Title</h1>
+            <input
+              type="text"
+              class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
+              formControlName="title"
+              placeholder="Category Name"
+            />
+            <!-- Error Message -->
+            <div
+              *ngIf="
+                categoryForm.get('title')?.invalid &&
+                categoryForm.get('title')?.touched
+              "
+              class="text-red-500 text-sm"
+            >
+              <div *ngIf="categoryForm.get('title')?.errors?.['required']">
+                Title is required.
+              </div>
+            </div>
+          </div>
+
+          <!-- Tag Input -->
+          <div>
+            <h1 class="text-black text-lg pb-3 font-medium">Tag</h1>
+            <input
+              type="text"
+              class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
+              formControlName="tag"
+              placeholder="Category Tag"
+            />
+            <!-- Error Message -->
+            <div
+              *ngIf="
+                categoryForm.get('tag')?.invalid &&
+                categoryForm.get('tag')?.touched
+              "
+              class="text-red-500 text-sm"
+            >
+              <div *ngIf="categoryForm.get('tag')?.errors?.['required']">
+                Tag is required.
+              </div>
+            </div>
+          </div>
+
+          <!-- Description Input -->
+          <div>
+            <h1 class="text-black text-lg pb-3 font-medium">Description</h1>
+            <textarea
+              rows="4"
+              cols="30"
+              class="bg-[#F6F7F9] w-full pl-3 pt-2 rounded-lg placeholder:text-gray-500 border border-gray-200"
+              formControlName="description"
+              placeholder="Description"
+            ></textarea>
+            <!-- Error Message -->
+            <div
+              *ngIf="
+                categoryForm.get('description')?.invalid &&
+                categoryForm.get('description')?.touched
+              "
+              class="text-red-500 text-sm"
+            >
+              <div
+                *ngIf="categoryForm.get('description')?.errors?.['required']"
+              >
+                Description is required.
+              </div>
+            </div>
+          </div>
+
+          <div class="">
+            <h1 class="text-black text-lg pb-3">Visibility</h1>
+            <div class="flex items-center space-x-4">
+              <div
+                [ngClass]="
+                  categoryForm.get('visibility')?.value === true
+                    ? 'border-2 border-[#854D94] text-[#854D94]'
+                    : 'text-[#6E6E6E] bg-[#F6F7F9] border border-gray-200'
+                "
+                class="inline-flex items-center px-4 py-[10px] text-sm font-medium rounded-md"
+              >
+                <label for="hidden" class="flex items-center cursor-pointer">
+                  <span class="pr-2 text-base font-medium">Hidden</span>
+                  <input
+                    id="hidden"
+                    type="radio"
+                    formControlName="visibility"
+                    [value]="true"
+                    [checked]="categoryForm.get('visibility')?.value === true"
+                    class="appearance-none peer h-3 w-3 border-2 border-gray-300 rounded-full checked:bg-[#854D94] checked:border-2"
+                  />
+                </label>
+              </div>
+              <div
+                [ngClass]="
+                  categoryForm.get('visibility')?.value === false
+                    ? 'border-2 border-[#854D94] text-[#854D94]'
+                    : 'text-[#6E6E6E] bg-[#F6F7F9] border border-gray-200'
+                "
+                class="inline-flex items-center px-4 py-[10px] text-sm font-medium rounded-md"
+              >
+                <label for="published" class="flex items-center cursor-pointer">
+                  <span class="pr-2 text-base font-medium">Published</span>
+                  <input
+                    id="published"
+                    type="radio"
+                    formControlName="visibility"
+                    [value]="false"
+                    [checked]="categoryForm.get('visibility')?.value === false"
+                    class="appearance-none peer h-3 w-3 border-2 border-gray-300 rounded-full checked:bg-[#854D94] checked:border-2"
+                  />
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <!-- Publish Date Input -->
+          <div>
+            <h1 class="text-black text-lg pb-3 font-medium">Publish Date</h1>
+            <input
+              type="date"
+              class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
+              formControlName="publishDate"
+              placeholder="16 Sep 2024"
+            />
+            <!-- Error Message -->
+            <div
+              *ngIf="
+                categoryForm.get('publishDate')?.invalid &&
+                categoryForm.get('publishDate')?.touched
+              "
+              class="text-red-500 text-sm"
+            >
+              <div
+                *ngIf="categoryForm.get('publishDate')?.errors?.['required']"
+              >
+                Publish date is required.
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Count Input -->
+          <!-- <div>
+            <h1 class="text-black text-lg pb-3 font-medium">Product Count</h1>
+
+            <p-inputNumber
+              inputId="integeronly"
+              class="bg-[#F6F7F9] h-12 w-full rounded-lg placeholder:text-gray-500 border border-gray-200"
+              formControlName="productCount"
+              placeholder="Count"
+              styleClass="w-full  bg-[#F6F7F9]"
+              inputStyleClass="w-full bg-[#F6F7F9] pl-5 "
+            /> -->
+
+          <!-- Error Message -->
+          <!-- <div
+              *ngIf="
+                categoryForm.get('productCount')?.invalid &&
+                categoryForm.get('productCount')?.touched
+              "
+              class="text-red-500 text-sm"
+            >
+              <div
+                *ngIf="categoryForm.get('productCount')?.errors?.['required']"
+              >
+                Product count is required.
+              </div>
+              <div
+                *ngIf="categoryForm.get('productCount')?.errors?.['pattern']"
+              >
+                Product count must be a number.
+              </div>
+            </div>
+          </div> -->
+
+          <!-- Maximum Discount Input -->
+          <div>
+            <h1 class="text-black text-lg pb-3 font-medium">
+              Maximum Discount
+            </h1>
+            <!-- <input
+                  type="text"
+    
+                /> -->
+
+            <p-inputNumber
+              formControlName="maximumDiscount"
+              inputId="percent"
+              prefix="%"
+              class="bg-[#F6F7F9] h-12 w-full focus:outline-none rounded-lg placeholder:text-gray-500 border border-gray-200"
+              formControlName="maximumDiscount"
+              placeholder="Discount"
+              styleClass="w-full  bg-[#F6F7F9] focus:outline-none"
+              inputStyleClass="w-full bg-[#F6F7F9] focus:outline-none pl-5 "
+              [min]="0"
+              [max]="100"
+            />
+
+            <!-- Error Message -->
+            <div
+              *ngIf="
+                categoryForm.get('maximumDiscount')?.invalid &&
+                categoryForm.get('maximumDiscount')?.touched
+              "
+              class="text-red-500 text-sm"
+            >
+              <div
+                *ngIf="categoryForm.get('maximumDiscount')?.errors?.['required']"
+              >
+                Maximum discount is required.
+              </div>
+              <div
+                *ngIf="categoryForm.get('maximumDiscount')?.errors?.['pattern']"
+              >
+                Maximum discount must be a number.
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-5">
+            <label for="featured" class="flex items-center cursor-pointer pb-3">
+              <input
+                id="featured"
+                type="checkbox"
+                formControlName="featuredCategory"
+                [value]="true"
+                class="h-5 w-5 border-2 border-gray-300 rounded-full checked:bg-[#854D94] checked:border-2"
+              />
+              <span class="pl-3 text-lg font-medium text-black"
+                >Add to Featured Category</span
+              >
+            </label>
+          </div>
+
+          <!-- Submit Buttons -->
+          <div class="flex justify-end space-x-3 w-full mt-5">
+            <button
+              class="border border-[#854D94] text-[#854D94] font-bold px-4 py-2 rounded-lg"
+              type="button"
+              pButton
+              (click)="categoryForm.reset()"
+            >
+              Cancel
+            </button>
+            <button
+              class="bg-[#854D94] text-white font-bold px-4 py-2 rounded-lg"
+              type="submit"
+              pButton
+              [disabled]="categoryForm.invalid"
+            >
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<p-dialog
+  header=""
+  [(visible)]="cancelDialog"
+  [style]="{ width: '25rem' }"
+  class="p-0"
+>
+</p-dialog>
+
+<ng-template #noDataTemplate>
+  <div class="flex flex-col items-center justify-center py-10">
+    <img src="assets/no-po.png" alt="No purchase order" class="mx-auto w-56" />
+
+    <h4 class="my-8">There is no Sub Categories available!</h4>
+
+    <i class="pi pi-spin pi-spinner text-3xl"></i>
+  </div>
+</ng-template>

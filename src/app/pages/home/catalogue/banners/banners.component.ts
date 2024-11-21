@@ -21,7 +21,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { BannerService } from './banner.service';
-import { Subscription } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import {
   BannerData,
   Banners,
@@ -29,6 +29,7 @@ import {
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { SkeletonModule } from 'primeng/skeleton';
+import { CategoryService } from '../categories/category.service';
 @Component({
   selector: 'app-banners',
   standalone: true,
@@ -76,7 +77,8 @@ export class BannersComponent implements OnInit, OnDestroy {
 
   constructor(
     private fb: FormBuilder,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private categoryService: CategoryService
   ) {}
 
   ngOnInit() {
@@ -107,6 +109,8 @@ export class BannersComponent implements OnInit, OnDestroy {
             this.messageService.add({ severity: 'success', summary: message });
 
             this.addBannerData(this.bannerForm.value);
+
+            this.showDialog()
           })
       );
       // Perform submit logic
@@ -137,7 +141,8 @@ export class BannersComponent implements OnInit, OnDestroy {
       );
       if (selectedCategory) {
         // Add subcategories to the subCategories array
-        this.subCategories.push(...selectedCategory.subCategories);
+        this.subCategories.push(...selectedCategory.subCategory);
+        console.log(this.subCategories);
       }
     });
   }
@@ -156,10 +161,15 @@ export class BannersComponent implements OnInit, OnDestroy {
 
   getBanners() {
     this.subscriptions.add(
-      this.services.getBanners().subscribe(({ data }) => {
-        this.banners = data;
-
-        console.log(this.banners);
+      forkJoin({
+        banner: this.services.getBanners(),
+        categories: this.categoryService.getData(),
+      }).subscribe({
+        next: ({ banner, categories }) => {
+          // Assign the results to respective variables
+          this.banners = banner.data;
+          this.categories = categories.data;
+        },
       })
     );
   }
@@ -219,37 +229,6 @@ export class BannersComponent implements OnInit, OnDestroy {
   }
 
   addData() {
-    this.categories = [
-      {
-        _id: '605c72e2d2b3b134a840c6e4',
-        name: 'Strength Training',
-        code: 'ST',
-        subCategories: [
-          { name: 'Dumbbells', code: 'DB', _id: '605c72e2d2b3b134a840c6e5' },
-          { name: 'Barbells', code: 'BB', _id: '605c72e2d2b3b134a840c6e6' },
-          { name: 'Kettlebells', code: 'KB', _id: '605c72e2d2b3b134a840c6e7' },
-        ],
-      },
-      {
-        _id: '605c72e2d2b3b134a840c6e8',
-        name: 'Cardio Equipment',
-        code: 'CE',
-        subCategories: [
-          { name: 'Treadmills', code: 'TM', _id: '605c72e2d2b3b134a840c6e9' },
-          {
-            name: 'Elliptical Machines',
-            code: 'EM',
-            _id: '605c72e2d2b3b134a840c6ea',
-          },
-          {
-            name: 'Exercise Bikes',
-            code: 'EB',
-            _id: '605c72e2d2b3b134a840c6eb',
-          },
-        ],
-      },
-    ];
-
     this.type = [
       { name: 'Main Banner', code: 'NY' },
       { name: 'Sub Banner', code: 'RM' },

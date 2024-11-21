@@ -3,8 +3,9 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 interface TreeNode {
-  name: string;
-  children: TreeNode[];
+  title: string;
+  subCategory: TreeNode[];
+  level: number;
   selected?: boolean;
 }
 
@@ -17,14 +18,17 @@ interface TreeNode {
 })
 export class TreeNodeComponent {
   @Input() node!: TreeNode;
-  @Output() addChild = new EventEmitter<{ parentNode: TreeNode; childName: string }>();
+  @Output() addChild = new EventEmitter<{
+    parentNode: TreeNode;
+    childName: string;
+  }>();
 
   isExpanded = false;
   isEditing = false;
   showAddChildInput = false;
   newChildName = '';
 
-  // Expand or collapse children
+  // Expand or collapse subCategory
   toggleExpand() {
     this.isExpanded = !this.isExpanded;
   }
@@ -37,9 +41,15 @@ export class TreeNodeComponent {
   // Add a child node
   addChilds() {
     if (this.newChildName.trim()) {
-      this.addChild.emit({ parentNode: this.node, childName: this.newChildName.trim() });
+      this.addChild.emit({
+        parentNode: this.node,
+        childName: this.newChildName.trim(),
+      });
       this.newChildName = '';
       this.showAddChildInput = false;
     }
   }
+
+  allData: any[] = [];
+
 }

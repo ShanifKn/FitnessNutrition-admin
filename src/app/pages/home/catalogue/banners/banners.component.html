@@ -295,10 +295,10 @@
           <h1 class="text-black text-lg pb-3">Category</h1>
           <p-multiSelect
             [options]="categories"
-            optionLabel="name"
+            optionLabel="title"
             formControlName="category"
             [filter]="true"
-            filterBy="name"
+            filterBy="title"
             [showClear]="true"
             placeholder="Select a Category"
             styleClass="bg-[#F6F7F9] w-full h-12 border border-gray-200 rounded-lg"
@@ -308,12 +308,12 @@
           >
             <ng-template pTemplate="selectedItem" let-selectedOption>
               <div class="flex align-items-center gap-2">
-                <div>{{ selectedOption.name }}</div>
+                <div>{{ selectedOption.title }}</div>
               </div>
             </ng-template>
             <ng-template let-category pTemplate="item">
               <div class="flex align-items-center gap-2">
-                <div>{{ category.name }}</div>
+                <div>{{ category.title }}</div>
               </div>
             </ng-template>
           </p-multiSelect>
@@ -324,10 +324,10 @@
           <h1 class="text-black text-lg pb-3">Sub Category</h1>
           <p-multiSelect
             [options]="subCategories"
-            optionLabel="name"
+            optionLabel="title"
             formControlName="subCategory"
             [filter]="true"
-            filterBy="name"
+            filterBy="title"
             [showClear]="true"
             placeholder="Select a SubCategory"
             styleClass="bg-[#F6F7F9] w-full h-12 border border-gray-200 rounded-lg"
@@ -336,12 +336,12 @@
           >
             <ng-template pTemplate="selectedItem" let-selectedOption>
               <div class="flex align-items-center gap-2">
-                <div>{{ selectedOption.name }}</div>
+                <div>{{ selectedOption.title }}</div>
               </div>
             </ng-template>
             <ng-template let-subCategory pTemplate="item">
               <div class="flex align-items-center gap-2">
-                <div>{{ subCategory.name }}</div>
+                <div>{{ subCategory.title }}</div>
               </div>
             </ng-template>
           </p-multiSelect>

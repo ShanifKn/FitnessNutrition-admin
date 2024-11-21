@@ -17,6 +17,7 @@ import { MessageService } from 'primeng/api';
 import { routes } from './app.routes';
 import { PLATFORM_ID, inject } from '@angular/core';
 import { isPlatformServer } from '@angular/common';
+import { FileUploadService } from './shared/services/file-upload.service';
 
 
 export const COOKIE_OPTIONS = new InjectionToken('COOKIE_OPTIONS');
@@ -47,5 +48,6 @@ export const appConfig: ApplicationConfig = {
 
     // Provide services required by interceptors
     MessageService,
+    FileUploadService
   ],
 };

@@ -9,13 +9,13 @@
 
   <!-- Editable Node Name -->
   <span *ngIf="!isEditing; else editTemplate" (click)="editNode()" class="text-black">
-    {{ node.name }}
+    {{ node.title }}
   </span>
 
   <!-- Edit Node Name -->
   <ng-template #editTemplate>
     <input
-      [(ngModel)]="node.name"
+      [(ngModel)]="node.title"
       class="border p-1 rounded focus:outline-blue-500 text-black"
       (blur)="isEditing = false"
     />
@@ -23,6 +23,7 @@
 
   <!-- Add Child Button -->
   <button
+  *ngIf="node.level < 2"
     class="text-green-500 hover:text-green-700 text-lg"
     (click)="showAddChildInput = !showAddChildInput"
   >
@@ -47,7 +48,7 @@
 
 <!-- Recursive Rendering of Children -->
 <ul *ngIf="isExpanded" class="pl-6 mt-4 space-y-3">
-  <li *ngFor="let child of node.children" class="space-y-4">
+  <li *ngFor="let child of node.subCategory" class="space-y-4">
     <app-tree-node
       [node]="child"
       (addChild)="addChild.emit($event)"

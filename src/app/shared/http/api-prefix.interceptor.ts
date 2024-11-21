@@ -26,6 +26,17 @@ export class ApiPrefixInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     const headers: HttpHeaders = this.getHeaders();
 
+    // If the request is a FormData (file upload), do not set the Content-Type header
+    if (!(request.body instanceof FormData)) {
+      // Add Content-Type for non-FormData requests
+      request = request.clone({
+        setHeaders: {
+          'Content-Type': 'application/json', // For JSON requests
+        },
+        headers,
+      });
+    }
+
     if (!/^(http|https):/i.test(request.url)) {
       request = request.clone({
         url: environment.serverUrl + request.url,
@@ -36,7 +47,9 @@ export class ApiPrefixInterceptor implements HttpInterceptor {
   }
 
   getHeaders() {
-    const savedCredentials = this.cookieService.getCookie(environment.cookieName);
+    const savedCredentials = this.cookieService.getCookie(
+      environment.cookieName
+    );
 
     if (!savedCredentials)
       return new HttpHeaders({

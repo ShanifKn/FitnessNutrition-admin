@@ -70,10 +70,6 @@ export class LoginComponent {
       });
 
     this.subscriptions.add(sub);
-
-    // 
-    // console.log("heelo");
-
   }
 
   ngOnDestroy() {

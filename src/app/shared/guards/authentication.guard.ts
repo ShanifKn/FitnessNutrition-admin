@@ -30,7 +30,6 @@ export class AuthenticationGuard implements CanActivate {
     state: RouterStateSnapshot
   ): boolean {
     if (this.credentialsService.isAuthenticated()) {
-      console.log('Authenticated user:', this.credentialsService.currentUser);
       return true; // Allow access
     }
 

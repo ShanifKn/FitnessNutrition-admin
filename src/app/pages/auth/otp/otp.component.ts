@@ -62,8 +62,6 @@ export class OtpComponent implements OnInit {
       otp: this.otpForm.value.otp,
     };
 
-    console.log(data);
-
     const sub = this.authService
       .verifyOtp(data)
       .subscribe(({ message, token }) => {

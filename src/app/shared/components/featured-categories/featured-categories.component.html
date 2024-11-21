@@ -1,47 +1,110 @@
-<p-table
-  [value]="products"
-  [rowsPerPageOptions]="[5, 10, 20]"
-  [rows]="7"
-  [paginator]="true"
-  class="drop-shadow-lg"
->
-  <ng-template pTemplate="header">
-    <tr class="flex">
-      <th
-        pSortableColumn="name"
-        class="flex items-center w-full justify-center text-white bg-[#825092]"
-      >
-        Category name
-      </th>
+<div class="" *ngIf="featuredCategory.length > 0; else noDataTemplate">
+  <p-table
+    [value]="featuredCategory"
+    [rowsPerPageOptions]="[5, 10, 20]"
+    [rows]="7"
+    [paginator]="true"
+    class="drop-shadow-lg"
+  >
+    <!-- Table Header -->
+    <ng-template pTemplate="header">
+      <tr class="flex">
+        <th
+          pSortableColumn="title"
+          class="flex items-center w-full justify-center text-white bg-[#825092]"
+        >
+          Title <p-sortIcon field="title" />
+        </th>
+        <th
+          pSortableColumn="tag"
+          class="flex items-center justify-center w-full text-white bg-[#825092]"
+        >
+          Tag <p-sortIcon field="tag" />
+        </th>
+        <th
+          pSortableColumn="maximumDiscount"
+          class="flex items-center w-full justify-center text-white bg-[#825092]"
+        >
+          Max Discount <p-sortIcon field="maximumDiscount" />
+        </th>
+        <th
+          pSortableColumn="publishDate"
+          class="flex items-center w-full justify-center text-white bg-[#825092]"
+        >
+          Publish Date <p-sortIcon field="publishDate" />
+        </th>
+        <th
+          pSortableColumn="visibility"
+          class="flex items-center w-full justify-center text-white bg-[#825092]"
+        >
+          Visibility <p-sortIcon field="visibility" />
+        </th>
+        <th
+          class="flex items-center w-full justify-center text-white bg-[#825092]"
+        >
+          Edit
+        </th>
+      </tr>
+    </ng-template>
 
-      <!-- -->
-      <th
-        pSortableColumn="description"
-        class="flex items-center justify-center w-full text-white bg-[#825092]"
-      >
-        Description
-      </th>
-      <th
-        pSortableColumn="stock"
-        class="flex items-center w-full justify-center text-white bg-[#825092]"
-      >
-        Product Count
-      </th>
-    </tr>
-  </ng-template>
-  <ng-template pTemplate="body" let-product>
-    <tr class="flex">
-      <td class="w-full flex line-clamp-2">
-        <img
-          src="{{ product.image }}"
-          alt="{{ product.name }}"
-          class="w-10 h-10 mr-2 rounded"
-        />{{ product.name }}
-      </td>
-      <td class="w-full flex justify-center">{{ product.description }}</td>
+    <!-- Table Body -->
+    <ng-template pTemplate="body" let-product>
+      <tr class="flex">
+        <td class="w-full flex line-clamp-2 items-center">
+          <img
+            src="{{ product.image }}"
+            alt="{{ product.name }}"
+            class="w-10 h-10 mr-2 rounded"
+          />{{ product.title }}
+        </td>
+        <td class="w-full flex justify-center">{{ product.tag }}</td>
+        <td class="w-full flex justify-center">
+          {{ product.maximumDiscount }}
+        </td>
+        <td class="w-full flex justify-center">
+          {{ product.publishDate | date : "dd/MM/yyyy" }}
+        </td>
+        <td class="w-full flex justify-center">
+          <div [ngSwitch]="product.visibility">
+            <p
+              *ngSwitchCase="false"
+              class="bg-red-100 text-red-600 px-4 py-1 rounded-full text-sm tracking-wide w-fit"
+            >
+              False
+            </p>
+            <p
+              *ngSwitchDefault
+              class="bg-green-100 text-green-600 px-4 py-1 rounded-full text-sm tracking-wide w-fit"
+            >
+              True
+            </p>
+          </div>
+        </td>
+        <td class="w-full flex justify-center cursor-pointer gap-5">
 
-      <td class="w-full flex justify-center">{{ product.count }}</td>
 
-    </tr>
-  </ng-template>
-</p-table>
+          <p-confirmPopup rejectButtonStyleClass="p-5 border border-red-500" />
+          <i class="pi pi-pen-to-square text-[#007EF2] cursor-pointer"
+            [routerLink]="['/catalogue/category/detail', product._id]"
+            style="font-size: 1.4rem"></i>
+
+
+          <i class="pi pi-trash text-red-500 cursor-pointer"
+            style="font-size: 1.4rem" (click)="confirm2($event, product._id)"></i>
+        </td>
+      </tr>
+    </ng-template>
+
+    <!-- Empty Template -->
+  </p-table>
+</div>
+
+<ng-template #noDataTemplate>
+  <div class="flex flex-col items-center justify-center py-10">
+    <img src="assets/no-po.png" alt="No purchase order" class="mx-auto w-56" />
+
+    <h4 class="my-8">There is no Categories available!</h4>
+
+    <i class="pi pi-spin pi-spinner text-3xl"></i>
+  </div>
+</ng-template>

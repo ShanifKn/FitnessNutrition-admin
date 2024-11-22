@@ -95,7 +95,12 @@
         </div>
         <div class="flex">
           <span class="font-bold">Published :</span>
-          <span class="ml-2 text-green-600">Published</span>
+          <span
+          class="ml-2"
+          :class="banner.visible ? 'text-green-600' : 'text-red-600'"
+        >
+          {{ banner.visibility ? "Published" : "Hidden" }}
+        </span>
         </div>
         <div class="flex">
           <span class="font-bold">CreatedAt :</span>
@@ -158,13 +163,14 @@
           </div>
           <div class="flex">
             <span class="font-bold">Published :</span>
-            <span class="ml-2 text-green-600">Published</span>
+            <span
+              class="ml-2"
+              :class="banner.visible ? 'text-green-600' : 'text-red-600'"
+            >
+              {{ banner.visibility ? "Published" : "Hidden" }}
+            </span>
           </div>
           <!-- Published -->
-          <div class="flex">
-            <span class="font-bold">Published :</span>
-            <span class="ml-2 text-green-600">Published</span>
-          </div>
           <div class="flex">
             <span class="font-bold">CreatedAt :</span>
             <span class="ml-2 text-green-600">{{
@@ -254,7 +260,7 @@
               class="inline-flex items-center px-4 py-[10px] text-sm font-medium rounded-md"
             >
               <label for="hidden" class="flex items-center cursor-pointer">
-                <span class="pr-2 text-base font-medium">Hidden</span>
+                <span class="pr-2 text-base font-medium">Published</span>
                 <input
                   id="hidden"
                   type="radio"
@@ -274,7 +280,7 @@
               class="inline-flex items-center px-4 py-[10px] text-sm font-medium rounded-md"
             >
               <label for="published" class="flex items-center cursor-pointer">
-                <span class="pr-2 text-base font-medium">Published</span>
+                <span class="pr-2 text-base font-medium">Hidden</span>
                 <input
                   id="published"
                   type="radio"

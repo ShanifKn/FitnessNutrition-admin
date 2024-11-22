@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { TabViewModule } from 'primeng/tabview';
 import { FeaturedCategoriesComponent } from '../../../../../shared/components/featured-categories/featured-categories.component';
 import { CategoryService } from '../category.service';
@@ -28,7 +28,7 @@ import { ButtonModule } from 'primeng/button';
   styleUrl: './category-list.component.scss',
   providers: [ConfirmationService],
 })
-export class CategoryListComponent implements OnInit {
+export class CategoryListComponent implements OnInit, OnDestroy {
   services = inject(CategoryService);
   messageService = inject(MessageService);
   confirmationService = inject(ConfirmationService);

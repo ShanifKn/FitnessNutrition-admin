@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { InputOtpModule } from 'primeng/inputotp';
 import {
   FormBuilder,
@@ -25,7 +25,7 @@ interface OtpData {
   templateUrl: './otp.component.html',
   styleUrl: './otp.component.scss',
 })
-export class OtpComponent implements OnInit {
+export class OtpComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription = new Subscription();
 
   otpForm!: FormGroup;

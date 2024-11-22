@@ -11,6 +11,7 @@ export interface CategoryData {
   title: string;
   updatedAt?: string;
   visibility: boolean;
+  image?: string;
 }
 
 export interface SubCategoryLevel2 {

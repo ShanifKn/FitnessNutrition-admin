@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { TabViewModule } from 'primeng/tabview';
 import { CommonModule, Location } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
@@ -40,7 +40,7 @@ interface TreeNode {
   templateUrl: './category-detail.component.html',
   styleUrl: './category-detail.component.scss',
 })
-export class CategoryDetailComponent implements OnInit {
+export class CategoryDetailComponent implements OnInit, OnDestroy {
   categoryForm!: FormGroup;
   uploadedImage: string = '';
   selectedFile: File | null = null;
@@ -186,20 +186,18 @@ export class CategoryDetailComponent implements OnInit {
       formData.append('image', imageFile, imageFile.name); // 'image' is the field name for multer
     }
 
-    const sub = this.imageService
-      .imageUplaod(formData)
-      .subscribe(({ url }) => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Image uploaded successfully',
-        });
-
-        this.categoryForm.patchValue({
-          image: url,
-        });
-
-        this.onSubmit();
+    const sub = this.imageService.imageUplaod(formData).subscribe(({ url }) => {
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Image uploaded successfully',
       });
+
+      this.categoryForm.patchValue({
+        image: url,
+      });
+
+      this.onSubmit();
+    });
 
     this.subscriptions.add(sub);
   }

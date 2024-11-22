@@ -91,6 +91,7 @@ export class BannersComponent implements OnInit, OnDestroy {
 
   formBuild() {
     this.bannerForm = this.fb.group({
+      _id: [''],
       title: ['', [Validators.required]],
       expDate: ['', [Validators.required]],
       bannerType: ['', [Validators.required]],
@@ -112,7 +113,12 @@ export class BannersComponent implements OnInit, OnDestroy {
 
             this.addBannerData(this.bannerForm.value);
 
-            this.showDialog()
+            // Reset the form
+            this.bannerForm.reset();
+            this.imagePreview = null;
+
+            // Close the dialog
+            this.sidebarVisible = false;
           })
       );
       // Perform submit logic
@@ -144,7 +150,6 @@ export class BannersComponent implements OnInit, OnDestroy {
       if (selectedCategory) {
         // Add subcategories to the subCategories array
         this.subCategories.push(...selectedCategory.subCategory);
-        console.log(this.subCategories);
       }
     });
   }
@@ -155,10 +160,9 @@ export class BannersComponent implements OnInit, OnDestroy {
       const reader = new FileReader();
       reader.onload = (e) => (this.imagePreview = reader.result);
       reader.readAsDataURL(file);
-      this.onImageUpload(file)
+      this.onImageUpload(file);
     }
   }
-
 
   onImageUpload(file: any) {
     const formData = new FormData();
@@ -168,25 +172,19 @@ export class BannersComponent implements OnInit, OnDestroy {
       formData.append('image', imageFile, imageFile.name); // 'image' is the field name for multer
     }
 
-    const sub = this.imageService
-      .imageUplaod(formData)
-      .subscribe(({ url }) => {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Image uploaded successfully',
-        });
-
-        this.bannerForm.patchValue({
-          image: url,
-        });
-
-        this.onSubmit();
+    const sub = this.imageService.imageUplaod(formData).subscribe(({ url }) => {
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Image uploaded successfully',
       });
+
+      this.bannerForm.patchValue({
+        image: url,
+      });
+    });
 
     this.subscriptions.add(sub);
   }
-
-
 
   getBanners() {
     this.subscriptions.add(
@@ -254,7 +252,11 @@ export class BannersComponent implements OnInit, OnDestroy {
   }
 
   showDialog() {
-    this.visible = true;
+    this.visible = !this.visible;
+  }
+
+  closeDialog() {
+    this.visible = false;
   }
 
   addData() {

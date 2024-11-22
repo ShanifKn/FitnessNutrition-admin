@@ -30,6 +30,7 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { SkeletonModule } from 'primeng/skeleton';
 import { CategoryService } from '../categories/category.service';
+import { FileUploadService } from '../../../../shared/services/file-upload.service';
 @Component({
   selector: 'app-banners',
   standalone: true,
@@ -78,7 +79,8 @@ export class BannersComponent implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private messageService: MessageService,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private imageService: FileUploadService
   ) {}
 
   ngOnInit() {
@@ -153,11 +155,38 @@ export class BannersComponent implements OnInit, OnDestroy {
       const reader = new FileReader();
       reader.onload = (e) => (this.imagePreview = reader.result);
       reader.readAsDataURL(file);
-      this.bannerForm.patchValue({
-        image: 'https://via.placeholder.com/550x240',
-      });
+      this.onImageUpload(file)
     }
   }
+
+
+  onImageUpload(file: any) {
+    const formData = new FormData();
+
+    const imageFile: any = file; // Assuming `selectedFile` holds the image file selected by the user
+    if (imageFile) {
+      formData.append('image', imageFile, imageFile.name); // 'image' is the field name for multer
+    }
+
+    const sub = this.imageService
+      .imageUplaod(formData)
+      .subscribe(({ url }) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Image uploaded successfully',
+        });
+
+        this.bannerForm.patchValue({
+          image: url,
+        });
+
+        this.onSubmit();
+      });
+
+    this.subscriptions.add(sub);
+  }
+
+
 
   getBanners() {
     this.subscriptions.add(

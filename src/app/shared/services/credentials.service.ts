@@ -1,64 +1,124 @@
-// import { ChangeDetectorRef, Injectable } from '@angular/core';
-// import { User } from '@app/@shared/interfaces/user.interface';
-// import { environment } from '@env/environment';
-// import { CookieOptions, CookieService } from 'ngx-cookie';
-// import { JwtHelperService } from '@auth0/angular-jwt';
-// import { Router } from '@angular/router';
-// import { BehaviorSubject, Observable } from 'rxjs';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { Router } from '@angular/router';
+import { User } from '../interfaces/user.interface';
+import { environment } from '../../../environments/environment';
 
-// const jwtPath = environment.cookieName;
+interface CookieOptions {
+  expires?: Date;
+  path?: string;
+  sameSite?: 'Lax' | 'Strict' | 'None';
+  secure?: boolean;
+}
 
-// @Injectable({
-//   providedIn: 'root',
-// })
-// export class CredentialsService {
-//   // private _user: User | null = null;
-//   helper = new JwtHelperService();
+const jwtPath = environment.cookieName;
 
-//   private user$: BehaviorSubject<User | null> =
-//     new BehaviorSubject<User | null>(null);
+@Injectable({
+  providedIn: 'root',
+})
+export class CredentialsService {
+  helper = new JwtHelperService();
+  private user$: BehaviorSubject<User | null> =
+    new BehaviorSubject<User | null>(null);
 
-//   constructor(private cookieService: CookieService, private router: Router) {
-//     const savedCredentials = this.cookieService.get(jwtPath);
+  constructor(
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object // To detect platform
+  ) {
+    if (isPlatformBrowser(this.platformId)) {
+      const savedCredentials = this.getCookie(jwtPath);
+      if (savedCredentials) this.setUser(savedCredentials);
+    }
+  }
 
-//     if (savedCredentials) this.setUser(savedCredentials);
-//   }
+  setUser(jwt: string) {
+    const _user = this.helper.decodeToken(jwt);
+    this.user$.next(_user as User);
+    return _user;
+  }
 
-//   setUser(jwt: string) {
-//     const _user = this.helper.decodeToken(jwt);
+  isAuthenticated(): boolean {
+    if (isPlatformBrowser(this.platformId)) {
+      const jwt = this.getCookie(jwtPath);
+      return !!jwt;
+    }
+    return false;
+  }
 
-//     this.user$.next(_user as User);
+  get credentials(): Observable<User | null> {
+    return this.user$.asObservable();
+  }
 
-//     return _user;
-//   }
+  setCredentials(jwt: string) {
+    if (isPlatformBrowser(this.platformId)) {
+      const _user = this.setUser(jwt);
 
-//   isAuthenticated(): boolean {
-//     return !!this.credentials;
-//   }
+      const expires = _user?.exp ? new Date(_user.exp * 1000) : undefined;
 
-//   get credentials(): Observable<User | null> {
-//     return this.user$.asObservable();
-//   }
+      const cookieOptions: CookieOptions = {
+        expires,
+        path: '/',
+        sameSite: 'Lax',
+        secure: location.protocol === 'https:',
+      };
 
-//   setCredentials(jwt: string) {
-//     const _user = this.setUser(jwt);
+      this.setCookie(jwtPath, jwt, cookieOptions);
+    }
+  }
 
-//     const expires = new Date((_user?.exp || 0) * 1000);
+  logout() {
+    if (isPlatformBrowser(this.platformId)) {
+      this.deleteCookie(jwtPath);
+    }
+    this.user$.next(null);
+    this.router.navigate(['/auth/login'], { replaceUrl: true });
+  }
 
-//     const cookieOptions = { expires } as CookieOptions;
+  decodeToken(jwt: string) {
+    return this.helper.decodeToken(jwt);
+  }
 
-//     this.cookieService.put(jwtPath, jwt, cookieOptions);
-//   }
+  get currentUser(): User | null {
+    return this.user$.value;
+  }
 
-//   decodeToken(jwt: string) {
-//     return this.helper.decodeToken(jwt);
-//   }
+  /** Cookie Utility Methods **/
+  private setCookie(name: string, value: string, options: CookieOptions = {}) {
+    if (!isPlatformBrowser(this.platformId)) return;
 
-//   logout() {
-//     this.cookieService.remove(jwtPath);
+    let cookieString = `${encodeURIComponent(name)}=${encodeURIComponent(
+      value
+    )}`;
+    if (options.expires) {
+      cookieString += `; expires=${options.expires.toUTCString()}`;
+    }
+    if (options.path) {
+      cookieString += `; path=${options.path}`;
+    }
+    if (options.sameSite) {
+      cookieString += `; SameSite=${options.sameSite}`;
+    }
+    if (options.secure) {
+      cookieString += `; Secure`;
+    }
 
-//     this.user$.next(null);
+    document.cookie = cookieString;
+  }
 
-//     this.router.navigate(['/home'], { replaceUrl: true });
-//   }
-// }
+  getCookie(name: string): string | null {
+    if (!isPlatformBrowser(this.platformId)) return null;
+
+    const match = document.cookie.match(
+      new RegExp(`(?:^|; )${encodeURIComponent(name)}=([^;]*)`)
+    );
+    return match ? decodeURIComponent(match[1]) : null;
+  }
+
+  private deleteCookie(name: string, path: string = '/') {
+    if (!isPlatformBrowser(this.platformId)) return;
+
+    this.setCookie(name, '', { expires: new Date(0), path });
+  }
+}

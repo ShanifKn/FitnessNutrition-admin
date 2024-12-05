@@ -21,14 +21,19 @@ import {
   Validators,
 } from '@angular/forms';
 import { BannerService } from './banner.service';
-import { Subscription } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import {
   BannerData,
   Banners,
 } from '../../../../shared/interfaces/data.interface';
 import { ToastModule } from 'primeng/toast';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { SkeletonModule } from 'primeng/skeleton';
+import { CategoryService } from '../categories/category.service';
+import { FileUploadService } from '../../../../shared/services/file-upload.service';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+
 @Component({
   selector: 'app-banners',
   standalone: true,
@@ -45,10 +50,12 @@ import { SkeletonModule } from 'primeng/skeleton';
     MultiSelectModule,
     DatePipe,
     SkeletonModule,
+    ConfirmPopupModule,
+    ConfirmDialogModule,
   ],
   templateUrl: './banners.component.html',
   styleUrl: './banners.component.scss',
-  providers: [BannerService],
+  providers: [BannerService, ConfirmationService, ConfirmationService],
 })
 export class BannersComponent implements OnInit, OnDestroy {
   banners!: Banners;
@@ -61,10 +68,12 @@ export class BannersComponent implements OnInit, OnDestroy {
   selectedCategory: any; // Track selected category
   selectedSubCategory: any; // Track selected sub-category
   subCategories: any = [];
+  productList: any = [];
   sidebarVisible: boolean = false;
   imagePreview: string | ArrayBuffer | null = null;
   date: Date | undefined;
   imageLoaded = false;
+  emptyBanner = true;
 
   onImageLoad() {
     this.imageLoaded = true;
@@ -73,10 +82,13 @@ export class BannersComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription();
 
   services = inject(BannerService);
+  confirmationService = inject(ConfirmationService);
 
   constructor(
     private fb: FormBuilder,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private categoryService: CategoryService,
+    private imageService: FileUploadService
   ) {}
 
   ngOnInit() {
@@ -87,6 +99,7 @@ export class BannersComponent implements OnInit, OnDestroy {
 
   formBuild() {
     this.bannerForm = this.fb.group({
+      _id: [''],
       title: ['', [Validators.required]],
       expDate: ['', [Validators.required]],
       bannerType: ['', [Validators.required]],
@@ -107,6 +120,14 @@ export class BannersComponent implements OnInit, OnDestroy {
             this.messageService.add({ severity: 'success', summary: message });
 
             this.addBannerData(this.bannerForm.value);
+
+            // Reset the form
+            this.bannerForm.reset();
+            this.imagePreview = null;
+
+            // Close the dialog
+            this.sidebarVisible = false;
+            this.emptyBanner = false;
           })
       );
       // Perform submit logic
@@ -116,10 +137,34 @@ export class BannersComponent implements OnInit, OnDestroy {
   removeBanner(_id: string) {
     this.subscriptions.add(
       this.services.deleteBanner(_id).subscribe(({ message }) => {
-        this.messageService.add({ severity: 'success', summary: message });
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Deleted',
+          detail: message,
+        });
         this.removeBannerData(_id);
       })
     );
+  }
+
+  confirm2(event: Event, _id: string) {
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Do you want to delete this Banner?',
+      icon: 'pi pi-info-circle',
+      acceptButtonStyleClass: 'p-button-danger p-button-sm',
+      accept: () => {
+        this.removeBanner(_id);
+      },
+      reject: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Rejected',
+          detail: 'You have rejected',
+          life: 3000,
+        });
+      },
+    });
   }
 
   // Handle category change
@@ -137,7 +182,7 @@ export class BannersComponent implements OnInit, OnDestroy {
       );
       if (selectedCategory) {
         // Add subcategories to the subCategories array
-        this.subCategories.push(...selectedCategory.subCategories);
+        this.subCategories.push(...selectedCategory.subCategory);
       }
     });
   }
@@ -148,18 +193,56 @@ export class BannersComponent implements OnInit, OnDestroy {
       const reader = new FileReader();
       reader.onload = (e) => (this.imagePreview = reader.result);
       reader.readAsDataURL(file);
-      this.bannerForm.patchValue({
-        image: 'https://via.placeholder.com/550x240',
-      });
+      this.onImageUpload(file);
     }
+  }
+
+  onImageUpload(file: any) {
+    const formData = new FormData();
+
+    const imageFile: any = file; // Assuming `selectedFile` holds the image file selected by the user
+    if (imageFile) {
+      formData.append('image', imageFile, imageFile.name); // 'image' is the field name for multer
+    }
+
+    const sub = this.imageService.imageUplaod(formData).subscribe(({ url }) => {
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Image uploaded successfully',
+      });
+
+      this.bannerForm.patchValue({
+        image: url,
+      });
+    });
+
+    this.subscriptions.add(sub);
   }
 
   getBanners() {
     this.subscriptions.add(
-      this.services.getBanners().subscribe(({ data }) => {
-        this.banners = data;
+      forkJoin({
+        banner: this.services.getBanners(),
+        categories: this.categoryService.getData(),
+      }).subscribe({
+        next: ({ banner, categories }) => {
+          // Assign the results to respective variables
+          this.banners = banner.data;
 
-        console.log(this.banners);
+          if (
+            this.banners &&
+            this.banners.mainBanners?.length === 0 &&
+            this.banners.subBanners?.length === 0 &&
+            this.banners.offerBanners?.length === 0 &&
+            this.banners.bottomBanners?.length === 0
+          ) {
+            this.emptyBanner = true;
+          } else {
+            this.emptyBanner = false;
+          }
+
+          this.categories = categories.data;
+        },
       })
     );
   }
@@ -215,41 +298,14 @@ export class BannersComponent implements OnInit, OnDestroy {
   }
 
   showDialog() {
-    this.visible = true;
+    this.visible = !this.visible;
+  }
+
+  closeDialog() {
+    this.visible = false;
   }
 
   addData() {
-    this.categories = [
-      {
-        _id: '605c72e2d2b3b134a840c6e4',
-        name: 'Strength Training',
-        code: 'ST',
-        subCategories: [
-          { name: 'Dumbbells', code: 'DB', _id: '605c72e2d2b3b134a840c6e5' },
-          { name: 'Barbells', code: 'BB', _id: '605c72e2d2b3b134a840c6e6' },
-          { name: 'Kettlebells', code: 'KB', _id: '605c72e2d2b3b134a840c6e7' },
-        ],
-      },
-      {
-        _id: '605c72e2d2b3b134a840c6e8',
-        name: 'Cardio Equipment',
-        code: 'CE',
-        subCategories: [
-          { name: 'Treadmills', code: 'TM', _id: '605c72e2d2b3b134a840c6e9' },
-          {
-            name: 'Elliptical Machines',
-            code: 'EM',
-            _id: '605c72e2d2b3b134a840c6ea',
-          },
-          {
-            name: 'Exercise Bikes',
-            code: 'EB',
-            _id: '605c72e2d2b3b134a840c6eb',
-          },
-        ],
-      },
-    ];
-
     this.type = [
       { name: 'Main Banner', code: 'NY' },
       { name: 'Sub Banner', code: 'RM' },

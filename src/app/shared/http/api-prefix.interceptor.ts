@@ -8,9 +8,8 @@ import {
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-
-import { CookieService } from 'ngx-cookie-service';
 import { environment } from '../../../environments/environment';
+import { CredentialsService } from '../services/credentials.service';
 
 /**
  * Prefixes all requests not starting with `http[s]` with `environment.serverUrl`.
@@ -19,13 +18,24 @@ import { environment } from '../../../environments/environment';
   providedIn: 'root',
 })
 export class ApiPrefixInterceptor implements HttpInterceptor {
-  constructor(private cookieService: CookieService) {}
+  constructor(private cookieService: CredentialsService) {}
 
   intercept(
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     const headers: HttpHeaders = this.getHeaders();
+
+    // If the request is a FormData (file upload), do not set the Content-Type header
+    if (!(request.body instanceof FormData)) {
+      // Add Content-Type for non-FormData requests
+      request = request.clone({
+        setHeaders: {
+          'Content-Type': 'application/json', // For JSON requests
+        },
+        headers,
+      });
+    }
 
     if (!/^(http|https):/i.test(request.url)) {
       request = request.clone({
@@ -37,7 +47,9 @@ export class ApiPrefixInterceptor implements HttpInterceptor {
   }
 
   getHeaders() {
-    const savedCredentials = this.cookieService.get(environment.cookieName);
+    const savedCredentials = this.cookieService.getCookie(
+      environment.cookieName
+    );
 
     if (!savedCredentials)
       return new HttpHeaders({

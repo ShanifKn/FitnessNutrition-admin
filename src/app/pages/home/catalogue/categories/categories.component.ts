@@ -1,11 +1,14 @@
-import { Component } from '@angular/core';
-import { TabViewModule } from 'primeng/tabview';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-categories',
   standalone: true,
-  imports: [TabViewModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: './categories.component.html',
   styleUrl: './categories.component.scss',
 })
-export class CategoriesComponent {}
+export class CategoriesComponent {
+  constructor() {}
+}

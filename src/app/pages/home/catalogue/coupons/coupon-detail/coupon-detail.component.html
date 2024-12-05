@@ -3,7 +3,9 @@
 </div>
 
 <div class="grid grid-cols-3 gap-3 mt-7">
-  <div class="px-5 py-5 rounded-lg bg-white col-span-2 grid gap-4 drop-shadow-lg">
+  <div
+    class="px-5 py-5 rounded-lg bg-white col-span-2 grid gap-4 drop-shadow-lg"
+  >
     <div class="">
       <h1 class="text-black text-lg pb-3 font-medium">Code</h1>
 
@@ -25,7 +27,7 @@
         pInputTextarea
         class="bg-[#F6F7F9] w-full pl-5 pt-2 rounded-lg placeholder:text-gray-500 border border-gray-200"
         pInput
-        placeholder="Coupon code"
+        placeholder="Coupon description"
         autoResize="false"
       >
       </textarea>
@@ -97,7 +99,9 @@
     </div>
   </div>
 
-  <div class="p-5 py-5 rounded-lg bg-white col-span-1 flex flex-col gap-4 h-fit drop-shadow-lg">
+  <div
+    class="p-5 py-5 rounded-lg bg-white col-span-1 flex flex-col gap-4 h-fit drop-shadow-lg"
+  >
     <div class="">
       <h1 class="text-black text-lg pb-3">Status</h1>
 
@@ -132,7 +136,7 @@
       >
     </div>
 
-  <div class="">
+    <div class="">
       <h1 class="text-black text-lg pb-3 font-medium">Start date</h1>
 
       <input
@@ -187,7 +191,9 @@
 <div class="mt-7">
   <h1 class="text-black text-[24px] font-bold pb-4">Assign Category</h1>
 
-  <div class="px-5 py-5 rounded-lg bg-white col-span-2 grid gap-4 drop-shadow-lg">
+  <div
+    class="px-5 py-5 rounded-lg bg-white col-span-2 grid gap-4 drop-shadow-lg"
+  >
     <div class="grid grid-cols-4 gap-3">
       <div class="grid col-span-2">
         <h1 class="text-black text-lg pb-3">Assigning to</h1>
@@ -234,11 +240,9 @@
           [options]="categoryLevels"
           [group]="true"
           placeholder="Select Category"
-          scrollHeight="250px"
           display="chip"
           class="bg-[#F6F7F9] w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
           styleClass=" w-full bg-[#F6F7F9]"
-          panelStyleClass="w-full"
           appendTo="body"
         >
         </p-multiSelect>
@@ -253,11 +257,9 @@
         [options]="groupedCities"
         [group]="true"
         placeholder="Select Category"
-        scrollHeight="250px"
         display="chip"
         class="bg-[#F6F7F9] w-full"
         styleClass=" w-full bg-[#F6F7F9] pl-3 pt-2 h-14 rounded-lg placeholder:text-gray-500 border border-gray-200"
-        panelStyleClass="w-full h-14"
         appendTo="body"
         [maxSelectedLabels]="25"
       >
@@ -275,11 +277,9 @@
         [options]="groupedCities"
         [group]="true"
         placeholder="Select Category"
-        scrollHeight="250px"
         display="chip"
         class="bg-[#F6F7F9] w-full"
         styleClass=" w-full bg-[#F6F7F9] pl-3 pt-2 h-14 rounded-lg placeholder:text-gray-500 border border-gray-200"
-        panelStyleClass="w-full h-14"
         appendTo="body"
         [maxSelectedLabels]="25"
       >
@@ -301,7 +301,6 @@
         display="chip"
         class="bg-[#F6F7F9] w-full"
         styleClass=" w-full bg-[#F6F7F9] pl-3 pt-2 h-14 rounded-lg placeholder:text-gray-500 border border-gray-200"
-        panelStyleClass="w-full h-14"
         appendTo="body"
         [maxSelectedLabels]="25"
       >

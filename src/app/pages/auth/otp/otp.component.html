@@ -1,14 +1,26 @@
 <div>
     <div class="flex flex-col gap-5">
         <h2 class="text-3xl font-semibold text-white text-center">Verify Code</h2>
-        <p class="text-center text-white">Please enter the code we sent to your mobile number</p>
-        <div class="flex justify-between ">
-            <input type="text" name="" id="" class="w-16 h-16 text-6xl text-center p-1 rounded-md outline-none">
-            <input type="text" name="" id="" class="w-16 h-16 text-6xl text-center p-1 rounded-md outline-none">
-            <input type="text" name="" id="" class="w-16 h-16 text-6xl text-center p-1 rounded-md outline-none">
-            <input type="text" name="" id="" class="w-16 h-16 text-6xl text-center p-1 rounded-md outline-none">
+        <p class="text-center text-white">
+            Please enter the code we sent to your mobile number
+        </p>
+        <div class="flex justify-center">
+            <form [formGroup]="otpForm" (ngSubmit)="onSubmit()">
+                <p-inputOtp formControlName="otp" [integerOnly]="true" [maxlength]="4">
+                </p-inputOtp>
+
+                <button type="submit"
+                    class="p-2 font-semibold w-28 flex justify-center mx-auto mt-5 rounded-md bg-white">
+                    submit
+                </button>
+
+            </form>
         </div>
-        <p class="text-sm text-[#F2E1E1] text-center">Didn't receive any code?</p>
-        <p class="underline text-white text-xl text-center font-semibold">Resend Code</p>
+        <div class="">
+            <p class="text-sm text-[#F2E1E1] text-center">Didn't receive any code?</p>
+            <p class="underline text-white text-xl text-center font-semibold">
+                Resend Code
+            </p>
+        </div>
     </div>
 </div>

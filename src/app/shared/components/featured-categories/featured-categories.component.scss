@@ -1,0 +1,19 @@
+::ng-deep .p-confirm-popup-footer .p-button-danger {
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  background-color: red;
+  margin-left: 5px;
+  color: white;
+}
+
+::ng-deep .p-confirm-popup-footer .p-confirm-popup-reject {
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  background-color: blue;
+  margin-left: 5px;
+  color: white;
+}

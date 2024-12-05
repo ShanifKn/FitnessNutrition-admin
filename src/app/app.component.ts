@@ -10,8 +10,6 @@ import { ToastModule } from 'primeng/toast';
   standalone: true,
   imports: [
     RouterOutlet,
-    SidebarComponent,
-    NavbarComponent,
     ReactiveFormsModule,
     ToastModule,
   ],

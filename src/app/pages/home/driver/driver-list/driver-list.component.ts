@@ -83,7 +83,6 @@ export class DriverListComponent {
   ];
 
   showDialog() {
-    console.log('hello');
     this.addNewDriver = true;
   }
 }

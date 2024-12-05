@@ -5,7 +5,8 @@ export const environment = {
   version: '',
   cookieName: env_common['cookieName'],
   serverHeaders: env_common['serverHeaders'],
-  serverUrl: 'http://localhost:8001',
+  // serverUrl: 'http://localhost:8001',
+  serverUrl: 'http://fitnmuscles.com:8001',
   defaultLanguage: 'en-US',
   supportedLanguages: ['en-US'],
 };

@@ -195,8 +195,6 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
       this.categoryForm.patchValue({
         image: url,
       });
-
-      this.onSubmit();
     });
 
     this.subscriptions.add(sub);

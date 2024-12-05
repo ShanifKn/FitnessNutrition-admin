@@ -22,6 +22,7 @@ export class TreeNodeComponent {
     parentNode: TreeNode;
     childName: string;
   }>();
+  @Output() deleteParent = new EventEmitter<any>();
 
   isExpanded = false;
   isEditing = false;
@@ -50,6 +51,20 @@ export class TreeNodeComponent {
     }
   }
 
-  allData: any[] = [];
+  editParent() {
+    this.isEditing = false;
+  }
 
+  deleteNode() {
+    this.deleteParent.emit(this.node); // Emit the current node to the parent for deletion
+  }
+
+  deleteChildNode(childNode: any) {
+    const index = this.node.subCategory.indexOf(childNode);
+    if (index !== -1) {
+      this.node.subCategory.splice(index, 1); // Remove the child node from the subCategory array
+    }
+  }
+
+  allData: any[] = [];
 }

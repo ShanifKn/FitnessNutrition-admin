@@ -16,9 +16,12 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
 import { routes } from './app.routes';
 import { PLATFORM_ID, inject } from '@angular/core';
-import { isPlatformServer } from '@angular/common';
+import {
+  HashLocationStrategy,
+  isPlatformServer,
+  LocationStrategy,
+} from '@angular/common';
 import { FileUploadService } from './shared/services/file-upload.service';
-
 
 export const COOKIE_OPTIONS = new InjectionToken('COOKIE_OPTIONS');
 
@@ -45,9 +48,13 @@ export const appConfig: ApplicationConfig = {
       useClass: ErrorHandlerInterceptor,
       multi: true,
     },
+    {
+      provide: LocationStrategy,
+      useClass: HashLocationStrategy,
+    },
 
     // Provide services required by interceptors
     MessageService,
-    FileUploadService
+    FileUploadService,
   ],
 };

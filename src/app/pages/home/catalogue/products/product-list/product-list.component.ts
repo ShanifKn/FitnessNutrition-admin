@@ -1,72 +1,55 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TableModule } from 'primeng/table';
+import { SidebarModule } from 'primeng/sidebar';
+import { ButtonModule } from 'primeng/button';
+import { forkJoin, Subscription } from 'rxjs';
+import { ProductService } from '../product.service';
+import { PendingListComponent } from '../pending-list/pending-list.component';
+import { Products } from '../../../../../shared/interfaces/product.interface';
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
-  imports: [TableModule, CommonModule,RouterModule],
+  imports: [
+    TableModule,
+    CommonModule,
+    RouterModule,
+    SidebarModule,
+    ButtonModule,
+    PendingListComponent,
+  ],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss',
+  providers: [ProductService],
 })
-export class ProductListComponent {
-  products: any[] = [
-    {
-      no: 1,
-      image: '/assets/images/customer/product1.svg',
-      name: 'Optimum Nutrition Gold Standard 100% Whey Protein',
-      category: 'Protein Powder',
-      stock: '0',
-      price: '49.99',
-    },
-    {
-      no: 2,
-      image: '/assets/images/customer/product1.svg',
-      name: 'Optimum Nutrition Gold Standard 100% Whey Protein',
-      category: 'Supplements',
-      stock: '5',
-      price: '59.99',
-    },
-    {
-      no: 3,
-      image: '/assets/images/customer/product1.svg',
-      name: 'Optimum Nutrition Gold Standard 100% Whey Protein',
-      category: 'Amino Acids',
-      stock: '15',
-      price: '29.99',
-    },
-    {
-      no: 4,
-      image: '/assets/images/customer/product1.svg',
-      name: 'Optimum Nutrition Gold Standard 100% Whey Protein',
-      category: 'Supplements',
-      stock: '20',
-      price: '19.99',
-    },
-    {
-      no: 5,
-      image: '/assets/images/customer/product1.svg',
-      name: 'Optimum Nutrition Gold Standard 100% Whey Protein',
-      category: 'Protein Powder',
-      stock: '8',
-      price: '39.99',
-    },
-    {
-      no: 6,
-      image: '/assets/images/customer/product1.svg',
-      name: 'Optimum Nutrition Gold Standard 100% Whey Protein',
-      category: 'Energy Boosters',
-      stock: '12',
-      price: '34.99',
-    },
-    {
-      no: 7,
-      image: '/assets/images/customer/product1.svg',
-      name: 'Optimum Nutrition Gold Standard 100% Whey Protein',
-      category: 'Omega 3',
-      stock: '25',
-      price: '14.99',
-    },
-  ];
+export class ProductListComponent implements OnDestroy {
+  pendingNumber: string = '0';
+  sidebarVisible: boolean = false;
+  products: Products[] = [];
+
+  private subscriptions = new Subscription();
+
+  services = inject(ProductService);
+
+  constructor() {
+    this.getData();
+  }
+
+  getData() {
+    this.subscriptions.add(
+      forkJoin({
+        pendingCount: this.services.getCount(),
+        products: this.services.getProduct(),
+      }).subscribe(({ pendingCount, products }) => {
+        this.pendingNumber = pendingCount.data;
+        this.products = products.data;
+      })
+    );
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
+  }
 }

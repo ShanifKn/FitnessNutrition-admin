@@ -1,0 +1,80 @@
+<h1 class="text-black text-[24px] font-bold pb-4">Pending product</h1>
+
+<div class="" *ngIf="products.length > 0; else noDataTemplate">
+
+      <p-table [value]="products" [rowsPerPageOptions]="[5, 10, 20]" [rows]="10"
+            [paginator]="true" class="drop-shadow-lg">
+            <ng-template pTemplate="header">
+                  <tr class="flex">
+                        <th pSortableColumn="no"
+                              class="flex items-center w-56 text-white bg-[#825092] rounded-t-md">
+                              S.no <p-sortIcon field="no" />
+                        </th>
+
+                        <th pSortableColumn="name"
+                              class="flex items-center w-full justify-center text-white bg-[#825092]">
+                              Product <p-sortIcon field="name" />
+                        </th>
+
+
+                        <th pSortableColumn="stock"
+                              class="flex items-center w-full justify-center text-white bg-[#825092]">
+                              Stock<p-sortIcon field="stock" />
+                        </th>
+
+                        <th pSortableColumn="price"
+                              class="flex items-center w-full justify-center text-white bg-[#825092]">
+                              Special Price<p-sortIcon field="price" />
+                        </th>
+
+                        <th
+                              class="flex items-center w-full justify-center text-white bg-[#825092]">
+                              Edit
+                        </th>
+                  </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-product let-rowIndex="rowIndex">
+                  <tr class="flex">
+                        <td class="w-56 text-black cursor-pointer flex justify-center">
+                              {{ rowIndex + 1 }}
+                        </td>
+                        <td class="w-full flex line-clamp-2">
+                              <img src="{{ product.image[0] }}" alt="{{ product.name }}"
+                                    class="w-10 h-10 mr-2 rounded line-clamp-2" />{{
+                              product.name }}
+                        </td>
+
+                        <td class="w-full flex justify-center">
+                              <div [ngSwitch]="product.actual_available_stock">
+                                    <p *ngSwitchCase="0"
+                                          class="bg-red-100 text-red-600 px-4 py-1 rounded-full text-sm tracking-wide w-fit">
+                                          Out of stock
+                                    </p>
+
+                                    <p *ngSwitchDefault
+                                          class="bg-green-100 text-green-600 px-4 py-1 rounded-full text-sm tracking-wide w-fit">
+                                          {{ product.actual_available_stock }} of stock
+                                    </p>
+                              </div>
+                        </td>
+                        <td class="w-full flex justify-center">AED {{ product.rate }}</td>
+                        <td class="w-full flex justify-center cursor-pointer"
+                              [routerLink]="['/catalogue/products/detail', product._id]">
+                              <i class="pi pi-pen-to-square text-[#007EF2]"
+                                    style="font-size: 1.4rem"></i>
+                        </td>
+                  </tr>
+            </ng-template>
+      </p-table>
+
+</div>
+
+<ng-template #noDataTemplate>
+      <div class="flex flex-col items-center justify-center py-10">
+            <img src="assets/no-po.png" alt="No purchase order" class="mx-auto w-56" />
+
+            <h4 class="my-8">There is no Pending Products!</h4>
+
+            <i class="pi pi-spin pi-spinner text-3xl"></i>
+      </div>
+</ng-template>

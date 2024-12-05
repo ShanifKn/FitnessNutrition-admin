@@ -4,6 +4,16 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { TableModule } from 'primeng/table';
 import { DropdownModule } from 'primeng/dropdown';
 import { EditorModule } from 'primeng/editor';
+import { Subscription } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
+import { ProductService } from '../product.service';
+import { Products } from '../../../../../shared/interfaces/product.interface';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 
 interface City {
   name: string;
@@ -19,11 +29,19 @@ interface City {
     ImageUploaderComponent,
     MultiSelectModule,
     TableModule,
+    ReactiveFormsModule,
   ],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.scss',
+  providers: [ProductService],
 })
 export class ProductDetailComponent {
+  productId: string | null = null;
+  product!: Products;
+  productForm!: FormGroup;
+
+  private subscriptions = new Subscription();
+
   cities!: City[];
   payment!: City[];
   branchList!: any[];
@@ -32,7 +50,15 @@ export class ProductDetailComponent {
   variants!: any[];
   text: string | undefined;
 
-  constructor() {
+  constructor(
+    private route: ActivatedRoute,
+    private service: ProductService,
+    private fb: FormBuilder
+  ) {
+    this.productId = this.route.snapshot.paramMap.get('id');
+
+    this.buildForms();
+
     this.cities = [
       { name: 'Protein', code: 'NY' },
       { name: 'Whey', code: 'RM' },
@@ -88,5 +114,39 @@ export class ProductDetailComponent {
         exp: '15 Aug 2025',
       },
     ];
+  }
+
+  buildForms() {
+    this.productForm = this.fb.group({
+      image: [[]],
+      name: ['', [Validators.required]],
+      description: ['', [Validators.required]],
+      additionalDescription: ['', [Validators.required]],
+      purchase_account_name: ['', [Validators.required]],
+      actual_available_stock: [0, [Validators.required]],
+      available_stock: [0, [Validators.required]],
+      category: ['', [Validators.required]],
+      pending: [true], // Default to hidden
+      created_time: [null],
+      productCount: ['', [Validators.required]],
+      paymentMethods: [[], [Validators.required]],
+      maxDiscount: ['', [Validators.required]],
+    });
+  }
+
+  getData(_id: string) {
+    this.subscriptions.add(
+      this.service.getDetails(_id).subscribe(({ data }) => {
+        this.product = data;
+      })
+    );
+  }
+
+  onSubmit(): void {
+    if (this.productForm.valid) {
+      console.log(this.productForm.value);
+    } else {
+      console.log('Form is invalid');
+    }
   }
 }

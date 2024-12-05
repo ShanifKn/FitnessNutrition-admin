@@ -27,10 +27,13 @@ import {
   Banners,
 } from '../../../../shared/interfaces/data.interface';
 import { ToastModule } from 'primeng/toast';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { SkeletonModule } from 'primeng/skeleton';
 import { CategoryService } from '../categories/category.service';
 import { FileUploadService } from '../../../../shared/services/file-upload.service';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+
 @Component({
   selector: 'app-banners',
   standalone: true,
@@ -47,10 +50,12 @@ import { FileUploadService } from '../../../../shared/services/file-upload.servi
     MultiSelectModule,
     DatePipe,
     SkeletonModule,
+    ConfirmPopupModule,
+    ConfirmDialogModule,
   ],
   templateUrl: './banners.component.html',
   styleUrl: './banners.component.scss',
-  providers: [BannerService],
+  providers: [BannerService, ConfirmationService, ConfirmationService],
 })
 export class BannersComponent implements OnInit, OnDestroy {
   banners!: Banners;
@@ -63,10 +68,12 @@ export class BannersComponent implements OnInit, OnDestroy {
   selectedCategory: any; // Track selected category
   selectedSubCategory: any; // Track selected sub-category
   subCategories: any = [];
+  productList: any = [];
   sidebarVisible: boolean = false;
   imagePreview: string | ArrayBuffer | null = null;
   date: Date | undefined;
   imageLoaded = false;
+  emptyBanner = true;
 
   onImageLoad() {
     this.imageLoaded = true;
@@ -75,6 +82,7 @@ export class BannersComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription();
 
   services = inject(BannerService);
+  confirmationService = inject(ConfirmationService);
 
   constructor(
     private fb: FormBuilder,
@@ -119,6 +127,7 @@ export class BannersComponent implements OnInit, OnDestroy {
 
             // Close the dialog
             this.sidebarVisible = false;
+            this.emptyBanner = false;
           })
       );
       // Perform submit logic
@@ -128,10 +137,34 @@ export class BannersComponent implements OnInit, OnDestroy {
   removeBanner(_id: string) {
     this.subscriptions.add(
       this.services.deleteBanner(_id).subscribe(({ message }) => {
-        this.messageService.add({ severity: 'success', summary: message });
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Deleted',
+          detail: message,
+        });
         this.removeBannerData(_id);
       })
     );
+  }
+
+  confirm2(event: Event, _id: string) {
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Do you want to delete this Banner?',
+      icon: 'pi pi-info-circle',
+      acceptButtonStyleClass: 'p-button-danger p-button-sm',
+      accept: () => {
+        this.removeBanner(_id);
+      },
+      reject: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Rejected',
+          detail: 'You have rejected',
+          life: 3000,
+        });
+      },
+    });
   }
 
   // Handle category change
@@ -195,6 +228,19 @@ export class BannersComponent implements OnInit, OnDestroy {
         next: ({ banner, categories }) => {
           // Assign the results to respective variables
           this.banners = banner.data;
+
+          if (
+            this.banners &&
+            this.banners.mainBanners?.length === 0 &&
+            this.banners.subBanners?.length === 0 &&
+            this.banners.offerBanners?.length === 0 &&
+            this.banners.bottomBanners?.length === 0
+          ) {
+            this.emptyBanner = true;
+          } else {
+            this.emptyBanner = false;
+          }
+
           this.categories = categories.data;
         },
       })

@@ -1,7 +1,11 @@
 <div class="grid mt-7 drop-shadow-lg">
   <h1 class="text-black text-[24px] font-bold pb-4">Edit Product</h1>
 
-  <div class="grid grid-cols-3 gap-3">
+  <form
+    [formGroup]="productForm"
+    (ngSubmit)="onSubmit()"
+    class="grid grid-cols-3 gap-3"
+  >
     <div class="col-span-2 grid gap-2">
       <div class="bg-white rounded-lg shadow-md overflow-hidden p-5">
         <app-image-uploader></app-image-uploader>
@@ -12,10 +16,10 @@
 
             <input
               type="text"
+              formControlName="name"
               class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
               pInput
               placeholder="Product Name"
-              formControlName="code"
             />
           </div>
 
@@ -25,13 +29,11 @@
             <textarea
               rows="4"
               cols="30"
-              pInputTextarea
+              formControlName="description"
               class="bg-[#F6F7F9] w-full pl-3 pt-2 rounded-lg placeholder:text-gray-500 border border-gray-200"
-              pInput
+              pInputTextarea
               placeholder="Product description"
-              autoResize="false"
-            >
-            </textarea>
+            ></textarea>
           </div>
 
           <div class="">
@@ -42,13 +44,11 @@
             <textarea
               rows="4"
               cols="30"
+              formControlName="additionalDescription"
+              class="bg-[#F6F7F9] w-full pl-3 pt-2 rounded-lg placeholder:text-gray-500 border border-gray-200"
               pInputTextarea
-              class="bg-[#F6F7F9] w-full pl-5 pt-2 rounded-lg placeholder:text-gray-500 border border-gray-200"
-              pInput
-              placeholder="Short description"
-              autoResize="false"
-            >
-            </textarea>
+              placeholder="Product description"
+            ></textarea>
           </div>
 
           <div class="">
@@ -59,20 +59,34 @@
               class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
               pInput
               placeholder="Select brand"
-              formControlName="code"
+              formControlName="purchase_account_name"
             />
           </div>
 
-          <div class="">
-            <h1 class="text-black text-lg pb-3 font-medium">Buffer Count</h1>
+          <div class="flex gap-5">
+            <div class="">
+              <h1 class="text-black text-lg pb-3 font-medium">Available Stock</h1>
 
-            <input
-              type="text"
-              class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
-              pInput
-              placeholder="count"
-              formControlName="code"
-            />
+              <input
+                type="text"
+                class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
+                pInput
+                placeholder="count"
+                formControlName="available_stock"
+              />
+            </div>
+
+            <div class="">
+              <h1 class="text-black text-lg pb-3 font-medium">Actual available Stock</h1>
+
+              <input
+                type="text"
+                class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
+                pInput
+                placeholder="count"
+                formControlName="actual_available_stock"
+              />
+            </div>
           </div>
 
           <div class="flex gap-4"></div>
@@ -250,7 +264,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </form>
 </div>
 
 <div class="grid mt-7">

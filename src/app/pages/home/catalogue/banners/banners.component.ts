@@ -205,6 +205,7 @@ export class BannersComponent implements OnInit, OnDestroy {
       formData.append('image', imageFile, imageFile.name); // 'image' is the field name for multer
     }
 
+
     const sub = this.imageService.imageUplaod(formData).subscribe(({ url }) => {
       this.messageService.add({
         severity: 'success',

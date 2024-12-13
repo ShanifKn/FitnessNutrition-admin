@@ -5,7 +5,11 @@ import {
   QueryList,
   ElementRef,
   Input,
+  inject,
 } from '@angular/core';
+import { Subscription } from 'rxjs';
+import { FileUploadService } from '../../services/file-upload.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-image-uploader',
@@ -16,10 +20,13 @@ import {
 })
 export class ImageUploadComponent {
   @Input() images: (string | null)[] = []; // Receive the images array from parent
-
   @ViewChildren('imageInput') imageInputs!: QueryList<
     ElementRef<HTMLInputElement>
   >;
+
+  private subscriptions = new Subscription();
+  imageService = inject(FileUploadService);
+  messageService = inject(MessageService);
 
   // Trigger the hidden input for the main image
   triggerFileInput(input: HTMLInputElement): void {
@@ -27,14 +34,18 @@ export class ImageUploadComponent {
   }
 
   // Upload the main image (image[0])
-  uploadMainImage(event: Event): void {
+  async uploadMainImage(event: Event) {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.images[0] = reader.result as string; // Update main image in the array
-      };
-      reader.readAsDataURL(file);
+      const url = await this.uploadOnServer(file);
+
+      this.images[0] = url;
+
+      // const reader = new FileReader();
+      // reader.onload = () => {
+      //   this.images[0] = reader.result as string; // Update main image in the array
+      // };
+      // reader.readAsDataURL(file);
     }
   }
 
@@ -43,19 +54,49 @@ export class ImageUploadComponent {
     input.click();
   }
   // Upload additional images (images[1] to images[n])
-  uploadAdditionalImage(event: Event, index: number): void {
+  async uploadAdditionalImage(event: Event, index: number) {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.images[index] = reader.result as string; // Update the image in the corresponding slot
-      };
-      reader.readAsDataURL(file);
+      const url = await this.uploadOnServer(file);
+
+      this.images[index] = url;
+
+      // const reader = new FileReader();
+      // reader.onload = () => {};
+      // reader.readAsDataURL(file);
     }
   }
 
   // Remove image
   removeImage(index: number): void {
     this.images[index] = null; // Clear the image slot in the array
+  }
+
+  // Method to upload an image file to the server
+  async uploadOnServer(file: any): Promise<string> {
+    const formData = new FormData();
+    formData.append('image', file, file.name); // Append the file to formData with the 'image' field
+
+    try {
+      // Call the image upload service and await its response
+      const response: any = await this.imageService
+        .imageUplaod(formData)
+        .toPromise();
+
+      // Display a success message
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Image uploaded successfully',
+      });
+
+      console.log('Uploaded URL:', response.url);
+
+      // Return the uploaded URL
+      return response.url;
+    } catch (error) {
+      // Handle any errors that occur during the upload
+      console.error('Image upload failed:', error);
+      throw error; // Optional: rethrow the error if needed
+    }
   }
 }

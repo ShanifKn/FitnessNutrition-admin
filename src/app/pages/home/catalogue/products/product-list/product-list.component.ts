@@ -45,6 +45,7 @@ export class ProductListComponent implements OnDestroy {
       }).subscribe(({ pendingCount, products }) => {
         this.pendingNumber = pendingCount.data;
         this.products = products.data;
+
       })
     );
   }

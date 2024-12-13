@@ -33,8 +33,8 @@ export class ProductService {
     return this.httpClient.get<{ data: Products }>(routes.getDetails(_id));
   }
 
-  updatePrdouct(data: any): Observable<{ data: Products }> {
-    return this.httpClient.post<{ data: Products }>(
+  updatePrdouct(data: any): Observable<{ message: string }> {
+    return this.httpClient.post<{ message: string }>(
       routes.updatedProduct,
       data
     );

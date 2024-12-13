@@ -242,7 +242,6 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
 
   patchData(data: any) {
     this.categoryForm.patchValue(data);
-    console.log(data);
 
     this.categoryForm.patchValue({
       publishDate: data.publishDate ? new Date(data.publishDate).toISOString().split('T')[0]: '',

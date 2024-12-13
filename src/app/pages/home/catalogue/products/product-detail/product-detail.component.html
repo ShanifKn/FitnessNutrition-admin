@@ -1,6 +1,20 @@
 <form action="" [formGroup]="productForm" (ngSubmit)="onSubmit()">
   <div class="grid mt-7 drop-shadow-lg">
-    <h1 class="text-black text-[24px] font-bold pb-4">Edit Product</h1>
+
+    <div class="flex items-center justify-between">
+
+      <h1 class="text-black text-[24px] font-bold pb-4">Edit Product</h1>
+      <button
+      pButton
+      icon="pi pi-angle-left"
+      class="p-button-sm rounded-full text-xs px-3 py-2 bg-white text-black border-2 border-black mb-3"
+      label="BACK"
+      type="button"
+      (click)="_location.back()"
+    ></button>
+
+    </div>
+ 
 
     <div class="grid grid-cols-3 gap-3">
       <div class="col-span-2 grid gap-2 h-full">
@@ -184,7 +198,7 @@
           <div class="flex items-center space-x-4">
             <div
               [ngClass]="
-                productForm.get('status')?.value === true
+                productForm.get('status')?.value === 'active'
                   ? 'border-2 border-[#854D94] text-[#854D94]'
                   : 'text-[#6E6E6E] bg-[#F6F7F9] border border-gray-200'
               "
@@ -204,7 +218,7 @@
             </div>
             <div
               [ngClass]="
-                productForm.get('status')?.value === false
+                productForm.get('status')?.value === 'inactive'
                   ? 'border-2 border-[#854D94] text-[#854D94]'
                   : 'text-[#6E6E6E] bg-[#F6F7F9] border border-gray-200'
               "

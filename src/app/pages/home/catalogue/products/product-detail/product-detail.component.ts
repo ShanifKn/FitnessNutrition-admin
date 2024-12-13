@@ -5,7 +5,7 @@ import { TableModule } from 'primeng/table';
 import { DropdownModule } from 'primeng/dropdown';
 import { EditorModule } from 'primeng/editor';
 import { Subscription } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../product.service';
 import { Products } from '../../../../../shared/interfaces/product.interface';
 import {
@@ -17,12 +17,14 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { CategoryData } from '../../../../../shared/interfaces/category.interface';
 import { CategoryService } from '../../categories/category.service';
 import { ChipModule } from 'primeng/chip';
 import { RatingModule } from 'primeng/rating';
 import { TabViewModule } from 'primeng/tabview';
+import { MessageService } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
 
 interface City {
   name: string;
@@ -44,6 +46,7 @@ interface City {
     CommonModule,
     TabViewModule,
     FormsModule,
+    ButtonModule,
   ],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.scss',
@@ -77,7 +80,10 @@ export class ProductDetailComponent implements OnDestroy {
     private route: ActivatedRoute,
     private service: ProductService,
     private fb: FormBuilder,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private router: Router,
+    private messageService: MessageService,
+    public _location: Location
   ) {
     this.productId = this.route.snapshot.paramMap.get('id');
 
@@ -107,7 +113,7 @@ export class ProductDetailComponent implements OnDestroy {
   buildForms() {
     this.productForm = this.fb.group({
       _id: ['', Validators.required],
-      images: this.fb.control([null, null, null, null]),
+      images: this.fb.array([null, null, null, null]),
       name: ['', Validators.required],
       description: ['', Validators.required],
       additionalDescription: ['', Validators.required],
@@ -147,13 +153,15 @@ export class ProductDetailComponent implements OnDestroy {
       return;
     }
 
-    console.log(this.productForm.value);
-
     this.subscriptions.add(
       this.service
         .updatePrdouct(this.productForm.value)
-        .subscribe(({ data }) => {
-          console.log(data);
+        .subscribe(({ message }) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: message,
+          });
+          this.router.navigate(['/desired-route']);
         })
     );
   }
@@ -203,7 +211,7 @@ export class ProductDetailComponent implements OnDestroy {
           available_stock: this.product.available_stock || '',
           actual_available_stock: this.product.actual_available_stock || '',
           chips: this.product.chips || [],
-          status: this.product.visibility || 'inactive',
+          status: this.product.visibility || 'active',
           stock_on_hand: this.product.stock_on_hand || '',
           rate: this.product.rate || '',
           purchase_rate: this.product.purchase_rate || '',
@@ -221,6 +229,8 @@ export class ProductDetailComponent implements OnDestroy {
 
         const variants = this.product?.variants || [];
         const additional = this.product.additionals || [];
+
+        this.patchChips(this.product.chips || []);
 
         if (variants.length > 0) {
           this.patchVariants(this.product.variants ?? []);
@@ -250,19 +260,26 @@ export class ProductDetailComponent implements OnDestroy {
 
   // Triggered when a parent category is selected// Triggered when a parent category is selected
   onParentCategoryChange() {
+    const selectedCategory = this.categories.find(
+      (item) => item._id === this.selectedParentCategory
+    );
+
     // Filter the categories based on the selected parent category
-    this.filteredCategories = this.selectedParentCategory?.subCategory || [];
+    this.filteredCategories = selectedCategory?.subCategory || [];
+
     this.selectedCategory = null; // Reset selected category
     this.selectedSubCategory = null; // Reset selected subcategory
-    console.log('Filtered Categories:', this.filteredCategories);
   }
 
   // Method to handle change in Category
   onCategoryChange() {
+    const selectedCategory = this.filteredCategories.find(
+      (item) => item._id === this.selectedCategory
+    );
+
     // Filter the subcategories based on the selected category
-    this.filteredSubCategories = this.selectedCategory?.subCategory || [];
+    this.filteredSubCategories = selectedCategory?.subCategory || [];
     this.selectedSubCategory = null; // Reset selected subcategory
-    console.log('Filtered Subcategories:', this.filteredSubCategories);
   }
 
   ///---------------------------------------------------------   add remove array from form builds  -----------------------------------------------------//
@@ -340,6 +357,14 @@ export class ProductDetailComponent implements OnDestroy {
           availableStock: [variant.availableStock, ,],
         })
       );
+    });
+  }
+
+  patchChips(data: any) {
+    this.chipsControl.clear();
+
+    data.forEach((chip: any) => {
+      this.chipsControl.push(this.fb.control(chip));
     });
   }
 

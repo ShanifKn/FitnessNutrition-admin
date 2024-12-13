@@ -1,99 +1,156 @@
 <div class="flex justify-between items-start">
   <h1 class="text-black text-[24px] font-bold">Products</h1>
 
-  <p-button label="Pending Products"
+  <p-button
+    label="Pending Products"
     styleClass="px-5 bg-[#20A1FF] text-white py-3 font-semibold rounded-md"
-    [badge]="pendingNumber" (onClick)="sidebarVisible = true" badgeClass="custom-badge" />
+    [badge]="pendingNumber"
+    (onClick)="sidebarVisible = true"
+    badgeClass="custom-badge"
+  />
 </div>
 
 <div class="mt-7">
-
   <div class="" *ngIf="products.length > 0; else noDataTemplate">
-
     <div class="bg-white rounded-lg p-5 mb-5 drop-shadow-lg">
-      <div class="flex items-center border border-gray-300 bg-white rounded-xl px-4 py-2">
+      <div
+        class="flex items-center border border-gray-300 bg-white rounded-xl px-4 py-2"
+      >
         <span class="pi pi-search"></span>
-        <input type="text" placeholder="Search Orders"
-          class="ml-3 w-full focus:outline-none text-gray-700" />
+        <input
+          type="text"
+          placeholder="Search Orders"
+          class="ml-3 w-full focus:outline-none text-gray-700"
+        />
       </div>
     </div>
 
+    <p-table
+      [value]="products"
+      [rowsPerPageOptions]="[5, 10, 20]"
+      [rows]="10"
+      [paginator]="true"
+      class="drop-shadow-lg"
+    >
+      <ng-template pTemplate="header">
+        <tr class="flex">
+          <th
+            pSortableColumn="no"
+            class="flex items-center w-56 text-white bg-[#825092] rounded-t-md"
+          >
+            S.no <p-sortIcon field="no" />
+          </th>
 
-    <p-table [value]="products" [rowsPerPageOptions]="[5, 10, 20]" [rows]="10"
-    [paginator]="true" class="drop-shadow-lg">
-    <ng-template pTemplate="header">
-          <tr class="flex">
-                <th pSortableColumn="no"
-                      class="flex items-center w-56 text-white bg-[#825092] rounded-t-md">
-                      S.no <p-sortIcon field="no" />
-                </th>
+          <th
+            pSortableColumn="name"
+            class="flex items-center w-full justify-center text-white bg-[#825092]"
+          >
+            Product <p-sortIcon field="name" />
+          </th>
 
-                <th pSortableColumn="name"
-                      class="flex items-center w-full justify-center text-white bg-[#825092]">
-                      Product <p-sortIcon field="name" />
-                </th>
+          <th
+            pSortableColumn="stock"
+            class="flex items-center w-full justify-center text-white bg-[#825092]"
+          >
+            Stock<p-sortIcon field="stock" />
+          </th>
 
+          <th
+            pSortableColumn="price"
+            class="flex items-center w-full justify-center text-white bg-[#825092]"
+          >
+            Special Price<p-sortIcon field="price" />
+          </th>
 
-                <th pSortableColumn="stock"
-                      class="flex items-center w-full justify-center text-white bg-[#825092]">
-                      Stock<p-sortIcon field="stock" />
-                </th>
+          <th
+            pSortableColumn="price"
+            class="flex items-center w-72 justify-center text-white bg-[#825092]"
+          >
+            Status<p-sortIcon field="status" />
+          </th>
 
-                <th pSortableColumn="price"
-                      class="flex items-center w-full justify-center text-white bg-[#825092]">
-                      Special Price<p-sortIcon field="price" />
-                </th>
+          <th
+            class="flex items-center w-72 justify-center text-white bg-[#825092]"
+          >
+            Edit
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-product let-rowIndex="rowIndex">
+        <tr class="flex">
+          <td class="w-56 text-black cursor-pointer flex justify-center">
+            {{ rowIndex + 1 }}
+          </td>
+          <td class="w-full flex line-clamp-2 items-center">
+            <img
+              src="{{ product.images[0] }}"
+              alt="{{ product.name }}"
+              class="w-16 h-16 mr-2 rounded line-clamp-2"
+            />{{ product.name }}
+          </td>
 
-                <th
-                      class="flex items-center w-full justify-center text-white bg-[#825092]">
-                      Edit
-                </th>
-          </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-product let-rowIndex="rowIndex">
-          <tr class="flex">
-                <td class="w-56 text-black cursor-pointer flex justify-center">
-                      {{ rowIndex + 1 }}
-                </td>
-                <td class="w-full flex line-clamp-2">
-                      <img src="{{ product.image[0] }}" alt="{{ product.name }}"
-                            class="w-10 h-10 mr-2 rounded line-clamp-2" />{{
-                      product.name }}
-                </td>
+          <td class="w-full flex justify-center">
+            <div [ngSwitch]="product.actual_available_stock">
+              <p
+                *ngSwitchCase="0"
+                class="bg-red-100 text-red-600 px-4 py-1 rounded-full text-sm tracking-wide w-fit"
+              >
+                Out of stock
+              </p>
 
-                <td class="w-full flex justify-center">
-                      <div [ngSwitch]="product.actual_available_stock">
-                            <p *ngSwitchCase="0"
-                                  class="bg-red-100 text-red-600 px-4 py-1 rounded-full text-sm tracking-wide w-fit">
-                                  Out of stock
-                            </p>
+              <p
+                *ngSwitchDefault
+                class="bg-green-100 text-green-600 px-4 py-1 rounded-full text-sm tracking-wide w-fit"
+              >
+                {{ product.actual_available_stock }} of stock
+              </p>
+            </div>
+          </td>
+          <td class="w-full flex justify-center">AED {{ product.rate }}</td>
 
-                            <p *ngSwitchDefault
-                                  class="bg-green-100 text-green-600 px-4 py-1 rounded-full text-sm tracking-wide w-fit">
-                                  {{ product.actual_available_stock }} of stock
-                            </p>
-                      </div>
-                </td>
-                <td class="w-full flex justify-center">AED {{ product.rate }}</td>
-                <td class="w-full flex justify-center cursor-pointer"
-                      [routerLink]="['/catalogue/products/detail', product._id]">
-                      <i class="pi pi-pen-to-square text-[#007EF2]"
-                            style="font-size: 1.4rem"></i>
-                </td>
-          </tr>
-    </ng-template>
-</p-table>
+          <td class="w-72 flex justify-center">
+            <div [ngSwitch]="product.status">
+              <p
+                *ngSwitchCase="'inactive'"
+                class="bg-red-100 text-red-600 px-4 py-1 rounded-full text-sm tracking-wide w-fit"
+              >
+                Inactive
+              </p>
+
+              <p
+                *ngSwitchDefault
+                class="bg-green-100 text-green-900 px-3 py-2 rounded-full text-sm tracking-wide w-fit"
+              >
+                Active
+              </p>
+            </div>
+          </td>
+
+          <td
+            class="w-72 flex justify-center cursor-pointer"
+            [routerLink]="['/catalogue/products/detail', product._id]"
+          >
+            <i
+              class="pi pi-pen-to-square text-[#007EF2]"
+              style="font-size: 1.4rem"
+            ></i>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
   </div>
 </div>
 
-<p-sidebar [(visible)]="sidebarVisible" position="right" [style]="{ width: '80rem' }">
+<p-sidebar
+  [(visible)]="sidebarVisible"
+  position="right"
+  [style]="{ width: '80rem' }"
+>
   <app-pending-list></app-pending-list>
 </p-sidebar>
 
-
-
 <ng-template #noDataTemplate>
-  <div class="flex flex-col items-center justify-center py-10 h-[700px] ">
+  <div class="flex flex-col items-center justify-center py-10 h-[700px]">
     <img src="assets/no-po.png" alt="No purchase order" class="mx-auto w-56" />
 
     <h4 class="my-8">There is no Products available!</h4>

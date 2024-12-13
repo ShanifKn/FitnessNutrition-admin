@@ -21,8 +21,11 @@ import { FileUploadService } from '../../../../../shared/services/file-upload.se
 
 interface TreeNode {
   title: string;
+  tag?: string;
   level: number;
   subCategory: TreeNode[];
+  featuredCategory?: false;
+  description?: string;
 }
 
 @Component({
@@ -42,13 +45,16 @@ interface TreeNode {
 })
 export class CategoryDetailComponent implements OnInit, OnDestroy {
   categoryForm!: FormGroup;
+  subCategoryForm!: FormGroup;
   uploadedImage: string = '';
   selectedFile: File | null = null;
   categoryId: string | null = null;
   categoryData!: CategoryData;
-  mainImage: string | null = null; // Main image URL
+  categoryImage: string = ''; // Main image URL
   cancelDialog: boolean = false;
+  subCategory = false;
   tree: TreeNode[] = [];
+  savedNodeData: any = null;
 
   private subscriptions = new Subscription();
 
@@ -76,6 +82,7 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
       title: `New Subcategory`,
       subCategory: [],
       level: 1,
+      featuredCategory: false,
     };
     this.tree.push(newNode);
   }
@@ -97,21 +104,28 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
   // ---------create categories ------------------//
   buildFrom() {
     this.categoryForm = this.fb.group({
-      image: [''],
-      _id: [''],
+      image: ['', [Validators.required]],
+      _id: [this.categoryId],
       title: ['', [Validators.required]],
       tag: ['', [Validators.required]],
       description: ['', [Validators.required]],
       visibility: [false, [Validators.required]],
       publishDate: ['', [Validators.required]],
       // productCount: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
-      maximumDiscount: [
-        '',
-        [Validators.required, Validators.pattern('^[0-9]+$')],
-      ],
+      maximumDiscount: ['', [Validators.pattern('^[0-9]+$')]],
       featuredCategory: [false],
 
       subCategory: [[]],
+    });
+
+    this.subCategoryForm = this.fb.group({
+      parentId: [''],
+      _id: [''],
+      image: [''],
+      title: [''],
+      tag: [''],
+      description: [''],
+      featuredCategory: [false],
     });
   }
 
@@ -132,13 +146,35 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
 
     const sub = this.service
       .createCategory(this.categoryForm.value)
-      .subscribe((data) => {
+      .subscribe(({ data }) => {
         this.messageService.add({
           severity: 'success',
           summary: 'Category has been Created',
         });
 
-        this.patchData(data);
+        this.categoryForm.patchValue({
+          _id: data._id || '',
+          image: data.image || '',
+          title: data.title || '',
+          tag: data.tag || '',
+          description: data.description || '',
+          visibility: data.visibility || false,
+          publishDate: data.publishDate
+            ? new Date(data.publishDate).toISOString().split('T')[0]
+            : '',
+          maximumDiscount: data.maximumDiscount || '',
+          featuredCategory: data.featuredCategory || false,
+          subCategory: data.subCategory || [],
+        });
+
+        const subCategoryValue = this.categoryForm.get('subCategory')?.value;
+
+        if (subCategoryValue && subCategoryValue.length > 0) {
+          // If subCategory is not empty, assign it to another variable
+          this.tree = subCategoryValue;
+        } else {
+          this.tree = []; // Assign empty array if subCategory is empty
+        }
       });
 
     this.subscriptions.add(sub);
@@ -221,13 +257,35 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
 
     const sub = this.service
       .createCategory(this.categoryForm.value)
-      .subscribe((data) => {
+      .subscribe(({ data }) => {
         this.messageService.add({
           severity: 'success',
           summary: 'Category has been Created',
         });
 
-        this.patchData(data);
+        this.categoryForm.patchValue({
+          _id: data._id || '',
+          image: data.image || '',
+          title: data.title || '',
+          tag: data.tag || '',
+          description: data.description || '',
+          visibility: data.visibility || false,
+          publishDate: data.publishDate
+            ? new Date(data.publishDate).toISOString().split('T')[0]
+            : '',
+          maximumDiscount: data.maximumDiscount || '',
+          featuredCategory: data.featuredCategory || false,
+          subCategory: data.subCategory || [],
+        });
+
+        const subCategoryValue = this.categoryForm.get('subCategory')?.value;
+
+        if (subCategoryValue && subCategoryValue.length > 0) {
+          // If subCategory is not empty, assign it to another variable
+          this.tree = subCategoryValue;
+        } else {
+          this.tree = []; // Assign empty array if subCategory is empty
+        }
       });
 
     this.subscriptions.add(sub);
@@ -244,12 +302,21 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
   }
 
   patchData(data: any) {
-    this.categoryForm.patchValue(data);
+    console.log(this.categoryForm.value, data);
 
-    const publishDate = new Date('2024-01-01T00:00:00.000Z'); // Example date
-    const formattedDate = this.formatDate(publishDate);
     this.categoryForm.patchValue({
-      publishDate: formattedDate,
+      _id: data._id || '',
+      image: data.image || '',
+      title: data.title || '',
+      tag: data.tag || '',
+      description: data.description || '',
+      visibility: data.visibility || false,
+      publishDate: data.publishDate
+        ? new Date(data.publishDate).toISOString().split('T')[0]
+        : '',
+      maximumDiscount: data.maximumDiscount || '',
+      featuredCategory: data.featuredCategory || false,
+      subCategory: data.subCategory || [],
     });
 
     const subCategoryValue = this.categoryForm.get('subCategory')?.value;
@@ -260,6 +327,68 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
     } else {
       this.tree = []; // Assign empty array if subCategory is empty
     }
+  }
+
+  handleSubCategory(node: any) {
+    // Save the current node data into the variable
+    this.savedNodeData = { ...node };
+
+    this.subCategoryForm.patchValue({
+      parentId: this.categoryForm.get('_id')?.value,
+      _id: this.savedNodeData._id,
+      title: this.savedNodeData.title,
+      tag: this.savedNodeData.tag,
+      description: this.savedNodeData.description,
+      featuredCategory: this.savedNodeData.featuredCategory,
+      image: this.savedNodeData.image,
+    });
+
+    this.subCategory = true;
+  }
+
+  onImageCategorySelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+
+    if (input.files && input.files[0]) {
+      const file = input.files[0];
+
+      const formData = new FormData();
+
+      const imageFile: any = file; // Assuming `selectedFile` holds the image file selected by the user
+      if (imageFile) {
+        formData.append('image', imageFile, imageFile.name); // 'image' is the field name for multer
+      }
+
+      const sub = this.imageService
+        .imageUplaod(formData)
+        .subscribe(({ url }) => {
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Image uploaded successfully',
+          });
+
+          this.subCategoryForm.patchValue({
+            image: url,
+          });
+        });
+    }
+  }
+
+  onSubmitTwo() {
+    if (this.subCategoryForm.invalid) {
+      return;
+    }
+
+    const sub = this.service
+      .updateSubCategory(this.subCategoryForm.value)
+      .subscribe(({ message }) => {
+        this.messageService.add({
+          severity: 'success',
+          summary: message,
+        });
+      });
+
+    this.subscriptions.add(sub);
   }
 
   ngOnDestroy() {

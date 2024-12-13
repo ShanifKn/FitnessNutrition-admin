@@ -45,7 +45,7 @@ export class CategoryListComponent implements OnInit, OnDestroy {
     // Use forkJoin to combine the two API calls
     this.subscriptions.add(
       forkJoin({
-        nonFeatured: this.services.getNonFeaturedCategory(),
+        nonFeatured: this.services.getData(),
         featured: this.services.getFeaturedCategory(),
       }).subscribe({
         next: ({ nonFeatured, featured }) => {

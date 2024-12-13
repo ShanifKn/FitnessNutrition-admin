@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:FitnessNutrition-admin": "node dist/fitness-nutrition-admin/server/server.mjs"
+    "serve:ssr": "node dist/fitness-nutrition-admin/server/server.mjs"
   },
   "private": true,
   "dependencies": {

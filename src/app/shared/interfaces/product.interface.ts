@@ -4,7 +4,6 @@ export interface Products {
   actual_available_stock: number;
   name: string;
   rate: number;
-  image: string[]; // Array of image URLs or paths
 
   // Optional properties
   __v?: number;
@@ -50,4 +49,19 @@ export interface Products {
   updatedAt?: string; //
   zcrm_product_id?: string | null;
   additionalDescription?: string;
+  chips?: string;
+  visibility?: string;
+  productCount?: number;
+  productPrice?: number;
+  images?: [string, string];
+  maxDiscount?: number;
+  parentCategory?: string;
+  subCategory?: string;
+  category?: string;
+  analytics?: [string];
+  paymentMethods?: [string];
+  publishDate?: string;
+  variants?: [string, string];
+  additionals?: [string];
+  rating?: string;
 }

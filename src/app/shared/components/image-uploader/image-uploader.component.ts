@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewChildren, QueryList, ElementRef } from '@angular/core';
+import {
+  Component,
+  ViewChildren,
+  QueryList,
+  ElementRef,
+  Input,
+} from '@angular/core';
 
 @Component({
   selector: 'app-image-uploader',
@@ -8,9 +14,8 @@ import { Component, ViewChildren, QueryList, ElementRef } from '@angular/core';
   templateUrl: './image-uploader.component.html',
   styleUrl: './image-uploader.component.scss',
 })
-export class ImageUploaderComponent {
-  mainImage: string | null = null; // Main image URL
-  additionalImages: (string | null)[] = [null, null, null]; // Additional images URLs
+export class ImageUploadComponent {
+  @Input() images: (string | null)[] = []; // Receive the images array from parent
 
   @ViewChildren('imageInput') imageInputs!: QueryList<
     ElementRef<HTMLInputElement>
@@ -21,34 +26,29 @@ export class ImageUploaderComponent {
     input.click();
   }
 
-  // Upload main image
-  uploadMainImage(event: Event) {
+  // Upload the main image (image[0])
+  uploadMainImage(event: Event): void {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-        this.mainImage = reader.result as string;
+        this.images[0] = reader.result as string; // Update main image in the array
       };
       reader.readAsDataURL(file);
     }
   }
 
-  // Trigger file input
-  triggerUpload(index: number): void {
-    const input = this.imageInputs.toArray()[index];
-    if (input) {
-      input.nativeElement.click();
-    }
+  // Trigger file input for additional images
+  triggerUpload(input: HTMLInputElement): void {
+    input.click();
   }
-  // Upload additional images
-
-  // Upload image and set it in the corresponding slot
+  // Upload additional images (images[1] to images[n])
   uploadAdditionalImage(event: Event, index: number): void {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-        this.additionalImages[index] = reader.result as string; // Update the corresponding image
+        this.images[index] = reader.result as string; // Update the image in the corresponding slot
       };
       reader.readAsDataURL(file);
     }
@@ -56,6 +56,6 @@ export class ImageUploaderComponent {
 
   // Remove image
   removeImage(index: number): void {
-    this.additionalImages[index] = null; // Reset the corresponding image slot
+    this.images[index] = null; // Clear the image slot in the array
   }
 }

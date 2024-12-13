@@ -8,6 +8,7 @@ const routes = {
   getProducts: '/get-products',
   getPendingProducts: '/get-pending',
   getDetails: (id: string) => `/product/${id}`,
+  updatedProduct: '/updateProduct',
 };
 
 @Injectable()
@@ -30,5 +31,12 @@ export class ProductService {
 
   getDetails(_id: string): Observable<{ data: Products }> {
     return this.httpClient.get<{ data: Products }>(routes.getDetails(_id));
+  }
+
+  updatePrdouct(data: any): Observable<{ data: Products }> {
+    return this.httpClient.post<{ data: Products }>(
+      routes.updatedProduct,
+      data
+    );
   }
 }

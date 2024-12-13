@@ -105,10 +105,7 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
       visibility: [false, [Validators.required]],
       publishDate: ['', [Validators.required]],
       // productCount: ['', [Validators.required, Validators.pattern('^[0-9]+$')]],
-      maximumDiscount: [
-        '',
-        [Validators.required, Validators.pattern('^[0-9]+$')],
-      ],
+      maximumDiscount: ['', [Validators.pattern('^[0-9]+$')]],
       featuredCategory: [false],
 
       subCategory: [[]],
@@ -245,11 +242,10 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
 
   patchData(data: any) {
     this.categoryForm.patchValue(data);
+    console.log(data);
 
-    const publishDate = new Date('2024-01-01T00:00:00.000Z'); // Example date
-    const formattedDate = this.formatDate(publishDate);
     this.categoryForm.patchValue({
-      publishDate: formattedDate,
+      publishDate: data.publishDate ? new Date(data.publishDate).toISOString().split('T')[0]: '',
     });
 
     const subCategoryValue = this.categoryForm.get('subCategory')?.value;

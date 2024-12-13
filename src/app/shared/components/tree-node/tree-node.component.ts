@@ -18,6 +18,7 @@ interface TreeNode {
 })
 export class TreeNodeComponent {
   @Input() node!: TreeNode;
+  @Output() saveNode = new EventEmitter<any>();
   @Output() addChild = new EventEmitter<{
     parentNode: TreeNode;
     childName: string;
@@ -64,6 +65,12 @@ export class TreeNodeComponent {
     if (index !== -1) {
       this.node.subCategory.splice(index, 1); // Remove the child node from the subCategory array
     }
+  }
+
+  saveParentNode() {
+    this.saveNode.emit(this.node); // Emit updated node to the parent
+
+    this.isEditing = false; // Exit edit mode
   }
 
   allData: any[] = [];

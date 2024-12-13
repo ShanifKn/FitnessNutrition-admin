@@ -27,6 +27,10 @@ export class CategoryService {
     );
   }
 
+  updateSubCategory(data: any): Observable<{ message: any }> {
+    return this.httpClient.patch<{ message: any }>(routes.createCategory, data);
+  }
+
   getData(): Observable<{ data: CategoryData[] }> {
     return this.httpClient.get<{ data: CategoryData[] }>(routes.getCategory);
   }
@@ -44,6 +48,8 @@ export class CategoryService {
   }
 
   deleteCategory(_id: string): Observable<{ message: string }> {
-    return this.httpClient.delete<{ message: string }>(routes.deleteCategory(_id));
+    return this.httpClient.delete<{ message: string }>(
+      routes.deleteCategory(_id)
+    );
   }
 }

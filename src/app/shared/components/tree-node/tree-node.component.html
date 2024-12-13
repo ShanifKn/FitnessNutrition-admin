@@ -5,7 +5,8 @@
   </button>
 
   <!-- Checkbox -->
-  <input type="checkbox" [(ngModel)]="node.selected" class="mr-2" />
+  <input type="checkbox" [(ngModel)]="node.selected"
+    class="ml-10 border border-red-500" />
 
   <!-- delete button -->
 
@@ -23,20 +24,26 @@
       class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 ml-2">
       Save
     </button>
-
   </ng-template>
 
   <!-- Add Child Button -->
-  <button *ngIf="node.level < 2" class="text-green-500 hover:text-green-700 text-lg"
-    (click)="showAddChildInput = !showAddChildInput">
-    +
-  </button>
+  <div class="flex gap-5 items-center mr-4" *ngIf="node.level < 2">
+    <button class="text-green-500 hover:text-green-700 text-2xl"
+      (click)="showAddChildInput = !showAddChildInput">
+      +
+    </button>
+
+    <button (click)="saveParentNode()"
+      class="mt-2 px-4 py-1 text-base font-semibold text-white bg-purple-500 rounded-lg hover:bg-purple-600">
+      view
+    </button>
+  </div>
 </div>
 
 <!-- Input to Add Child -->
 <div *ngIf="showAddChildInput" class="ml-6 mt-2">
   <input [(ngModel)]="newChildName"
-    class="border p-1 rounded focus:outline-blue-500 text-black"
+    class="border p-1 rounded focus:outline-blue-500 text-black ml-16 mt-3"
     placeholder="New Item..." />
   <button (click)="addChilds()"
     class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 ml-2">
@@ -46,7 +53,7 @@
 
 <!-- Recursive Rendering of Children -->
 <ul *ngIf="isExpanded" class="pl-6 mt-4 space-y-3">
-  <li *ngFor="let child of node.subCategory" class="space-y-4">
+  <li *ngFor="let child of node.subCategory" class="space-y-4 ml-16">
     <app-tree-node [node]="child" (addChild)="addChild.emit($event)"></app-tree-node>
   </li>
 </ul>

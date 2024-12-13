@@ -19,14 +19,15 @@
         <span class="pi pi-search"></span>
         <input
           type="text"
-          placeholder="Search Orders"
+          placeholder="Search Product by name"
+          [(ngModel)]="searchText"
           class="ml-3 w-full focus:outline-none text-gray-700"
         />
       </div>
     </div>
 
     <p-table
-      [value]="products"
+      [value]="products | search: searchText : 'name'"
       [rowsPerPageOptions]="[5, 10, 20]"
       [rows]="10"
       [paginator]="true"
@@ -81,11 +82,11 @@
           <td class="w-56 text-black cursor-pointer flex justify-center">
             {{ rowIndex + 1 }}
           </td>
-          <td class="w-full flex line-clamp-2 items-center">
+          <td class="w-full flex line-clamp-2 items-center gap-2">
             <img
               src="{{ product.images[0] }}"
               alt="{{ product.name }}"
-              class="w-16 h-16 mr-2 rounded line-clamp-2"
+              class="w-12 h-12 mr-2 rounded-full line-clamp-2"
             />{{ product.name }}
           </td>
 

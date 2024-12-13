@@ -33,6 +33,7 @@
             <app-tree-node
               [node]="node"
               (addChild)="addChildToNode($event)"
+              (saveNode)="handleSubCategory($event)"
             ></app-tree-node>
           </li>
         </ul>
@@ -41,7 +42,11 @@
   </div>
 
   <div class="bg-white px-5 py-5">
-    <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+    <form
+      [formGroup]="categoryForm"
+      (ngSubmit)="onSubmit()"
+      *ngIf="!subCategory"
+    >
       <div class="grid justify-center">
         <div class="relative w-32 h-32 border rounded-lg overflow-hidden">
           <!-- Display uploaded image or placeholder -->
@@ -81,6 +86,19 @@
         >
           Change Image
         </button>
+
+        <!-- Error Message -->
+        <div
+          *ngIf="
+            categoryForm.get('image')?.invalid &&
+            categoryForm.get('image')?.touched
+          "
+          class="text-red-500 text-sm"
+        >
+          <div *ngIf="categoryForm.get('image')?.errors?.['required']">
+            Image is required.
+          </div>
+        </div>
       </div>
 
       <div class="bg-white px-5 py-5">
@@ -169,7 +187,7 @@
                 class="inline-flex items-center px-4 py-[10px] text-sm font-medium rounded-md"
               >
                 <label for="hidden" class="flex items-center cursor-pointer">
-                  <span class="pr-2 text-base font-medium">Hidden</span>
+                  <span class="pr-2 text-base font-medium">Published</span>
                   <input
                     id="hidden"
                     type="radio"
@@ -189,7 +207,7 @@
                 class="inline-flex items-center px-4 py-[10px] text-sm font-medium rounded-md"
               >
                 <label for="published" class="flex items-center cursor-pointer">
-                  <span class="pr-2 text-base font-medium">Published</span>
+                  <span class="pr-2 text-base font-medium">Hidden</span>
                   <input
                     id="published"
                     type="radio"
@@ -265,7 +283,7 @@
           <!-- Maximum Discount Input -->
           <div>
             <h1 class="text-black text-lg pb-3 font-medium">
-              Maximum Discount
+              Maximum Discount %
             </h1>
             <!-- <input
                   type="text"
@@ -275,7 +293,7 @@
             <p-inputNumber
               formControlName="maximumDiscount"
               inputId="percent"
-              prefix="%"
+              prefix=""
               class="bg-[#F6F7F9] h-12 w-full focus:outline-none rounded-lg placeholder:text-gray-500 border border-gray-200"
               formControlName="maximumDiscount"
               placeholder="Discount"
@@ -327,7 +345,6 @@
               class="border border-[#854D94] text-[#854D94] font-bold px-4 py-2 rounded-lg"
               type="button"
               pButton
-              (click)="categoryForm.reset()"
             >
               Cancel
             </button>
@@ -336,6 +353,163 @@
               type="submit"
               pButton
               [disabled]="categoryForm.invalid"
+            >
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <form
+      [formGroup]="subCategoryForm"
+      (ngSubmit)="onSubmitTwo()"
+      *ngIf="subCategory"
+    >
+      <div class="grid justify-center">
+        <div class="relative w-32 h-32 border rounded-lg overflow-hidden">
+          <!-- Display uploaded image or placeholder -->
+          <img
+            [src]="
+              subCategoryForm.get('image')?.value ||
+              'https://via.placeholder.com/550x240'
+            "
+            alt="Main Image"
+            class="w-full h-full object-cover"
+          />
+          <!-- Show "No Image" text when no image is uploaded -->
+          <div
+            *ngIf="!categoryImage"
+            class="flex items-center justify-center w-full h-full text-gray-400"
+          >
+            No Image
+          </div>
+        </div>
+
+        <!-- Hidden file input -->
+        <input
+          type="file"
+          accept="image/*"
+          id="imageInput"
+          class="hidden"
+          (change)="onImageCategorySelected($event)"
+        />
+
+        <!-- Trigger the file input on button click -->
+        <button
+          (click)="triggerFileInput()"
+          type="button"
+          pButton
+          icon="pi pi-camera"
+          class="mt-2 px-4 py-1 text-sm font-semibold text-white bg-purple-500 rounded-lg hover:bg-purple-600"
+        >
+          Change Image
+        </button>
+      </div>
+
+      <div class="bg-white px-5 py-5">
+        <div class="grid gap-4 mt-5">
+          <!-- Title Input -->
+          <div>
+            <h1 class="text-black text-lg pb-3 font-medium">Title</h1>
+            <input
+              type="text"
+              class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
+              formControlName="title"
+              placeholder="Category Name"
+            />
+            <!-- Error Message -->
+            <div
+              *ngIf="
+                subCategoryForm.get('title')?.invalid &&
+                subCategoryForm.get('title')?.touched
+              "
+              class="text-red-500 text-sm"
+            >
+              <div *ngIf="subCategoryForm.get('title')?.errors?.['required']">
+                Title is required.
+              </div>
+            </div>
+          </div>
+
+          <!-- Tag Input -->
+          <div>
+            <h1 class="text-black text-lg pb-3 font-medium">Tag</h1>
+            <input
+              type="text"
+              class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
+              formControlName="tag"
+              placeholder="Category Tag"
+            />
+            <!-- Error Message -->
+            <div
+              *ngIf="
+                subCategoryForm.get('tag')?.invalid &&
+                subCategoryForm.get('tag')?.touched
+              "
+              class="text-red-500 text-sm"
+            >
+              <div *ngIf="subCategoryForm.get('tag')?.errors?.['required']">
+                Tag is required.
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <h1 class="text-black text-lg pb-3 font-medium">Description</h1>
+            <textarea
+              rows="4"
+              cols="30"
+              class="bg-[#F6F7F9] w-full pl-3 pt-2 rounded-lg placeholder:text-gray-500 border border-gray-200"
+              formControlName="description"
+              placeholder="Description"
+            ></textarea>
+            <!-- Error Message -->
+            <div
+              *ngIf="
+                subCategoryForm.get('description')?.invalid &&
+                subCategoryForm.get('description')?.touched
+              "
+              class="text-red-500 text-sm"
+            >
+              <div
+                *ngIf="subCategoryForm.get('description')?.errors?.['required']"
+              >
+                Description is required.
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-5">
+            <label for="featured" class="flex items-center cursor-pointer pb-3">
+              <input
+                id="featured"
+                type="checkbox"
+                formControlName="featuredCategory"
+                [value]="true"
+                class="h-5 w-5 border-2 border-gray-300 rounded-full checked:bg-[#854D94] checked:border-2"
+              />
+              <span class="pl-3 text-lg font-medium text-black"
+                >Add to Featured Category</span
+              >
+            </label>
+          </div>
+
+          <!-- Submit Buttons -->
+          <div class="flex justify-end space-x-3 w-full mt-5">
+            <button
+              class="border border-[#854D94] text-[#854D94] font-bold px-4 py-2 rounded-lg"
+              type="button"
+              pButton
+              (click)="subCategory = false"
+            >
+              Cancel
+            </button>
+            <button
+              class="bg-[#854D94] text-white font-bold px-4 py-2 rounded-lg"
+              type="submit"
+              pButton
+              [disabled]="subCategoryForm.invalid"
             >
               Save
             </button>

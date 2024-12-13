@@ -8,6 +8,8 @@ import { forkJoin, Subscription } from 'rxjs';
 import { ProductService } from '../product.service';
 import { PendingListComponent } from '../pending-list/pending-list.component';
 import { Products } from '../../../../../shared/interfaces/product.interface';
+import { SearchPipe } from '../../../../../shared/pipes/search.pipe';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-product-list',
@@ -19,6 +21,8 @@ import { Products } from '../../../../../shared/interfaces/product.interface';
     SidebarModule,
     ButtonModule,
     PendingListComponent,
+    SearchPipe,
+    FormsModule,
   ],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss',
@@ -28,6 +32,7 @@ export class ProductListComponent implements OnDestroy {
   pendingNumber: string = '0';
   sidebarVisible: boolean = false;
   products: Products[] = [];
+  searchText: string = '';
 
   private subscriptions = new Subscription();
 
@@ -45,7 +50,6 @@ export class ProductListComponent implements OnDestroy {
       }).subscribe(({ pendingCount, products }) => {
         this.pendingNumber = pendingCount.data;
         this.products = products.data;
-
       })
     );
   }

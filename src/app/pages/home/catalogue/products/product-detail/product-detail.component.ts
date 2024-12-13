@@ -113,30 +113,27 @@ export class ProductDetailComponent implements OnDestroy {
   buildForms() {
     this.productForm = this.fb.group({
       _id: ['', Validators.required],
-      images: this.fb.array([null, null, null, null]),
+      images: this.fb.array([null, null, null, null], Validators.required),
       name: ['', Validators.required],
       description: ['', Validators.required],
       additionalDescription: ['', Validators.required],
       purchase_account_name: ['', Validators.required],
-      available_stock: ['', [Validators.required]],
-      actual_available_stock: ['', [Validators.required]],
+      available_stock: [0, [Validators.required]],
+      actual_available_stock: [0, [Validators.required]],
       chips: this.fb.array([]),
       status: ['', Validators.required],
-      stock_on_hand: ['', [Validators.required]],
+      stock_on_hand: [0, [Validators.required]],
       rate: [
-        '',
+        0,
         [Validators.required, Validators.pattern('^[0-9]+(\\.[0-9]{1,2})?$')],
       ],
       purchase_rate: [
-        '',
+        0,
         [Validators.required, Validators.pattern('^[0-9]+(\\.[0-9]{1,2})?$')],
       ],
-      maxDiscount: [
-        '',
-        [Validators.required, Validators.pattern('^[0-9]+(\\.[0-9]{1,2})?$')],
-      ],
+      maxDiscount: [0],
       parentCategory: ['', Validators.required],
-      category: [''],
+      category: ['', Validators.required],
       subCategory: [''],
       analytics: [[]],
       paymentMethods: [[], Validators.required],
@@ -161,7 +158,7 @@ export class ProductDetailComponent implements OnDestroy {
             severity: 'success',
             summary: message,
           });
-          this.router.navigate(['/desired-route']);
+          this.router.navigate(['/catalogue/products']);
         })
     );
   }
@@ -181,15 +178,20 @@ export class ProductDetailComponent implements OnDestroy {
       this.service.getDetails(_id).subscribe(({ data }) => {
         this.product = data;
 
-        if (this.product.parentCategory) {
+        const parentCategory = this.product.parentCategory || [];
+
+        if (parentCategory.length > 0) {
           // Find the parent category by its _id
           this.selectedParentCategory = this.categories.find(
             (cat) => cat._id === this.product.parentCategory
           );
 
+          console.log(this.selectedParentCategory);
+
           // Filter categories based on parent category
           this.filteredCategories =
             this.selectedParentCategory.subCategory || [];
+
           this.selectedCategory = this.filteredCategories.find(
             (cat: any) => cat._id === this.product.category
           );
@@ -327,12 +329,9 @@ export class ProductDetailComponent implements OnDestroy {
   addVariant() {
     this.variant.push(
       this.fb.group({
-        variant: ['', Validators.required],
-        size: ['', Validators.required],
-        availableStock: [
-          '',
-          [Validators.required, Validators.pattern('^[0-9]*$')],
-        ],
+        variant: [''],
+        size: [''],
+        availableStock: [''],
       })
     );
   }

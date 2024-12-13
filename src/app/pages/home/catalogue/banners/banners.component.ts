@@ -104,10 +104,10 @@ export class BannersComponent implements OnInit, OnDestroy {
       expDate: ['', [Validators.required]],
       bannerType: ['', [Validators.required]],
       visibility: [true, [Validators.required]],
-      category: ['', [Validators.required]],
-      subCategory: [],
+      category: [''],
+      subCategory: [''],
       product: [''],
-      image: [null],
+      image: [null, [Validators.required]],
     });
   }
 
@@ -204,7 +204,6 @@ export class BannersComponent implements OnInit, OnDestroy {
     if (imageFile) {
       formData.append('image', imageFile, imageFile.name); // 'image' is the field name for multer
     }
-
 
     const sub = this.imageService.imageUplaod(formData).subscribe(({ url }) => {
       this.messageService.add({

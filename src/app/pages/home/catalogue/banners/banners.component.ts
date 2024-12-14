@@ -105,7 +105,7 @@ export class BannersComponent implements OnInit, OnDestroy {
       bannerType: ['', [Validators.required]],
       visibility: [true, [Validators.required]],
       category: [''],
-      subCategory: [''],
+      subCategory: [[]],
       product: [''],
       image: [null, [Validators.required]],
     });

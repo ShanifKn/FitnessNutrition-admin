@@ -17,3 +17,16 @@
   margin-left: 5px;
   color: white;
 }
+
+::ng-deep .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link {
+  color: black;
+  background-color: rgb(171, 171, 171);
+}
+
+::ng-deep
+  .p-tabview
+  .p-tabview-nav
+  li:not(.p-highlight):not(.p-disabled)
+  .p-tabview-nav-link {
+  color: gray;
+}

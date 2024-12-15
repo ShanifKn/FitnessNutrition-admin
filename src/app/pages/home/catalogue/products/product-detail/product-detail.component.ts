@@ -4,7 +4,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { TableModule } from 'primeng/table';
 import { DropdownModule } from 'primeng/dropdown';
 import { EditorModule } from 'primeng/editor';
-import { Subscription } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../product.service';
 import { Products } from '../../../../../shared/interfaces/product.interface';
@@ -56,7 +56,7 @@ export class ProductDetailComponent implements OnDestroy {
   @ViewChild('chipInput') chipInputRef: ElementRef | undefined;
 
   productId: string | null = null;
-  product!: Products;
+  product: Partial<Products> = {};
   productForm!: FormGroup;
 
   private subscriptions = new Subscription();
@@ -87,10 +87,8 @@ export class ProductDetailComponent implements OnDestroy {
   ) {
     this.productId = this.route.snapshot.paramMap.get('id');
 
-    this.getCategoryData();
-
     if (this.productId) {
-      this.getData(this.productId);
+      this.getDataWithCategories(this.productId);
     }
 
     this.buildForms();
@@ -173,102 +171,111 @@ export class ProductDetailComponent implements OnDestroy {
 
   ///---------------------------------------------------------   Get data  -----------------------------------------------------//
 
-  getData(_id: string) {
+  getDataWithCategories(_id: string) {
+    const categoryRequest = this.categoryService.getData();
+    const productRequest = this.service.getDetails(_id);
+
     this.subscriptions.add(
-      this.service.getDetails(_id).subscribe(({ data }) => {
-        this.product = data;
+      forkJoin([categoryRequest, productRequest]).subscribe(
+        ([categoryResponse, productResponse]) => {
+          // Handle category data
+          this.categories = categoryResponse.data;
+          this.filteredCategories = categoryResponse.data;
 
-        const parentCategory = this.product.parentCategory || [];
+          // Handle product data
+          this.product = productResponse.data;
 
-        if (parentCategory.length > 0) {
-          // Find the parent category by its _id
-          this.selectedParentCategory = this.categories.find(
-            (cat) => cat._id === this.product.parentCategory
-          );
+          const parentCategory = this.product.parentCategory || [];
 
-          console.log(this.selectedParentCategory);
+          if (parentCategory.length > 0) {
+            this.selectedParentCategory = this.categories.find(
+              (cat) => cat._id === this.product.parentCategory
+            );
 
-          // Filter categories based on parent category
-          this.filteredCategories =
-            this.selectedParentCategory.subCategory || [];
+            if (this.selectedParentCategory) {
+              this.filteredCategories =
+                this.selectedParentCategory.subCategory || [];
 
-          this.selectedCategory = this.filteredCategories.find(
-            (cat: any) => cat._id === this.product.category
-          );
+              this.selectedCategory = this.filteredCategories.find(
+                (cat: any) => cat._id === this.product.category
+              );
 
-          // Filter subcategories based on selected category
-          this.filteredSubCategories = this.selectedCategory?.subCategory || [];
-          this.selectedSubCategory = this.filteredSubCategories.find(
-            (cat: any) => cat._id === this.product.subCategory
-          );
+              this.filteredSubCategories =
+                this.selectedCategory?.subCategory || [];
+
+              this.selectedSubCategory = this.filteredSubCategories.find(
+                (cat: any) => cat._id === this.product.subCategory
+              );
+            }
+          }
+
+          this.productForm.patchValue({
+            _id: this.productId,
+            images: this.product.images || [null, null, null, null],
+            name: this.product.name || '',
+            description: this.product.description || '',
+            additionalDescription: this.product.additionalDescription || '',
+            purchase_account_name: this.product.purchase_account_name || '',
+            available_stock: this.product.available_stock || '',
+            actual_available_stock: this.product.actual_available_stock || '',
+            chips: this.product.chips || [],
+            status: this.product.visibility || 'active',
+            stock_on_hand: this.product.stock_on_hand || '',
+            rate: this.product.rate || '',
+            purchase_rate: this.product.purchase_rate || '',
+            maxDiscount: this.product.maxDiscount || '',
+            parentCategory: this.product.parentCategory || '',
+            category: this.product.category || '',
+            subCategory: this.product.subCategory || '',
+            analytics: this.product.analytics || [],
+            paymentMethods: this.product.paymentMethods || [],
+            rating: this.product.rating || 1,
+            publishDate: this.product.publishDate
+              ? new Date(this.product.publishDate).toISOString().split('T')[0]
+              : '',
+          });
+
+          const variants = this.product?.variants || [];
+          const additional = this.product.additionals || [];
+
+          this.patchChips(this.product.chips || []);
+
+          if (variants.length > 0) {
+            this.patchVariants(this.product.variants ?? []);
+          } else {
+            this.addVariant();
+          }
+
+          if (additional.length > 0) {
+            this.patchAddition(this.product.additionals ?? []);
+          } else {
+            this.addAdditional();
+          }
+        },
+        (error) => {
+          console.error('Error fetching data:', error);
         }
-        // Patch the form with the response data
-        this.productForm.patchValue({
-          _id: this.productId,
-          images: this.product.images || [null, null, null, null],
-          name: this.product.name || '',
-          description: this.product.description || '',
-          additionalDescription: this.product.additionalDescription || '',
-          purchase_account_name: this.product.purchase_account_name || '',
-          available_stock: this.product.available_stock || '',
-          actual_available_stock: this.product.actual_available_stock || '',
-          chips: this.product.chips || [],
-          status: this.product.visibility || 'active',
-          stock_on_hand: this.product.stock_on_hand || '',
-          rate: this.product.rate || '',
-          purchase_rate: this.product.purchase_rate || '',
-          maxDiscount: this.product.maxDiscount || '',
-          parentCategory: this.product.parentCategory || '',
-          category: this.product.category || '',
-          subCategory: this.product.subCategory || '',
-          analytics: this.product.analytics || [],
-          paymentMethods: this.product.paymentMethods || [],
-          rating: this.product.rating || 1,
-          publishDate: this.product.publishDate
-            ? new Date(this.product.publishDate).toISOString().split('T')[0]
-            : '',
-        });
-
-        const variants = this.product?.variants || [];
-        const additional = this.product.additionals || [];
-
-        this.patchChips(this.product.chips || []);
-
-        if (variants.length > 0) {
-          this.patchVariants(this.product.variants ?? []);
-        } else {
-          this.addVariant();
-        }
-
-        if (additional.length > 0) {
-          this.patchAddition(this.product.additionals ?? []);
-        } else {
-          this.addAdditional();
-        }
-      })
+      )
     );
   }
 
   ///---------------------------------------------------------    category section  -----------------------------------------------------//
 
-  getCategoryData() {
-    this.subscriptions.add(
-      this.categoryService.getData().subscribe(({ data }) => {
-        this.categories = data;
-        this.filteredCategories = data;
-      })
-    );
-  }
-
   // Triggered when a parent category is selected// Triggered when a parent category is selected
   onParentCategoryChange() {
+    if (!this.selectedParentCategory) {
+      this.filteredCategories = [];
+      return;
+    }
+
+    console.log(this.selectedParentCategory);
+
     const selectedCategory = this.categories.find(
       (item) => item._id === this.selectedParentCategory
     );
 
     // Filter the categories based on the selected parent category
     this.filteredCategories = selectedCategory?.subCategory || [];
-
     this.selectedCategory = null; // Reset selected category
     this.selectedSubCategory = null; // Reset selected subcategory
   }

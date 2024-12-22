@@ -1,0 +1,86 @@
+<form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+  <div
+    class="flex flex-col gap-6"
+    formArrayName="products"
+    *ngFor="let productGroup of products.controls; let i = index"
+  >
+    <div [formGroupName]="i" class="flex justify-between gap-4 my-2 items-end">
+      <div class="grid w-full">
+        <h1 class="text-black text-lg pb-3 font-medium">Product</h1>
+        <p-dropdown
+          [options]="productOptions"
+          formControlName="product_id"
+          optionLabel="name"
+          [filter]="true"
+          filterBy="name"
+          [showClear]="true"
+          appendTo="body"
+          class="bg-[#F6F7F9] w-full"
+          styleClass="w-full bg-[#F6F7F9] pl-3 pt-2 h-14 rounded-lg placeholder:text-gray-500 border border-gray-200"
+          placeholder="Select a product"
+          optionValue="_id"
+        >
+          <ng-template pTemplate="selectedItem" let-selectedOption>
+            <div class="flex align-items-center gap-2">
+              <div>{{ selectedOption.name }}</div>
+            </div>
+          </ng-template>
+          <ng-template let-product pTemplate="item">
+            <div class="flex align-items-center gap-2">
+              <div>{{ product.name }}</div>
+            </div>
+          </ng-template>
+        </p-dropdown>
+      </div>
+
+      <div class="grid w-56">
+        <h1 class="text-black text-lg font-medium pb-4">Type</h1>
+        <p-dropdown
+          [options]="category"
+          formControlName="variantType"
+          optionLabel="name"
+          placeholder="Select a Variant Type"
+          class="bg-[#F6F7F9] w-full"
+          styleClass="w-full bg-[#F6F7F9] pl-3 pt-2 h-14 rounded-lg placeholder:text-gray-500 border border-gray-200"
+          appendTo="body"
+          optionValue="code"
+        >
+        </p-dropdown>
+      </div>
+
+      <div class="grid w-full">
+        <h1 class="text-black text-lg font-medium pb-4">Variants</h1>
+        <input
+          type="text"
+          class="bg-[#F6F7F9] h-14 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
+          formControlName="variants"
+          pInput
+          placeholder="Size / colour / flavour"
+        />
+      </div>
+
+
+      <p-button
+        icon="pi pi-trash"
+        severity="danger"
+        class="text-white bg-red-500 rounded-lg h-fit py-1 mb-3"
+        (click)="removeProduct(i)"
+      />
+    </div>
+  </div>
+
+  <div class="flex justify-between items-center mt-6">
+    <button
+      class="text-white bg-blue-500 rounded-lg px-5 py-2"
+      icon="pi pi-bookmark"
+      type="button"
+      (click)="addProduct()"
+    >
+      Add Product
+    </button>
+
+    <button class="text-white bg-green-500 rounded-lg px-5 py-2" type="submit">
+      Submit
+    </button>
+  </div>
+</form>

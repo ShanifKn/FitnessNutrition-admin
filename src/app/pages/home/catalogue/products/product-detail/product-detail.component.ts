@@ -7,7 +7,10 @@ import { EditorModule } from 'primeng/editor';
 import { forkJoin, Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../product.service';
-import { Products } from '../../../../../shared/interfaces/product.interface';
+import {
+  Products,
+  Variant,
+} from '../../../../../shared/interfaces/product.interface';
 import {
   FormArray,
   FormBuilder,
@@ -25,6 +28,17 @@ import { RatingModule } from 'primeng/rating';
 import { TabViewModule } from 'primeng/tabview';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
+import {
+  DialogService,
+  DynamicDialogModule,
+  DynamicDialogRef,
+} from 'primeng/dynamicdialog';
+import { VariantDialogComponentComponent } from '../variant-dialog-component/variant-dialog-component.component';
+import {
+  Analytics,
+  Dietary,
+  Payment,
+} from '../../../../../shared/data/static.data';
 
 interface City {
   name: string;
@@ -47,15 +61,16 @@ interface City {
     TabViewModule,
     FormsModule,
     ButtonModule,
+    DynamicDialogModule,
   ],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.scss',
-  providers: [ProductService],
+  providers: [ProductService, DialogService],
 })
 export class ProductDetailComponent implements OnDestroy {
   @ViewChild('chipInput') chipInputRef: ElementRef | undefined;
 
-  productId: string | null = null;
+  productId: string | null = '';
   product: Partial<Products> = {};
   productForm!: FormGroup;
 
@@ -68,12 +83,12 @@ export class ProductDetailComponent implements OnDestroy {
   selectedSubCategory: any = null;
   filteredCategories: any[] = [];
   filteredSubCategories: any[] = [];
+  ref: DynamicDialogRef | undefined;
 
-  cities!: City[];
   payment!: City[];
-  branchList!: any[];
   analytics!: any[];
-  variants!: any[];
+  variants: any[] = [];
+  dietary!: City[];
   text: string | undefined;
 
   constructor(
@@ -83,7 +98,8 @@ export class ProductDetailComponent implements OnDestroy {
     private categoryService: CategoryService,
     private router: Router,
     private messageService: MessageService,
-    public _location: Location
+    public _location: Location,
+    private dialogService: DialogService
   ) {
     this.productId = this.route.snapshot.paramMap.get('id');
 
@@ -93,17 +109,9 @@ export class ProductDetailComponent implements OnDestroy {
 
     this.buildForms();
 
-    this.payment = [
-      { name: 'Tabby', code: 'NY' },
-      { name: 'Tamara', code: 'RM' },
-      { name: 'Cash on delivery', code: 'LDN' },
-    ];
-
-    this.analytics = [
-      { name: 'Top sellers', code: 'NY' },
-      { name: 'Daily best sellers', code: 'RM' },
-      { name: 'Trending', code: 'LDN' },
-    ];
+    this.payment = Payment;
+    this.analytics = Analytics;
+    this.dietary = Dietary;
   }
 
   ///---------------------------------------------------------   form build -----------------------------------------------------//
@@ -139,6 +147,7 @@ export class ProductDetailComponent implements OnDestroy {
       variants: this.fb.array([]),
       additionals: this.fb.array([]),
       rating: [''],
+      dietary: [],
     });
   }
 
@@ -174,13 +183,18 @@ export class ProductDetailComponent implements OnDestroy {
   getDataWithCategories(_id: string) {
     const categoryRequest = this.categoryService.getData();
     const productRequest = this.service.getDetails(_id);
+    const productVariant = this.service.getVariantDetails(_id);
 
     this.subscriptions.add(
-      forkJoin([categoryRequest, productRequest]).subscribe(
-        ([categoryResponse, productResponse]) => {
+      forkJoin([categoryRequest, productRequest, productVariant]).subscribe(
+        ([categoryResponse, productResponse, productVariant]) => {
           // Handle category data
           this.categories = categoryResponse.data;
           this.filteredCategories = categoryResponse.data;
+
+          if (productVariant.data) {
+            this.variants = productVariant.data.products || [];
+          }
 
           // Handle product data
           this.product = productResponse.data;
@@ -233,6 +247,7 @@ export class ProductDetailComponent implements OnDestroy {
             publishDate: this.product.publishDate
               ? new Date(this.product.publishDate).toISOString().split('T')[0]
               : '',
+            dietary: this.product.dietary || [],
           });
 
           const variants = this.product?.variants || [];
@@ -267,8 +282,6 @@ export class ProductDetailComponent implements OnDestroy {
       this.filteredCategories = [];
       return;
     }
-
-    console.log(this.selectedParentCategory);
 
     const selectedCategory = this.categories.find(
       (item) => item._id === this.selectedParentCategory
@@ -393,8 +406,40 @@ export class ProductDetailComponent implements OnDestroy {
     this.productForm.patchValue({ images: updatedImages }); // Update the form control
   }
 
+  ///---------------------------------------------------------   dialgoue settings  -----------------------------------------------------//
+
+  showDialog() {
+    this.ref = this.dialogService.open(VariantDialogComponentComponent, {
+      header: 'Add Variant Product',
+      width: '70%',
+      contentStyle: { 'max-height': '500px', overflow: 'auto' },
+      baseZIndex: 10000,
+      data: this.productId,
+    });
+
+    this.ref.onClose.subscribe((result) => {
+      if (result?.success) {
+        this.getVariantType(this.productId);
+      } else {
+        return;
+      }
+    });
+  }
+
+  getVariantType(_id: any) {
+    this.subscriptions.add(
+      this.service.getVariantDetails(_id).subscribe(({ data }) => {
+        this.variants = data.products;
+      })
+    );
+  }
+
   ngOnDestroy() {
     // Unsubscribe from all subscriptions when the component is destroyed
     this.subscriptions.unsubscribe();
+
+    if (this.ref) {
+      this.ref.close();
+    }
   }
 }

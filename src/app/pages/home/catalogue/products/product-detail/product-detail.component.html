@@ -371,7 +371,12 @@
   </div>
 
   <div class="bg-white rounded-md drop-shadow-lg p-6 flex flex-col gap-6 mt-5">
-    <div class="grid">
+   
+   
+   <div class="flex gap-4 w-full">
+
+
+    <div class="grid w-full">
       <h1 class="text-black text-xl font-bold pb-4">Analytics</h1>
       <p-multiSelect
         [options]="analytics"
@@ -398,6 +403,36 @@
         </div>
       </div>
     </div>
+
+    <div class="grid w-full">
+      <h1 class="text-black text-xl font-bold pb-4">Dietary</h1>
+      <p-multiSelect
+        [options]="dietary"
+        placeholder="Select Dietary"
+        optionLabel="name"
+        display="chip"
+        class="bg-[#F6F7F9] w-full"
+        styleClass=" w-full bg-[#F6F7F9] pl-3 pt-2 h-14 rounded-lg placeholder:text-gray-500 border border-gray-200"
+        appendTo="body"
+        [showClear]="true"
+        formControlName="dietary"
+        optionValue="code"
+      />
+
+      <div
+        *ngIf="
+          productForm.get('analytics')?.invalid &&
+          productForm.get('analytics')?.touched
+        "
+        class="text-red-500 text-sm"
+      >
+        <div *ngIf="productForm.get('analytics')?.errors?.['required']">
+          Publish date is required.
+        </div>
+      </div>
+    </div>
+   </div>
+
 
     <div class="">
       <h1 class="text-black text-xl font-bold pb-4">Product Category</h1>
@@ -461,91 +496,27 @@
         </div>
       </div>
     </div>
-
-    <div class="hidden">
-      <div class="flex justify-between items-center">
-        <h1 class="text-black text-xl font-bold pb-4">Available Variants</h1>
-
-        <!-- Add New Variant Button -->
-        <button
-          (click)="addVariant()"
-          type="button"
-          class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-        >
-          Add Variant
-        </button>
-      </div>
-
-      <div formArrayName="variants" class="flex flex-col gap-5">
-        <div
-          *ngFor="let variant of variant.controls; let i = index"
-          [formGroupName]="i"
-          class="flex gap-4 items-center"
-        >
-          <div class="grid">
-            <h1 class="text-lg pb-3 text-black">Variant</h1>
-            <input
-              type="text"
-              formControlName="variant"
-              class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
-              pInput
-              placeholder="Flavour / Colour / Type"
-            />
-
-            <small *ngIf="hasError('variant')" class="text-red-500">
-              Variant is required.
-            </small>
-          </div>
-
-          <div class="grid">
-            <h1 class="text-lg pb-3 text-black">Size</h1>
-            <input
-              type="text"
-              formControlName="size"
-              class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
-              pInput
-              placeholder="Size / Type"
-            />
-
-            <small *ngIf="hasError('size')" class="text-red-500">
-              Size is required.
-            </small>
-          </div>
-
-          <div class="grid">
-            <h1 class="text-lg pb-3 text-black">Available Stock</h1>
-            <input
-              type="text"
-              formControlName="availableStock"
-              class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
-              pInput
-              placeholder="Product stock"
-            />
-            <small *ngIf="hasError('availableStock')" class="text-red-500">
-              Stock quantity is required.
-            </small>
-          </div>
-
-          <!-- Remove Variant Button -->
-          <button
-            (click)="removeVariant(i)"
-            class="text-red-500 hover:text-red-700 font-semibold mt-10"
-          >
-            <i class="pi pi-trash" style="font-size: 1.4rem"></i>
-          </button>
-        </div>
-      </div>
-    </div>
   </div>
 
   <div class="grid mt-7">
-    <h1 class="text-black text-[24px] font-bold pb-4">Available Variants</h1>
+    <div class="flex justify-between items-center mb-5">
+      <h1 class="text-black text-[24px] font-bold">Available Variants</h1>
+
+      <!-- Add New Variant Button -->
+      <button
+        (click)="showDialog()"
+        type="button"
+        class="mt-4 px-4 py-2 bg-blue-500 text-white font-medium hover:bg-blue-600 rounded-lg"
+      >
+        Add Variant
+      </button>
+    </div>
 
     <p-table
       [value]="variants"
       [rowsPerPageOptions]="[5, 10, 20]"
       [rows]="7"
-      class="drop-shadow-lg h-44 border border-gray-400"
+      class="drop-shadow-lg h-full"
     >
       <ng-template pTemplate="header">
         <tr class="flex">
@@ -553,28 +524,28 @@
             pSortableColumn="stock"
             class="flex items-center w-full text-white bg-[#825092] justify-center"
           >
-            Branch <p-sortIcon field="stock" />
+            Name
           </th>
 
           <th
             pSortableColumn="flavour"
             class="flex items-center w-full text-white bg-[#825092] justify-center"
           >
-            Flavour <p-sortIcon field="flavour" />
+            Type <p-sortIcon field="flavour" />
           </th>
 
           <th
             pSortableColumn="price"
             class="flex items-center w-full text-white bg-[#825092] rounded-t-md justify-center"
           >
-            Price <p-sortIcon field="price" />
+            Variant <p-sortIcon field="price" />
           </th>
 
           <th
             pSortableColumn="size"
             class="flex items-center w-full text-white bg-[#825092] justify-center"
           >
-            Size <p-sortIcon field="size" />
+            Price <p-sortIcon field="size" />
           </th>
 
           <th
@@ -587,24 +558,24 @@
       </ng-template>
       <ng-template pTemplate="body" let-product>
         <tr class="flex">
-          <td class="w-full text-black cursor-pointer flex justify-center">
-            {{ product.price }}
+          <td class="w-full text-black cursor-pointer flex justify-center line-clamp-2">
+            {{ product.product_id.name }}
           </td>
 
           <td class="w-full text-black cursor-pointer flex justify-center">
-            {{ product.size }}
+            {{ product.variantType }}
           </td>
 
           <td class="w-full text-black cursor-pointer flex justify-center">
-            {{ product.flavour }}
+            {{ product.variants }}
           </td>
 
           <td class="w-full text-black cursor-pointer flex justify-center">
-            {{ product.stock }}
+            {{ product.product_id.rate }}
           </td>
 
           <td class="w-full text-black cursor-pointer flex justify-center">
-            {{ product.exp }}
+            {{ product.product_id.stock_on_hand }}
           </td>
         </tr>
       </ng-template>

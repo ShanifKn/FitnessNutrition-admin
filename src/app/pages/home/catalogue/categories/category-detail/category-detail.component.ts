@@ -302,7 +302,6 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
   }
 
   patchData(data: any) {
-    console.log(this.categoryForm.value, data);
 
     this.categoryForm.patchValue({
       _id: data._id || '',

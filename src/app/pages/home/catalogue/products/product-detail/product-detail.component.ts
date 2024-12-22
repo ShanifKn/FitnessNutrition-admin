@@ -4,10 +4,13 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { TableModule } from 'primeng/table';
 import { DropdownModule } from 'primeng/dropdown';
 import { EditorModule } from 'primeng/editor';
-import { Subscription } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../product.service';
-import { Products } from '../../../../../shared/interfaces/product.interface';
+import {
+  Products,
+  Variant,
+} from '../../../../../shared/interfaces/product.interface';
 import {
   FormArray,
   FormBuilder,
@@ -25,6 +28,17 @@ import { RatingModule } from 'primeng/rating';
 import { TabViewModule } from 'primeng/tabview';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
+import {
+  DialogService,
+  DynamicDialogModule,
+  DynamicDialogRef,
+} from 'primeng/dynamicdialog';
+import { VariantDialogComponentComponent } from '../variant-dialog-component/variant-dialog-component.component';
+import {
+  Analytics,
+  Dietary,
+  Payment,
+} from '../../../../../shared/data/static.data';
 
 interface City {
   name: string;
@@ -47,16 +61,17 @@ interface City {
     TabViewModule,
     FormsModule,
     ButtonModule,
+    DynamicDialogModule,
   ],
   templateUrl: './product-detail.component.html',
   styleUrl: './product-detail.component.scss',
-  providers: [ProductService],
+  providers: [ProductService, DialogService],
 })
 export class ProductDetailComponent implements OnDestroy {
   @ViewChild('chipInput') chipInputRef: ElementRef | undefined;
 
-  productId: string | null = null;
-  product!: Products;
+  productId: string | null = '';
+  product: Partial<Products> = {};
   productForm!: FormGroup;
 
   private subscriptions = new Subscription();
@@ -68,12 +83,12 @@ export class ProductDetailComponent implements OnDestroy {
   selectedSubCategory: any = null;
   filteredCategories: any[] = [];
   filteredSubCategories: any[] = [];
+  ref: DynamicDialogRef | undefined;
 
-  cities!: City[];
   payment!: City[];
-  branchList!: any[];
   analytics!: any[];
-  variants!: any[];
+  variants: any[] = [];
+  dietary!: City[];
   text: string | undefined;
 
   constructor(
@@ -83,29 +98,20 @@ export class ProductDetailComponent implements OnDestroy {
     private categoryService: CategoryService,
     private router: Router,
     private messageService: MessageService,
-    public _location: Location
+    public _location: Location,
+    private dialogService: DialogService
   ) {
     this.productId = this.route.snapshot.paramMap.get('id');
 
-    this.getCategoryData();
-
     if (this.productId) {
-      this.getData(this.productId);
+      this.getDataWithCategories(this.productId);
     }
 
     this.buildForms();
 
-    this.payment = [
-      { name: 'Tabby', code: 'NY' },
-      { name: 'Tamara', code: 'RM' },
-      { name: 'Cash on delivery', code: 'LDN' },
-    ];
-
-    this.analytics = [
-      { name: 'Top sellers', code: 'NY' },
-      { name: 'Daily best sellers', code: 'RM' },
-      { name: 'Trending', code: 'LDN' },
-    ];
+    this.payment = Payment;
+    this.analytics = Analytics;
+    this.dietary = Dietary;
   }
 
   ///---------------------------------------------------------   form build -----------------------------------------------------//
@@ -141,6 +147,7 @@ export class ProductDetailComponent implements OnDestroy {
       variants: this.fb.array([]),
       additionals: this.fb.array([]),
       rating: [''],
+      dietary: [],
     });
   }
 
@@ -173,102 +180,115 @@ export class ProductDetailComponent implements OnDestroy {
 
   ///---------------------------------------------------------   Get data  -----------------------------------------------------//
 
-  getData(_id: string) {
+  getDataWithCategories(_id: string) {
+    const categoryRequest = this.categoryService.getData();
+    const productRequest = this.service.getDetails(_id);
+    const productVariant = this.service.getVariantDetails(_id);
+
     this.subscriptions.add(
-      this.service.getDetails(_id).subscribe(({ data }) => {
-        this.product = data;
+      forkJoin([categoryRequest, productRequest, productVariant]).subscribe(
+        ([categoryResponse, productResponse, productVariant]) => {
+          // Handle category data
+          this.categories = categoryResponse.data;
+          this.filteredCategories = categoryResponse.data;
 
-        const parentCategory = this.product.parentCategory || [];
+          if (productVariant.data) {
+            this.variants = productVariant.data.products || [];
+          }
 
-        if (parentCategory.length > 0) {
-          // Find the parent category by its _id
-          this.selectedParentCategory = this.categories.find(
-            (cat) => cat._id === this.product.parentCategory
-          );
+          // Handle product data
+          this.product = productResponse.data;
 
-          console.log(this.selectedParentCategory);
+          const parentCategory = this.product.parentCategory || [];
 
-          // Filter categories based on parent category
-          this.filteredCategories =
-            this.selectedParentCategory.subCategory || [];
+          if (parentCategory.length > 0) {
+            this.selectedParentCategory = this.categories.find(
+              (cat) => cat._id === this.product.parentCategory
+            );
 
-          this.selectedCategory = this.filteredCategories.find(
-            (cat: any) => cat._id === this.product.category
-          );
+            if (this.selectedParentCategory) {
+              this.filteredCategories =
+                this.selectedParentCategory.subCategory || [];
 
-          // Filter subcategories based on selected category
-          this.filteredSubCategories = this.selectedCategory?.subCategory || [];
-          this.selectedSubCategory = this.filteredSubCategories.find(
-            (cat: any) => cat._id === this.product.subCategory
-          );
+              this.selectedCategory = this.filteredCategories.find(
+                (cat: any) => cat._id === this.product.category
+              );
+
+              this.filteredSubCategories =
+                this.selectedCategory?.subCategory || [];
+
+              this.selectedSubCategory = this.filteredSubCategories.find(
+                (cat: any) => cat._id === this.product.subCategory
+              );
+            }
+          }
+
+          this.productForm.patchValue({
+            _id: this.productId,
+            images: this.product.images || [null, null, null, null],
+            name: this.product.name || '',
+            description: this.product.description || '',
+            additionalDescription: this.product.additionalDescription || '',
+            purchase_account_name: this.product.purchase_account_name || '',
+            available_stock: this.product.available_stock || '',
+            actual_available_stock: this.product.actual_available_stock || '',
+            chips: this.product.chips || [],
+            status: this.product.visibility || 'active',
+            stock_on_hand: this.product.stock_on_hand || '',
+            rate: this.product.rate || '',
+            purchase_rate: this.product.purchase_rate || '',
+            maxDiscount: this.product.maxDiscount || '',
+            parentCategory: this.product.parentCategory || '',
+            category: this.product.category || '',
+            subCategory: this.product.subCategory || '',
+            analytics: this.product.analytics || [],
+            paymentMethods: this.product.paymentMethods || [],
+            rating: this.product.rating || 1,
+            publishDate: this.product.publishDate
+              ? new Date(this.product.publishDate).toISOString().split('T')[0]
+              : '',
+            dietary: this.product.dietary || [],
+          });
+
+          const variants = this.product?.variants || [];
+          const additional = this.product.additionals || [];
+
+          this.patchChips(this.product.chips || []);
+
+          if (variants.length > 0) {
+            this.patchVariants(this.product.variants ?? []);
+          } else {
+            this.addVariant();
+          }
+
+          if (additional.length > 0) {
+            this.patchAddition(this.product.additionals ?? []);
+          } else {
+            this.addAdditional();
+          }
+        },
+        (error) => {
+          console.error('Error fetching data:', error);
         }
-        // Patch the form with the response data
-        this.productForm.patchValue({
-          _id: this.productId,
-          images: this.product.images || [null, null, null, null],
-          name: this.product.name || '',
-          description: this.product.description || '',
-          additionalDescription: this.product.additionalDescription || '',
-          purchase_account_name: this.product.purchase_account_name || '',
-          available_stock: this.product.available_stock || '',
-          actual_available_stock: this.product.actual_available_stock || '',
-          chips: this.product.chips || [],
-          status: this.product.visibility || 'active',
-          stock_on_hand: this.product.stock_on_hand || '',
-          rate: this.product.rate || '',
-          purchase_rate: this.product.purchase_rate || '',
-          maxDiscount: this.product.maxDiscount || '',
-          parentCategory: this.product.parentCategory || '',
-          category: this.product.category || '',
-          subCategory: this.product.subCategory || '',
-          analytics: this.product.analytics || [],
-          paymentMethods: this.product.paymentMethods || [],
-          rating: this.product.rating || 1,
-          publishDate: this.product.publishDate
-            ? new Date(this.product.publishDate).toISOString().split('T')[0]
-            : '',
-        });
-
-        const variants = this.product?.variants || [];
-        const additional = this.product.additionals || [];
-
-        this.patchChips(this.product.chips || []);
-
-        if (variants.length > 0) {
-          this.patchVariants(this.product.variants ?? []);
-        } else {
-          this.addVariant();
-        }
-
-        if (additional.length > 0) {
-          this.patchAddition(this.product.additionals ?? []);
-        } else {
-          this.addAdditional();
-        }
-      })
+      )
     );
   }
 
   ///---------------------------------------------------------    category section  -----------------------------------------------------//
 
-  getCategoryData() {
-    this.subscriptions.add(
-      this.categoryService.getData().subscribe(({ data }) => {
-        this.categories = data;
-        this.filteredCategories = data;
-      })
-    );
-  }
-
   // Triggered when a parent category is selected// Triggered when a parent category is selected
   onParentCategoryChange() {
+    if (!this.selectedParentCategory) {
+      this.filteredCategories = [];
+      return;
+    }
+
     const selectedCategory = this.categories.find(
       (item) => item._id === this.selectedParentCategory
     );
 
     // Filter the categories based on the selected parent category
     this.filteredCategories = selectedCategory?.subCategory || [];
-
     this.selectedCategory = null; // Reset selected category
     this.selectedSubCategory = null; // Reset selected subcategory
   }
@@ -386,8 +406,40 @@ export class ProductDetailComponent implements OnDestroy {
     this.productForm.patchValue({ images: updatedImages }); // Update the form control
   }
 
+  ///---------------------------------------------------------   dialgoue settings  -----------------------------------------------------//
+
+  showDialog() {
+    this.ref = this.dialogService.open(VariantDialogComponentComponent, {
+      header: 'Add Variant Product',
+      width: '70%',
+      contentStyle: { 'max-height': '500px', overflow: 'auto' },
+      baseZIndex: 10000,
+      data: this.productId,
+    });
+
+    this.ref.onClose.subscribe((result) => {
+      if (result?.success) {
+        this.getVariantType(this.productId);
+      } else {
+        return;
+      }
+    });
+  }
+
+  getVariantType(_id: any) {
+    this.subscriptions.add(
+      this.service.getVariantDetails(_id).subscribe(({ data }) => {
+        this.variants = data.products;
+      })
+    );
+  }
+
   ngOnDestroy() {
     // Unsubscribe from all subscriptions when the component is destroyed
     this.subscriptions.unsubscribe();
+
+    if (this.ref) {
+      this.ref.close();
+    }
   }
 }

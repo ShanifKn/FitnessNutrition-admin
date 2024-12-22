@@ -11,14 +11,14 @@
   <!-- delete button -->
 
   <!-- Editable Node Name -->
-  <span *ngIf="!isEditing; else editTemplate" (click)="editNode()" class="text-black">
+  <span *ngIf="!isEditing; else editTemplate" (click)="editNode()" class="text-black w-64">
     {{ node.title }}
   </span>
 
   <!-- Edit Node Name -->
   <ng-template #editTemplate>
     <input [(ngModel)]="node.title"
-      class="border p-1 rounded focus:outline-blue-500 text-black" />
+      class="border p-1 rounded focus:outline-blue-500 text-black w-64" />
 
     <button (click)="editParent()"
       class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 ml-2">
@@ -34,7 +34,7 @@
     </button>
 
     <button (click)="saveParentNode()"
-      class="mt-2 px-4 py-1 text-base font-semibold text-white bg-purple-500 rounded-lg hover:bg-purple-600">
+      class="mt-2 px-4 py-1 text-base font-semibold text-white bg-purple-500 rounded-lg hover:bg-purple-600 ml-20">
       view
     </button>
   </div>

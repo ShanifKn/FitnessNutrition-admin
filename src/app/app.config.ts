@@ -15,10 +15,8 @@ import { ErrorHandlerInterceptor } from './shared/http/error-handler.interceptor
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MessageService } from 'primeng/api';
 import { routes } from './app.routes';
-import { PLATFORM_ID, inject } from '@angular/core';
 import {
   HashLocationStrategy,
-  isPlatformServer,
   LocationStrategy,
 } from '@angular/common';
 import { FileUploadService } from './shared/services/file-upload.service';
@@ -33,9 +31,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(),
 
     // Provide HttpClient and include interceptors from DI
-    provideHttpClient(
-      withInterceptorsFromDi() // Ensure that interceptors from DI are applied
-    ),
+    provideHttpClient(withInterceptorsFromDi()),
 
     // Provide class-based interceptors
     {

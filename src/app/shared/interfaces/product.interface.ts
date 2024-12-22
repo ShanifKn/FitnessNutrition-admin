@@ -64,4 +64,16 @@ export interface Products {
   variants?: [string, string];
   additionals?: [string];
   rating?: string;
+  dietary?: [];
+}
+
+export interface Variant {
+  item_id: String; // Refers to the product collection
+  products: VariantProduct[];
+}
+
+interface VariantProduct {
+  product_id: string; // Refers to the product collection
+  variantType: string;
+  variants: string;
 }

@@ -1,7 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Products } from '../../../../shared/interfaces/product.interface';
+import {
+  Products,
+  Variant,
+} from '../../../../shared/interfaces/product.interface';
 
 const routes = {
   getCount: '/get-count',
@@ -9,6 +12,9 @@ const routes = {
   getPendingProducts: '/get-pending',
   getDetails: (id: string) => `/product/${id}`,
   updatedProduct: '/updateProduct',
+  getAllProduct: '/allProducts',
+  createVariant: '/createVaraint',
+  getVaraintDetails: (id: string) => `/variants/${id}`,
 };
 
 @Injectable()
@@ -38,5 +44,21 @@ export class ProductService {
       routes.updatedProduct,
       data
     );
+  }
+
+  getAllProduct(): Observable<{ data: Products[] }> {
+    return this.httpClient.get<{ data: Products[] }>(routes.getAllProduct);
+  }
+
+  CreateVariantProduct(data: Variant): Observable<{ message: string }> {
+    return this.httpClient.post<{ message: string }>(
+      routes.createVariant,
+      data
+    );
+  }
+
+
+  getVariantDetails(_id: string): Observable<{ data: Variant }> {
+    return this.httpClient.get<{ data: Variant }>(routes.getVaraintDetails(_id));
   }
 }

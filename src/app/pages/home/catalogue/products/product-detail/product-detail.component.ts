@@ -90,6 +90,7 @@ export class ProductDetailComponent implements OnDestroy {
   variants: any[] = [];
   dietary!: City[];
   text: string | undefined;
+  category: any[] | undefined;
 
   constructor(
     private route: ActivatedRoute,
@@ -112,6 +113,11 @@ export class ProductDetailComponent implements OnDestroy {
     this.payment = Payment;
     this.analytics = Analytics;
     this.dietary = Dietary;
+    this.category = [
+      { name: 'SIZE', code: 'size' },
+      { name: 'FLAVOUR', code: 'flavor' },
+      { name: 'COLOUR', code: 'colour' },
+    ];
   }
 
   ///---------------------------------------------------------   form build -----------------------------------------------------//
@@ -144,10 +150,13 @@ export class ProductDetailComponent implements OnDestroy {
       analytics: [[]],
       paymentMethods: [[], Validators.required],
       publishDate: ['', Validators.required],
-      variants: this.fb.array([]),
       additionals: this.fb.array([]),
       rating: [''],
       dietary: [],
+      size: ['', Validators.required],
+      colour: [''],
+      flavour: [''],
+      productBrand: ['', Validators.required],
     });
   }
 
@@ -248,18 +257,15 @@ export class ProductDetailComponent implements OnDestroy {
               ? new Date(this.product.publishDate).toISOString().split('T')[0]
               : '',
             dietary: this.product.dietary || [],
+            size: this.product.size || '',
+            colour: this.product.colour || '',
+            flavour: this.product.flavour || '',
+            productBrand: this.product.productBrand || '',
           });
 
-          const variants = this.product?.variants || [];
           const additional = this.product.additionals || [];
 
           this.patchChips(this.product.chips || []);
-
-          if (variants.length > 0) {
-            this.patchVariants(this.product.variants ?? []);
-          } else {
-            this.addVariant();
-          }
 
           if (additional.length > 0) {
             this.patchAddition(this.product.additionals ?? []);
@@ -306,11 +312,6 @@ export class ProductDetailComponent implements OnDestroy {
 
   ///---------------------------------------------------------   add remove array from form builds  -----------------------------------------------------//
 
-  // Get the form array of variants
-  get variant() {
-    return this.productForm.get('variants') as FormArray;
-  }
-
   // Get the form array of additionals
   get additionals() {
     return this.productForm.get('additionals') as FormArray;
@@ -342,20 +343,6 @@ export class ProductDetailComponent implements OnDestroy {
     this.additionals.removeAt(index);
   }
 
-  removeVariant(index: number) {
-    this.variant.removeAt(index);
-  }
-
-  addVariant() {
-    this.variant.push(
-      this.fb.group({
-        variant: [''],
-        size: [''],
-        availableStock: [''],
-      })
-    );
-  }
-
   addAdditional() {
     this.additionals.push(
       this.fb.group({
@@ -363,20 +350,6 @@ export class ProductDetailComponent implements OnDestroy {
         value: ['', Validators.required],
       })
     );
-  }
-
-  patchVariants(variantsData: any[]) {
-    this.variant.clear(); // Clear existing form array
-
-    variantsData.forEach((variant) => {
-      this.variant.push(
-        this.fb.group({
-          variant: [variant.variant],
-          size: [variant.size],
-          availableStock: [variant.availableStock, ,],
-        })
-      );
-    });
   }
 
   patchChips(data: any) {

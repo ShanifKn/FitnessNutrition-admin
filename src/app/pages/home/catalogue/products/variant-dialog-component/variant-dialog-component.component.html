@@ -5,6 +5,7 @@
     *ngFor="let productGroup of products.controls; let i = index"
   >
     <div [formGroupName]="i" class="flex justify-between gap-4 my-2 items-end">
+      <!-- Product Dropdown -->
       <div class="grid w-full">
         <h1 class="text-black text-lg pb-3 font-medium">Product</h1>
         <p-dropdown
@@ -19,6 +20,7 @@
           styleClass="w-full bg-[#F6F7F9] pl-3 pt-2 h-14 rounded-lg placeholder:text-gray-500 border border-gray-200"
           placeholder="Select a product"
           optionValue="_id"
+          (onChange)="onSelectedProduct($event, i)"
         >
           <ng-template pTemplate="selectedItem" let-selectedOption>
             <div class="flex align-items-center gap-2">
@@ -33,7 +35,8 @@
         </p-dropdown>
       </div>
 
-      <div class="grid w-56">
+      <!-- Variant Type Dropdown -->
+      <div class="grid w-96">
         <h1 class="text-black text-lg font-medium pb-4">Type</h1>
         <p-dropdown
           [options]="category"
@@ -44,41 +47,45 @@
           styleClass="w-full bg-[#F6F7F9] pl-3 pt-2 h-14 rounded-lg placeholder:text-gray-500 border border-gray-200"
           appendTo="body"
           optionValue="code"
-        >
-        </p-dropdown>
+          (onChange)="onSelectCategory($event, i)"
+        ></p-dropdown>
       </div>
 
-      <div class="grid w-full">
-        <h1 class="text-black text-lg font-medium pb-4">Variants</h1>
+      <!-- Variant Value -->
+      <div class="grid w-96" *ngIf="productGroup.get('variantType')?.value">
+        <h1 class="text-black text-lg font-medium pb-4">
+          {{ productGroup.get('variantType')?.value | titlecase }}
+        </h1>
         <input
           type="text"
           class="bg-[#F6F7F9] h-14 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
           formControlName="variants"
           pInput
-          placeholder="Size / colour / flavour"
+          [placeholder]="selectedCategory"
+          readonly="true"
         />
       </div>
+      
 
-
+      <!-- Remove Button -->
       <p-button
         icon="pi pi-trash"
         severity="danger"
         class="text-white bg-red-500 rounded-lg h-fit py-1 mb-3"
         (click)="removeProduct(i)"
-      />
+      ></p-button>
     </div>
   </div>
 
+  <!-- Add Product & Submit Buttons -->
   <div class="flex justify-between items-center mt-6">
     <button
       class="text-white bg-blue-500 rounded-lg px-5 py-2"
-      icon="pi pi-bookmark"
       type="button"
       (click)="addProduct()"
     >
       Add Product
     </button>
-
     <button class="text-white bg-green-500 rounded-lg px-5 py-2" type="submit">
       Submit
     </button>

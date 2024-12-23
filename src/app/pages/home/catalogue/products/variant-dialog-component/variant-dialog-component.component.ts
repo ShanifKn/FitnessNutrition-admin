@@ -1,11 +1,17 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormsModule,
+  ReactiveFormsModule,
+  FormBuilder,
+  FormGroup,
+  FormArray,
+  Validators,
+} from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { forkJoin, Subscription } from 'rxjs';
 import { ProductService } from '../product.service';
 import { Products } from '../../../../../shared/interfaces/product.interface';
-import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { DynamicDialogConfig, DynamicDialogRef } from 'primeng/dynamicdialog';
@@ -23,7 +29,7 @@ import { MessageService } from 'primeng/api';
     ButtonModule,
   ],
   templateUrl: './variant-dialog-component.component.html',
-  styleUrl: './variant-dialog-component.component.scss',
+  styleUrls: ['./variant-dialog-component.component.scss'],
   providers: [ProductService],
 })
 export class VariantDialogComponentComponent implements OnInit, OnDestroy {
@@ -36,48 +42,45 @@ export class VariantDialogComponentComponent implements OnInit, OnDestroy {
 
   productOptions: Products[] = [];
   productForm!: FormGroup;
-  selectedProduct: any;
-  category: any[] | undefined;
-  selectedProductPrice: any;
+  category: { name: string; code: string }[] = [];
+  selectedCategory: 'size' | 'flavour' | 'colour' | null = null;
+  selectedProductPrice: { [key: number]: any } = {};
 
   ngOnInit() {
-    this.getData();
+    this.initializeForm();
+    this.loadData();
   }
 
-  getData() {
+  initializeForm() {
     this.productForm = this.fb.group({
-      item_id: ["", Validators.required],
+      item_id: [this.config.data, Validators.required],
       products: this.fb.array([this.createProductGroup()]),
     });
 
     this.category = [
       { name: 'SIZE', code: 'size' },
-      { name: 'FLAVOUR', code: 'flavor' },
+      { name: 'FLAVOUR', code: 'flavour' },
       { name: 'COLOUR', code: 'colour' },
     ];
+  }
 
+  loadData() {
     this.subscriptions.add(
       forkJoin({
         variantDetails: this.service.getVariantDetails(this.config.data),
         allProducts: this.service.getAllProduct(),
       }).subscribe(({ variantDetails, allProducts }) => {
-        if (variantDetails.data) {
-          // Handling variant details
-          this.productForm.patchValue({
-            item_id: this.config.data,
-          });
-          this.patchVariants(variantDetails.data.products ?? []);
+        this.productOptions = allProducts.data;
 
-          // Handling all products
-          this.productOptions = allProducts.data;
-        } else {
-          this.addProduct();
+        if (variantDetails.data) {
+          this.productForm.patchValue({ item_id: this.config.data });
+          this.patchVariants(variantDetails.data.products ?? []);
         }
       })
     );
   }
 
-  get products() {
+  get products(): FormArray {
     return this.productForm.get('products') as FormArray;
   }
 
@@ -98,17 +101,35 @@ export class VariantDialogComponentComponent implements OnInit, OnDestroy {
   }
 
   patchVariants(variantsData: any[]) {
-    this.products.clear(); // Clear existing form array
-
+    this.products.clear();
     variantsData.forEach((variant) => {
       this.products.push(
         this.fb.group({
-          product_id: [variant.product_id._id],
-          variantType: [variant.variantType],
-          variants: [variant.variants],
+          product_id: [variant.product_id._id, Validators.required],
+          variantType: [variant.variantType, Validators.required],
+          variants: [variant.variants, Validators.required],
         })
       );
     });
+  }
+
+  onSelectedProduct(event: any, index: number): void {
+    const selectedProduct: any = this.productOptions.find(
+      (item) => item._id === event.value
+    );
+
+    this.selectedProductPrice[index] = selectedProduct;
+  }
+
+  onSelectCategory(event: any, index: number): void {
+    this.selectedCategory = event.value;
+    const selectedProduct = this.selectedProductPrice[index];
+    const productGroup = this.products.at(index);
+
+    if (this.selectedCategory && selectedProduct && productGroup) {
+      const value = selectedProduct[this.selectedCategory] || '';
+      productGroup.patchValue({ variants: value });
+    }
   }
 
   onSubmit() {
@@ -120,11 +141,7 @@ export class VariantDialogComponentComponent implements OnInit, OnDestroy {
       this.service
         .CreateVariantProduct(this.productForm.value)
         .subscribe(({ message }) => {
-          this.messageService.add({
-            severity: 'success',
-            summary: message,
-          });
-
+          this.messageService.add({ severity: 'success', summary: message });
           this.closeDialog();
         })
     );
@@ -135,7 +152,6 @@ export class VariantDialogComponentComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    // Unsubscribe from all subscriptions when the component is destroyed
     this.subscriptions.unsubscribe();
   }
 }

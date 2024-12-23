@@ -65,6 +65,10 @@ export interface Products {
   additionals?: [string];
   rating?: string;
   dietary?: [];
+  size?: string;
+  flavour?: string;
+  colour?: string;
+  productBrand?: string;
 }
 
 export interface Variant {

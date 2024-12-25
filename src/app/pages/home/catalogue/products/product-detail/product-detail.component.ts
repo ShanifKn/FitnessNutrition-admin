@@ -146,7 +146,7 @@ export class ProductDetailComponent implements OnDestroy {
       maxDiscount: [0],
       parentCategory: ['', Validators.required],
       category: ['', Validators.required],
-      subCategory: [''],
+      subCategory: ['', Validators.required],
       analytics: [[]],
       paymentMethods: [[], Validators.required],
       publishDate: ['', Validators.required],
@@ -163,8 +163,76 @@ export class ProductDetailComponent implements OnDestroy {
   onSubmit() {
     if (this.productForm.invalid) {
       this.productForm.markAllAsTouched(); // Marks all controls as touched to trigger validation
+  
+      console.log(this.productForm.invalid);
+  
+      const errorMessages: any[] = [];
+  
+      // Validate individual form controls
+      Object.keys(this.productForm.controls).forEach((key) => {
+        const controlErrors = this.productForm.get(key)?.errors;
+        if (controlErrors) {
+          if (controlErrors['required']) {
+            errorMessages.push({
+              severity: 'error',
+              summary: `${key} is required.`,
+            });
+          }
+          if (controlErrors['minlength']) {
+            errorMessages.push({
+              severity: 'error',
+              summary: `${key} must be at least ${controlErrors['minlength'].requiredLength} characters long.`,
+            });
+          }
+          if (controlErrors['maxlength']) {
+            errorMessages.push({
+              severity: 'error',
+              summary: `${key} must be no more than ${controlErrors['maxlength'].requiredLength} characters long.`,
+            });
+          }
+          if (controlErrors['pattern']) {
+            errorMessages.push({
+              severity: 'error',
+              summary: `${key} has an invalid format.`,
+            });
+          }
+        }
+      });
+  
+      // Validate FormArray (additionals)
+      const additionalsArray = this.productForm.get('additionals') as FormArray;
+      additionalsArray.controls.forEach((group, index) => {
+        const keyErrors = group.get('key')?.errors;
+        const valueErrors = group.get('value')?.errors;
+  
+        if (keyErrors) {
+          if (keyErrors['required']) {
+            errorMessages.push({
+              severity: 'error',
+              summary: `Additional item field is required.`,
+            });
+          }
+        }
+
+        if (valueErrors) {
+          if (valueErrors['required']) {
+            errorMessages.push({
+              severity: 'error',
+              summary: `Additional item field is required.`,
+            });
+          }
+        }
+  
+      });
+  
+      // Use MessageService to display the messages
+      errorMessages.forEach((msg) => {
+        this.messageService.add(msg);
+      });
+  
       return;
     }
+  
 
     this.subscriptions.add(
       this.service
@@ -239,11 +307,11 @@ export class ProductDetailComponent implements OnDestroy {
             description: this.product.description || '',
             additionalDescription: this.product.additionalDescription || '',
             purchase_account_name: this.product.purchase_account_name || '',
-            available_stock: this.product.available_stock || '',
-            actual_available_stock: this.product.actual_available_stock || '',
+            available_stock: this.product.available_stock || 0,
+            actual_available_stock: this.product.actual_available_stock || 0,
             chips: this.product.chips || [],
-            status: this.product.visibility || 'active',
-            stock_on_hand: this.product.stock_on_hand || '',
+            status: this.product.status || 'active',
+            stock_on_hand: this.product.stock_on_hand || 0,
             rate: this.product.rate || '',
             purchase_rate: this.product.purchase_rate || '',
             maxDiscount: this.product.maxDiscount || '',
@@ -255,7 +323,8 @@ export class ProductDetailComponent implements OnDestroy {
             rating: this.product.rating || 1,
             publishDate: this.product.publishDate
               ? new Date(this.product.publishDate).toISOString().split('T')[0]
-              : '',
+              : new Date().toISOString().split('T')[0],
+
             dietary: this.product.dietary || [],
             size: this.product.size || '',
             colour: this.product.colour || '',
@@ -292,7 +361,6 @@ export class ProductDetailComponent implements OnDestroy {
     const selectedCategory = this.categories.find(
       (item) => item._id === this.selectedParentCategory
     );
-
     // Filter the categories based on the selected parent category
     this.filteredCategories = selectedCategory?.subCategory || [];
     this.selectedCategory = null; // Reset selected category
@@ -304,7 +372,6 @@ export class ProductDetailComponent implements OnDestroy {
     const selectedCategory = this.filteredCategories.find(
       (item) => item._id === this.selectedCategory
     );
-
     // Filter the subcategories based on the selected category
     this.filteredSubCategories = selectedCategory?.subCategory || [];
     this.selectedSubCategory = null; // Reset selected subcategory

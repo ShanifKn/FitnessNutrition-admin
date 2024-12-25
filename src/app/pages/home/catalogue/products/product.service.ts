@@ -12,7 +12,7 @@ const routes = {
   getPendingProducts: '/get-pending',
   getDetails: (id: string) => `/product/${id}`,
   updatedProduct: '/updateProduct',
-  getAllProduct: '/allProducts',
+  getAllProduct: '/get-products',
   createVariant: '/createVaraint',
   getVaraintDetails: (id: string) => `/variants/${id}`,
 };

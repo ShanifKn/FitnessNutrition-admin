@@ -4,100 +4,85 @@
 
 <div class="p-3 py-5 bg-white rounded-md
  grid gap-5 shadow-lg mt-5">
-  <div
-    class="flex items-center border border-gray-300 bg-white rounded-xl px-4 py-2"
-  >
+
+
+
+  <div class="flex items-center border border-gray-300 bg-white rounded-xl px-4 py-2">
     <span class="pi pi-search"></span>
-    <input
-      type="text"
-      placeholder="Search Orders"
-      class="ml-3 w-full focus:outline-none text-gray-700"
-    />
+    <input type="text" placeholder="Search Orders"
+      class="ml-3 w-full focus:outline-none text-gray-700" />
   </div>
+  <div class="" *ngIf="users.length > 0; else noDataTemplate">
+    <p-table [value]="users" [rows]="10" [paginator]="true"
+      paginatorStyleClass="text-[#825092]" [tableStyle]="{'min-width': '50rem'}">
+      <ng-template pTemplate="header">
+        <tr class="flex">
 
-  <p-table
-    [value]="users"
-    [rows]="10"
-    [paginator]="true"
-    paginatorStyleClass="text-[#825092]"
-    [tableStyle]="{'min-width': '50rem'}"
-  >
-    <ng-template pTemplate="header">
-      <tr class="flex">
-        <th
-          pSortableColumn="name"
-          class="flex items-center w-full text-white bg-[#825092]"
-        >
-          Name <p-sortIcon field="name" />
-        </th>
+          <th pSortableColumn="name"
+            class="flex items-center w-full text-white bg-[#825092]">
+            Customer ID <p-sortIcon field="customerId" />
+          </th>
 
-        <th
-          pSortableColumn="email"
-          class="flex items-center w-full text-white bg-[#825092]"
-        >
-          Email <p-sortIcon field="email" />
-        </th>
+          <th pSortableColumn="name"
+            class="flex items-center w-full text-white bg-[#825092]">
+            Name <p-sortIcon field="name" />
+          </th>
 
-        <!-- -->
-        <th
-          pSortableColumn="registered"
-          class="flex items-center w-full text-white bg-[#825092]"
-        >
-          Registered <p-sortIcon field="registered" />
-        </th>
-        <th
-          pSortableColumn="total"
-          class="flex items-center w-full text-white bg-[#825092]"
-        >
-          Avg Basket Value <p-sortIcon field="total" />
-        </th>
+          <th pSortableColumn="email"
+            class="flex items-center w-full text-white bg-[#825092]">
+            Email <p-sortIcon field="email" />
+          </th>
 
-        <th
-          pSortableColumn="status"
-          class="flex items-center w-full text-white bg-[#825092]"
-        >
-         Subscription Status<p-sortIcon field="status" />
-        </th>
+          <!-- -->
+          <th pSortableColumn="registered"
+            class="flex items-center w-full text-white bg-[#825092]">
+            Registered <p-sortIcon field="createdAt" />
+          </th>
+          <th pSortableColumn="total"
+            class="flex items-center w-full text-white bg-[#825092]">
+            Avg Basket Value <p-sortIcon field="total" />
+          </th>
 
-        <th class="flex items-center w-full text-white bg-[#825092]">Action</th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-product>
-      <tr class="flex">
-        <td class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium">
-          {{ product.name }}
-        </td>
-        <td class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium">
-          {{ product.email }}
-        </td>
-        <td class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium">
-          {{ product.registered }}
-        </td>
-        <td class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium">
-          {{ product.total }}
-        </td>
-        <td class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium">
-          <ng-container *ngIf="product.status === true; else notPaid">
-            <p class="text-[#1A1A1A] text-sm 2xl:text-base font-medium">
-              Registered
-            </p>
-          </ng-container>
-          <ng-template #notPaid>
-            <p class="text-[#1A1A1A] text-sm 2xl:text-base font-medium">
-            Not Registered
-            </p>
-          </ng-template>
-        </td>
-        <td class="w-full">
-          <button
-            pButton
-            [routerLink]="['/customers/customer-details', product._id]"
-            class="px-3 py-1 text-sm font-medium tracking-wide text-white bg-[#825092] rounded-md"
-          >
-            View Details
-          </button>
-        </td>
-      </tr>
-    </ng-template>
-  </p-table>
+
+          <th class="flex items-center w-full text-white bg-[#825092]">Action</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-product>
+        <tr class="flex">
+
+          <td class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium">
+            {{ product.customerId }}
+          </td>
+
+          <td class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium">
+            {{ product.name }}
+          </td>
+          <td class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium">
+            {{ product.email }}
+          </td>
+          <td class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium">
+            {{ product.createdAt | date : "dd/MM/yyyy" }}
+          </td>
+          <td class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium">
+            {{ product.total }}
+          </td>
+          <td class="w-full">
+            <button pButton [routerLink]="['/customers/customer-details', product._id]"
+              class="px-3 py-1 text-sm font-medium tracking-wide text-white bg-[#825092] rounded-md">
+              View Details
+            </button>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
 </div>
+<ng-template #noDataTemplate>
+  <div class="flex flex-col items-center justify-center py-10 h-[500px]">
+    <img src="assets/no-po.png" alt="No purchase order" class="mx-auto w-56" />
+
+    <h4 class="my-8">There is no Customer available!</h4>
+
+    <i class="pi pi-spin pi-spinner text-3xl"></i>
+  </div>
+</ng-template>

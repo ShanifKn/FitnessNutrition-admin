@@ -7,7 +7,7 @@
 
       <div class="">
         <h1 class="text-xl text-[#A3AED0] font-medium">Total invoice</h1>
-        <span class="text-black font-bold text-2xl">450</span>
+        <span class="text-black font-bold text-2xl">0</span>
       </div>
     </div>
   </div>
@@ -19,7 +19,7 @@
 
       <div class="">
         <h1 class="text-xl text-[#A3AED0] font-medium">Total Orders</h1>
-        <span class="text-black font-bold text-2xl">955</span>
+        <span class="text-black font-bold text-2xl">0</span>
       </div>
     </div>
   </div>
@@ -31,7 +31,7 @@
 
       <div class="">
         <h1 class="text-xl text-[#A3AED0] font-medium">Average Basket Value</h1>
-        <span class="text-black font-bold text-2xl">AED 1050.00</span>
+        <span class="text-black font-bold text-2xl">AED 0.00</span>
       </div>
     </div>
   </div>
@@ -44,16 +44,15 @@
     <div class="col-span-1 bg-white rounded-lg shadow-md overflow-hidden">
       <div class="bg-[#825092] py-4 px-9">
         <div class="flex items-center space-x-4">
-          <img
-            class="w-20 h-20 rounded-full"
-            src="/assets/images/customer/user.svg"
-            alt="Customer avatar"
-          />
-          <div>
-            <h3 class="text-white text-lg font-semibold">Customer name</h3>
+          <img class="w-20 h-20 rounded-full object-cover"
+            [src]="user.image || '/assets/images/customer/user.svg'"
+            alt="{{ 'Customer avatar' }}" />
 
-            <p class="text-[#F0E6FA]">Useroogmail.com</p>
-            <p class="text-[#F0E6FA]">+971 98945623</p>
+          <div>
+            <h3 class="text-white text-lg font-semibold">{{user.name}}</h3>
+
+            <p class="text-[#F0E6FA]">{{user.email}}</p>
+            <p class="text-[#F0E6FA]">+971 {{user.phone}}</p>
           </div>
         </div>
       </div>
@@ -61,17 +60,19 @@
       <div class="py-4 px-10">
         <div class="mb-2">
           <p class="text-lg text-[#1A1A1A] font-medium">Last Order</p>
-          <p class="text-base text-gray-500">
+          <!-- <p class="text-base text-gray-500">
             2 Days Ago- <a href="#" class="text-blue-600">#45784</a>
-          </p>
+          </p> -->
+
+          <p class="text-base text-gray-500">No order yet</p>
         </div>
         <div class="mb-4">
           <p class="text-lg text-[#1A1A1A] font-medium">Average Order Value</p>
-          <p class="text-base text-gray-500">AED 1050.00</p>
+          <p class="text-base text-gray-500">AED 0.00</p>
         </div>
         <div class="mb-4">
           <p class="text-lg text-[#1A1A1A] font-medium">Registered</p>
-          <p class="text-base text-gray-500">13 Sep 2024</p>
+          <p class="text-base text-gray-500">{{user.createdAt| date : "MMM d yyyy"}}</p>
         </div>
         <div class="mb-4">
           <p class="text-lg text-[#1A1A1A] font-medium">Email Marketing</p>
@@ -82,160 +83,111 @@
 
     <div class="col-span-2 rounded-lg">
       <div class="p-3 py-5 bg-white rounded grid gap-5 drop-shadow-lg">
-        <div
-          class="flex items-center border border-gray-300 bg-white rounded-xl px-4 py-2"
-        >
+        <div class="flex items-center border border-gray-300 bg-white rounded-xl px-4 py-2">
           <span class="pi pi-search"></span>
-          <input
-            type="text"
-            placeholder="Search Orders"
-            class="ml-3 w-full focus:outline-none text-gray-700"
-          />
+          <input type="text" placeholder="Search Orders" class="ml-3 w-full focus:outline-none text-gray-700" />
         </div>
       </div>
-
+    
       <div class="mt-5">
         <div class="flex justify-between">
           <h1 class="text-black text-lg font-bold pb-2">Recent orders</h1>
-
-          <span class="text-black text-base"
-            >Total Spend on
-            <span class="text-black font-semibold"
-              >AED 7024.00 - 8 Ordes</span
-            ></span
-          >
+          <span class="text-black text-base">
+            Total Spend on
+            <span class="text-black font-semibold">AED 0.00 - 0 Orders</span>
+          </span>
         </div>
       </div>
-
-      <p-table
-        [value]="users"
-        [rows]="3"
-        [paginator]="true"
-        paginatorStyleClass="text-[#825092]"
-        [tableStyle]="{ 'min-width': '50rem' }"
-        styleClass="drop-shadow-lg rounded-b-md"
-      >
-        <ng-template pTemplate="header">
-          <tr class="flex">
-            <th
-              pSortableColumn="orderId"
-              class="flex items-center w-full text-white bg-[#825092] rounded-l-lg"
-            >
-              Order ID <p-sortIcon field="orderId" />
-            </th>
-
-            <th
-              pSortableColumn="date"
-              class="flex items-center w-full text-white bg-[#825092]"
-            >
-              Date <p-sortIcon field="date" />
-            </th>
-
-            <!-- -->
-            <th
-              pSortableColumn="paid"
-              class="flex items-center w-full text-white bg-[#825092]"
-            >
-              Paid <p-sortIcon field="paid" />
-            </th>
-            <th
-              pSortableColumn="status"
-              class="flex items-center w-full text-white bg-[#825092]"
-            >
-              Status <p-sortIcon field="status" />
-            </th>
-
-            <th
-              pSortableColumn="items"
-              class="flex items-center w-full text-white bg-[#825092]"
-            >
-              Items<p-sortIcon field="items" />
-            </th>
-
-            <th
-              class="flex items-center w-full text-white bg-[#825092] rounded-r-lg"
-              pSortableColumn="total"
-            >
-              Total <p-sortIcon field="total" />
-            </th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-product>
-          <tr class="flex">
-            <td class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium">
-              {{ product.orderId }}
-            </td>
-            <td class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium">
-              {{ product.date }}
-            </td>
-            <td class="w-full">
-              <ng-container *ngIf="product.paid === 'Yes'; else notPaid">
-                <p
-                  class="bg-green-100 text-green-500 px-4 py-1 rounded text-sm w-fit"
-                >
-                  Paid
-                </p>
-              </ng-container>
-              <ng-template #notPaid>
-                <p
-                  class="bg-red-100 text-red-500 px-4 py-1 rounded text-sm w-fit"
-                >
-                  Not paid
-                </p>
-              </ng-template>
-            </td>
-
-            <td class="w-full">
-              <div [ngSwitch]="product.status">
-                <!-- Case: Delivered -->
-                <p
-                  *ngSwitchCase="'Delivered'"
-                  class="bg-green-100 text-green-600 px-4 py-1 rounded text-sm tracking-wide w-fit"
-                >
-                  Delivered
-                </p>
-
-                <!-- Case: Pending -->
-                <p
-                  *ngSwitchCase="'Pending'"
-                  class="bg-red-100 text-red-600 px-4 py-1 rounded text-sm tracking-wide w-fit"
-                >
-                  Pending
-                </p>
-
-                <!-- Case: Cancelled -->
-                <p
-                  *ngSwitchCase="'Cancelled'"
-                  class="bg-gray-100 text-gray-600 px-4 py-1 rounded text-sm tracking-wide w-fit"
-                >
-                  Cancelled
-                </p>
-
-                <!-- Case: Returned -->
-                <p
-                  *ngSwitchCase="'Returned'"
-                  class="bg-yellow-100 text-yellow-600 px-4 py-1 rounded text-sm tracking-wide w-fit"
-                >
-                  Returned
-                </p>
-
-                <!-- Default case (if status doesn't match any cases) -->
-                <button
-                  *ngSwitchDefault
-                  class="bg-gray-500 text-white px-4 py-2 rounded"
-                >
-                  Unknown Status
-                </button>
-              </div>
-            </td>
-
-            <td class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium">
-              {{ product.total }}
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
+    
+      <!-- Check if order array has data -->
+      <ng-container *ngIf="order?.length > 0; else noOrdersAvailable">
+        <p-table
+          [value]="order"
+          [rows]="3"
+          [paginator]="true"
+          paginatorStyleClass="text-[#825092]"
+          [tableStyle]="{ 'min-width': '50rem' }"
+          styleClass="drop-shadow-lg rounded-b-md"
+        >
+          <ng-template pTemplate="header">
+            <tr class="flex">
+              <th pSortableColumn="orderId" class="flex items-center w-full text-white bg-[#825092] rounded-l-lg">
+                Order ID <p-sortIcon field="orderId" />
+              </th>
+    
+              <th pSortableColumn="date" class="flex items-center w-full text-white bg-[#825092]">
+                Date <p-sortIcon field="date" />
+              </th>
+    
+              <th pSortableColumn="paid" class="flex items-center w-full text-white bg-[#825092]">
+                Paid <p-sortIcon field="paid" />
+              </th>
+              <th pSortableColumn="status" class="flex items-center w-full text-white bg-[#825092]">
+                Status <p-sortIcon field="status" />
+              </th>
+    
+              <th pSortableColumn="items" class="flex items-center w-full text-white bg-[#825092]">
+                Items <p-sortIcon field="items" />
+              </th>
+    
+              <th class="flex items-center w-full text-white bg-[#825092] rounded-r-lg" pSortableColumn="total">
+                Total <p-sortIcon field="total" />
+              </th>
+            </tr>
+          </ng-template>
+    
+          <ng-template pTemplate="body" let-product>
+            <tr class="flex">
+              <td class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium">{{ product.orderId }}</td>
+              <td class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium">{{ product.date }}</td>
+              <td class="w-full">
+                <ng-container *ngIf="product.paid === 'Yes'; else notPaid">
+                  <p class="bg-green-100 text-green-500 px-4 py-1 rounded text-sm w-fit">Paid</p>
+                </ng-container>
+                <ng-template #notPaid>
+                  <p class="bg-red-100 text-red-500 px-4 py-1 rounded text-sm w-fit">Not paid</p>
+                </ng-template>
+              </td>
+    
+              <td class="w-full">
+                <div [ngSwitch]="product.status">
+                  <p *ngSwitchCase="'Delivered'" class="bg-green-100 text-green-600 px-4 py-1 rounded text-sm tracking-wide w-fit">
+                    Delivered
+                  </p>
+    
+                  <p *ngSwitchCase="'Pending'" class="bg-red-100 text-red-600 px-4 py-1 rounded text-sm tracking-wide w-fit">
+                    Pending
+                  </p>
+    
+                  <p *ngSwitchCase="'Cancelled'" class="bg-gray-100 text-gray-600 px-4 py-1 rounded text-sm tracking-wide w-fit">
+                    Cancelled
+                  </p>
+    
+                  <p *ngSwitchCase="'Returned'" class="bg-yellow-100 text-yellow-600 px-4 py-1 rounded text-sm tracking-wide w-fit">
+                    Returned
+                  </p>
+    
+                  <button *ngSwitchDefault class="bg-gray-500 text-white px-4 py-2 rounded">
+                    Unknown Status
+                  </button>
+                </div>
+              </td>
+    
+              <td class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium">{{ product.total }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </ng-container>
+    
+      <!-- Fallback message if no orders -->
+      <ng-template #noOrdersAvailable>
+        <div class="p-5 text-center text-gray-500 bg-white h-[260px] flex  items-center justify-center">
+          No Orders Available.
+        </div>
+      </ng-template>
     </div>
+    
+
   </div>
 </div>
 
@@ -243,69 +195,116 @@
   <h1 class="text-black text-[24px] font-bold pb-4">Delivery Addresses</h1>
 
   <div class="bg-white rounded-md drop-shadow-lg">
-    <div class="p-4 border-b border-[#EAEAEA] flex gap-5 items-center">
-      <h1 class="text-lg font-semibold text-black">1</h1>
-      <span class="text-base font-medium text-black tracking-wider"
-        >skyline villas 124, Karama,Uae near lulmall, 87956</span
+    <ng-container *ngIf="user.address.length > 0; else noAddress">
+      <div
+        *ngFor="let addr of user?.address; let i = index"
+        class="p-4 border-b border-[#EAEAEA] flex justify-between items-center"
       >
-    </div>
-    <div class="p-4 border-b border-[#EAEAEA] flex gap-5 items-center">
-      <h1 class="text-lg font-semibold text-black">2</h1>
-      <span class="text-base font-medium text-black tracking-wider"
-        >skyline villas 124, Karama,Uae near lulmall, 87956</span
-      >
-    </div>
+      <div class="flex gap-5 items-cetner">
+        <h1 class="text-lg font-semibold text-black">{{ i + 1 }}</h1>
+        <span class="text-base font-medium text-black tracking-wider">
+          {{ addr.flatname }}, {{ addr.street }}, {{ addr.city }},
+          {{ addr.country }} near {{ addr.landMark }}, {{ addr.pin }}
+        </span>
+
+      </div>
+
+      <p
+*ngIf="addr.delivery"
+      class="bg-red-100 text-red-600 px-4 py-1 rounded-full text-sm tracking-wide w-fit"
+    >
+      Default
+    </p>
+
+      </div>
+    </ng-container>
+
+    <ng-template #noAddress>
+      <div class="p-4 text-center text-gray-500">
+        No address available.
+      </div>
+    </ng-template>
   </div>
 </div>
+
+
 
 <div class="grid mt-7">
   <h1 class="text-black text-[24px] font-bold pb-4">Wishlist</h1>
 
   <div class="bg-white rounded-md drop-shadow-lg">
-    <div class="p-4 border-b border-[#EAEAEA] flex gap-5 items-center">
-      <img src="/assets/images/customer/product1.svg" class="w-10 h-10" />
-      <span class="text-base font-medium text-black tracking-wider w-96"
-        >Optimum Nutrition Gold Standard 100% Whey Protein</span
+    <!-- Check if wishlist items exist -->
+    <ng-container *ngIf="wishlist.items.length > 0; else noWishlist">
+      <div
+        *ngFor="let item of wishlist.items"
+        class="p-4 border-b border-[#EAEAEA] flex gap-5 items-center"
       >
-    </div>
-    <div class="p-4 border-b border-[#EAEAEA] flex gap-5 items-center">
-      <img src="/assets/images/customer/product1.svg" class="w-10 h-10" />
-      <span class="text-base font-medium text-black tracking-wider w-96"
-        >Optimum Nutrition Gold Standard 100% Whey Protein</span
-      >
-    </div>
+        <!-- Product Image -->
+        <img
+          [src]="item.productId.images[0] || '/assets/images/customer/product-placeholder.svg'"
+          class="w-10 h-10"
+          alt="Product image"
+        />
+        <!-- Product Name -->
+        <span class="text-base font-medium text-black tracking-wider w-96">
+          {{ item.productId.name }}
+        </span>
+      </div>
+    </ng-container>
+
+    <!-- Fallback for empty wishlist -->
+    <ng-template #noWishlist>
+      <div class="p-4 text-center text-gray-500">
+        No items in your wishlist.
+      </div>
+    </ng-template>
   </div>
 </div>
+
 
 <div class="grid mt-7">
   <h1 class="text-black text-[24px] font-bold pb-4">Cart</h1>
 
   <div class="bg-white rounded-md drop-shadow-lg">
-    <div class="p-4 border-b border-[#EAEAEA] flex gap-5 items-center">
-      <img src="/assets/images/customer/product1.svg" class="w-10 h-10" />
-      <span class="text-base font-medium text-black tracking-wider w-96"
-        >Optimum Nutrition Gold Standard 100% Whey Protein</span
+    <!-- Check if cart items exist -->
+    <ng-container *ngIf="cart.items.length > 0; else noCartItems">
+      <div
+        *ngFor="let item of cart.items"
+        class="p-4 border-b border-[#EAEAEA] flex gap-5 items-center"
       >
-      <h1 class="text-black text-base font-semibold">Quantity : 01</h1>
-    </div>
-    <div class="p-4 border-b border-[#EAEAEA] flex gap-5 items-center">
-      <img src="/assets/images/customer/product1.svg" class="w-10 h-10" />
-      <span class="text-base font-medium text-black tracking-wider w-96"
-        >Optimum Nutrition Gold Standard 100% Whey Protein</span
-      >
+        <!-- Product Image -->
+        <img
+          [src]="item.product.images[0] || '/assets/images/customer/product-placeholder.svg'"
+          class="w-10 h-10"
+          alt="Product image"
+        />
+        <!-- Product Name -->
+        <span class="text-base font-medium text-black tracking-wider w-96">
+          {{ item.product.name }}
+        </span>
+        <!-- Quantity -->
+        <h1 class="text-black text-base font-semibold">
+          Quantity: {{ item.quantity }}
+        </h1>
+      </div>
+    </ng-container>
 
-      <h1 class="text-black text-base font-semibold">Quantity : 01</h1>
-    </div>
+    <!-- Fallback for empty cart -->
+    <ng-template #noCartItems>
+      <div class="p-4 text-center text-gray-500">
+        Your cart is empty.
+      </div>
+    </ng-template>
   </div>
 </div>
+
 
 <div class="grid mt-7">
   <h1 class="text-black text-[24px] font-bold pb-4">Redeem History</h1>
   <div class="bg-white rounded-lg drop-shadow-lg">
+    <!-- Search bar -->
     <div class="p-3 py-5 rounded grid gap-5">
-      <div
-        class="flex items-center border border-gray-300 bg-white rounded-xl px-4 py-2"
-      >
+      <div class="flex items-center border border-gray-300 bg-white rounded-xl px-4 py-2">
         <span class="pi pi-search"></span>
         <input
           type="text"
@@ -315,132 +314,91 @@
       </div>
     </div>
 
-    <p-table
-      [value]="users"
-      [rows]="3"
-      [paginator]="true"
-      paginatorStyleClass="text-[#825092]"
-      [tableStyle]="{ 'min-width': '50rem' }"
-    >
-      <ng-template pTemplate="header">
-        <tr class="flex">
-          <th
-            pSortableColumn="orderId"
-            class="flex items-center w-full text-white bg-[#825092] rounded-l-lg"
-          >
-            Order ID <p-sortIcon field="orderId" />
-          </th>
+    <!-- Check if redeem has any data -->
+    <ng-container *ngIf="redeem.length > 0; else noRedeemData">
+      <p-table
+        [value]="redeem"
+        [rows]="3"
+        [paginator]="true"
+        paginatorStyleClass="text-[#825092]"
+        [tableStyle]="{ 'min-width': '50rem' }"
+      >
+        <ng-template pTemplate="header">
+          <tr class="flex">
+            <th pSortableColumn="orderId" class="flex items-center w-full text-white bg-[#825092] rounded-l-lg">
+              Order ID <p-sortIcon field="orderId" />
+            </th>
+            <th pSortableColumn="date" class="flex items-center w-full text-white bg-[#825092]">
+              Date <p-sortIcon field="date" />
+            </th>
+            <th pSortableColumn="paid" class="flex items-center w-full text-white bg-[#825092]">
+              Paid <p-sortIcon field="paid" />
+            </th>
+            <th pSortableColumn="status" class="flex items-center w-full text-white bg-[#825092]">
+              Status <p-sortIcon field="status" />
+            </th>
+            <th pSortableColumn="items" class="flex items-center w-full text-white bg-[#825092]">
+              Items <p-sortIcon field="items" />
+            </th>
+            <th class="flex items-center w-full text-white bg-[#825092] rounded-r-lg" pSortableColumn="total">
+              Total <p-sortIcon field="total" />
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-product>
+          <tr class="flex">
+            <td class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium">{{ product.orderId }}</td>
+            <td class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium">{{ product.date }}</td>
+            <td class="w-full">
+              <ng-container *ngIf="product.paid === 'Yes'; else notPaid">
+                <p class="bg-green-100 text-green-500 px-4 py-1 rounded text-sm w-fit">Paid</p>
+              </ng-container>
+              <ng-template #notPaid>
+                <p class="bg-red-100 text-red-500 px-4 py-1 rounded text-sm w-fit">Not paid</p>
+              </ng-template>
+            </td>
+            <td class="w-full">
+              <div [ngSwitch]="product.status">
+                <p *ngSwitchCase="'Delivered'" class="bg-green-100 text-green-600 px-4 py-1 rounded text-sm tracking-wide w-fit">
+                  Delivered
+                </p>
+                <p *ngSwitchCase="'Pending'" class="bg-red-100 text-red-600 px-4 py-1 rounded text-sm tracking-wide w-fit">
+                  Pending
+                </p>
+                <p *ngSwitchCase="'Cancelled'" class="bg-gray-100 text-gray-600 px-4 py-1 rounded text-sm tracking-wide w-fit">
+                  Cancelled
+                </p>
+                <p *ngSwitchCase="'Returned'" class="bg-yellow-100 text-yellow-600 px-4 py-1 rounded text-sm tracking-wide w-fit">
+                  Returned
+                </p>
+                <button *ngSwitchDefault class="bg-gray-500 text-white px-4 py-2 rounded">Unknown Status</button>
+              </div>
+            </td>
+            <td class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium">{{ product.total }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </ng-container>
 
-          <th
-            pSortableColumn="date"
-            class="flex items-center w-full text-white bg-[#825092]"
-          >
-            Date <p-sortIcon field="date" />
-          </th>
-
-          <!-- -->
-          <th
-            pSortableColumn="paid"
-            class="flex items-center w-full text-white bg-[#825092]"
-          >
-            Paid <p-sortIcon field="paid" />
-          </th>
-          <th
-            pSortableColumn="status"
-            class="flex items-center w-full text-white bg-[#825092]"
-          >
-            Status <p-sortIcon field="status" />
-          </th>
-
-          <th
-            pSortableColumn="items"
-            class="flex items-center w-full text-white bg-[#825092]"
-          >
-            Items<p-sortIcon field="items" />
-          </th>
-
-          <th
-            class="flex items-center w-full text-white bg-[#825092] rounded-r-lg"
-            pSortableColumn="total"
-          >
-            Total <p-sortIcon field="total" />
-          </th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-product>
-        <tr class="flex">
-          <td class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium">
-            {{ product.orderId }}
-          </td>
-          <td class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium">
-            {{ product.date }}
-          </td>
-          <td class="w-full">
-            <ng-container *ngIf="product.paid === 'Yes'; else notPaid">
-              <p
-                class="bg-green-100 text-green-500 px-4 py-1 rounded text-sm w-fit"
-              >
-                Paid
-              </p>
-            </ng-container>
-            <ng-template #notPaid>
-              <p
-                class="bg-red-100 text-red-500 px-4 py-1 rounded text-sm w-fit"
-              >
-                Not paid
-              </p>
-            </ng-template>
-          </td>
-
-          <td class="w-full">
-            <div [ngSwitch]="product.status">
-              <!-- Case: Delivered -->
-              <p
-                *ngSwitchCase="'Delivered'"
-                class="bg-green-100 text-green-600 px-4 py-1 rounded text-sm tracking-wide w-fit"
-              >
-                Delivered
-              </p>
-
-              <!-- Case: Pending -->
-              <p
-                *ngSwitchCase="'Pending'"
-                class="bg-red-100 text-red-600 px-4 py-1 rounded text-sm tracking-wide w-fit"
-              >
-                Pending
-              </p>
-
-              <!-- Case: Cancelled -->
-              <p
-                *ngSwitchCase="'Cancelled'"
-                class="bg-gray-100 text-gray-600 px-4 py-1 rounded text-sm tracking-wide w-fit"
-              >
-                Cancelled
-              </p>
-
-              <!-- Case: Returned -->
-              <p
-                *ngSwitchCase="'Returned'"
-                class="bg-yellow-100 text-yellow-600 px-4 py-1 rounded text-sm tracking-wide w-fit"
-              >
-                Returned
-              </p>
-
-              <!-- Default case (if status doesn't match any cases) -->
-              <button
-                *ngSwitchDefault
-                class="bg-gray-500 text-white px-4 py-2 rounded"
-              >
-                Unknown Status
-              </button>
-            </div>
-          </td>
-
-          <td class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium">
-            {{ product.total }}
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
+    <!-- Fallback when redeem array is empty -->
+    <ng-template #noRedeemData>
+      <div class="p-5 text-center text-gray-500">
+        No Redeem History Found.
+      </div>
+    </ng-template>
   </div>
 </div>
+
+
+
+
+
+<ng-template #noDataTemplate>
+  <div class="flex flex-col items-center justify-center py-5 h-60 mt-5 drop-shadow-lg rounded-b-md bg-white">
+    <img src="assets/no-po.png" alt="No purchase order" class="mx-auto w-20" />
+
+    <h4 class="my-2">There is no Order yet!</h4>
+
+    <!-- <i class="pi pi-spin pi-spinner text-3xl"></i> -->
+  </div>
+</ng-template>

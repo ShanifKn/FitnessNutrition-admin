@@ -163,11 +163,11 @@ export class ProductDetailComponent implements OnDestroy {
   onSubmit() {
     if (this.productForm.invalid) {
       this.productForm.markAllAsTouched(); // Marks all controls as touched to trigger validation
-  
+
       console.log(this.productForm.invalid);
-  
+
       const errorMessages: any[] = [];
-  
+
       // Validate individual form controls
       Object.keys(this.productForm.controls).forEach((key) => {
         const controlErrors = this.productForm.get(key)?.errors;
@@ -198,13 +198,13 @@ export class ProductDetailComponent implements OnDestroy {
           }
         }
       });
-  
+
       // Validate FormArray (additionals)
       const additionalsArray = this.productForm.get('additionals') as FormArray;
       additionalsArray.controls.forEach((group, index) => {
         const keyErrors = group.get('key')?.errors;
         const valueErrors = group.get('value')?.errors;
-  
+
         if (keyErrors) {
           if (keyErrors['required']) {
             errorMessages.push({
@@ -222,17 +222,15 @@ export class ProductDetailComponent implements OnDestroy {
             });
           }
         }
-  
       });
-  
+
       // Use MessageService to display the messages
       errorMessages.forEach((msg) => {
         this.messageService.add(msg);
       });
-  
+
       return;
     }
-  
 
     this.subscriptions.add(
       this.service
@@ -261,13 +259,20 @@ export class ProductDetailComponent implements OnDestroy {
     const categoryRequest = this.categoryService.getData();
     const productRequest = this.service.getDetails(_id);
     const productVariant = this.service.getVariantDetails(_id);
+    const dietary = this.categoryService.getDietary();
 
     this.subscriptions.add(
-      forkJoin([categoryRequest, productRequest, productVariant]).subscribe(
-        ([categoryResponse, productResponse, productVariant]) => {
+      forkJoin([
+        categoryRequest,
+        productRequest,
+        productVariant,
+        dietary,
+      ]).subscribe(
+        ([categoryResponse, productResponse, productVariant, dietary]) => {
           // Handle category data
           this.categories = categoryResponse.data;
           this.filteredCategories = categoryResponse.data;
+          this.dietary = dietary.data;
 
           if (productVariant.data) {
             this.variants = productVariant.data.products || [];

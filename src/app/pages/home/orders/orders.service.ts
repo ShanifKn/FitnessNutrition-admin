@@ -30,6 +30,7 @@ export class OrdersService {
   }
 
   getOrder(_id: string): Observable<{ data: Order }> {
-    return this.httpClient.get<{ data: Order }>(routes.getOrdersList);
+    return this.httpClient.get<{ data: Order }>(routes.getOrder(_id));
   }
+  
 }

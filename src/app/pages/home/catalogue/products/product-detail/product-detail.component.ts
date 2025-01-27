@@ -164,8 +164,6 @@ export class ProductDetailComponent implements OnDestroy {
     if (this.productForm.invalid) {
       this.productForm.markAllAsTouched(); // Marks all controls as touched to trigger validation
 
-      console.log(this.productForm.invalid);
-
       const errorMessages: any[] = [];
 
       // Validate individual form controls

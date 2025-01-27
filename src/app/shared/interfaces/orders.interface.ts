@@ -39,7 +39,7 @@ export interface Order {
   billingInfo: BillingInfo;
   reFund: boolean;
   _id: string;
-  user: string;
+  user: any;
   product: Product[];
   paymentMethod: string;
   payment: boolean;
@@ -48,10 +48,11 @@ export interface Order {
   discountAmount: number;
   orderComfirmed: string; // If this is always "pending" or similar states, you can use a union type like `"pending" | "confirmed"`.
   total: number;
-  createdAt: string; // Use `Date` if you plan to parse these strings into actual `Date` objects.
-  updatedAt: string; // Same as above.
+  createdAt: any; // Use `Date` if you plan to parse these strings into actual `Date` objects.
+  updatedAt: any; // Same as above.
   orderNumber: string;
   __v: number;
   salesorderId: string;
   invoiceNumber?: string;
+  totalOrder: number;
 }

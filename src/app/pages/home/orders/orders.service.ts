@@ -1,11 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Order, OrderCount } from '../../../shared/interfaces/orders.interface';
 
-import {
-  OrderCount,
-  Order,
-} from '../../../../shared/interfaces/orders.interface';
 
 const routes = {
   getCount: '/orders-count',
@@ -25,14 +22,14 @@ export class OrdersService {
   }
 
   getOrders(): Observable<{ data: Order[] }> {
-    return this.httpClient.get<{ data: order[] }>(routes.getOrdersList);
+    return this.httpClient.get<{ data: Order[] }>(routes.getOrdersList);
   }
 
   getReturnOrders(): Observable<{ data: Order[] }> {
-    return this.httpClient.get<{ data: order[] }>(routes.getReturnList);
+    return this.httpClient.get<{ data: Order[] }>(routes.getReturnList);
   }
 
   getOrder(_id: string): Observable<{ data: Order }> {
-    return this.httpClient.get<{ data: order }>(routes.getOrdersList);
+    return this.httpClient.get<{ data: Order }>(routes.getOrdersList);
   }
 }

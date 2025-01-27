@@ -53,4 +53,5 @@ export interface Order {
   orderNumber: string;
   __v: number;
   salesorderId: string;
+  invoiceNumber?: string;
 }

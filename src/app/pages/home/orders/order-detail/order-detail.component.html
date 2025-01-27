@@ -286,12 +286,142 @@
 </div>
 
 
+<!-- Main Update Order Dialog -->
 <p-dialog
   header="Update Order"
   [(visible)]="orderUpdated"
   [style]="{ width: '40rem' }"
   class="p-0"
 >
+  <div class="flex flex-col justify-center w-full gap-4 mt-2">
+    <!-- Status Dropdown -->
+    <div>
+      <h1 class="text-black text-lg font-medium pb-1">Status</h1>
+      <p-dropdown
+        [options]="orderUpdates"
+        optionLabel="name"
+        [(ngModel)]="selectedOption"
+        [filter]="true"
+        filterBy="name"
+        [showClear]="true"
+        placeholder="Select status"
+        styleClass="bg-[#F6F7F9] w-full h-12 border border-gray-200 rounded-lg no-focus-ring"
+        appendTo="body"
+        class="w-full"
+      >
+        <ng-template pTemplate="selectedItem" let-selectedOption>
+          <div class="flex align-items-center gap-2">
+            <div>{{ selectedOption?.name }}</div>
+          </div>
+        </ng-template>
+      </p-dropdown>
+    </div>
 
+    <!-- Conditional Inputs -->
+    <div *ngIf="selectedOption?.name === 'Confirmed'">
+      <h1 class="text-black text-lg font-medium pb-1">Invoice No</h1>
+      <input
+        type="text"
+        [(ngModel)]="invoiceNumber"
+        class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
+        pInput
+        placeholder="Enter Invoice Number"
+      />
+    </div>
+  </div>
 
+  <!-- Action Buttons -->
+  <div class="flex gap-1 mx-auto w-full justify-center mt-5">
+    <button
+      class="text-[#825092] text-lg border border-[#825092] px-5 py-1 w-24 rounded-lg"
+      (click)="cancel()"
+    >
+      Cancel
+    </button>
+    <button
+      class="text-white bg-[#825092] text-lg px-5 py-1 w-24 rounded-lg"
+      (click)="updateOrder()"
+    >
+      Sure
+    </button>
+  </div>
+</p-dialog>
+
+<!-- Return Product Dialog -->
+<p-dialog
+  header="Select Product to Return"
+  [(visible)]="returnDialogVisible"
+  [style]="{ width: '70rem' }"
+  class="p-0"
+>
+  <div class="flex flex-col justify-center w-full gap-4 mt-2">
+    <!-- Product Table -->
+    <p-table
+      [value]="items"
+      [(selection)]="selectedProduct"
+      [paginator]="true"
+      [rows]="5"
+      [showCurrentPageReport]="true"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
+      class="custom-table bg-gray-500"
+    >
+      <ng-template pTemplate="header">
+        <tr>
+          <th style="width: 3rem; border-bottom: 2px solid #ccc;"  class="bg-[#854D94] text-white">
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          </th>
+          <th style="border-bottom: 2px solid #ccc; text-align: left;" class="bg-[#854D94] text-white">Name</th>
+          <th style="border-bottom: 2px solid #ccc; text-align: left;" class="bg-[#854D94] text-white">Price</th>
+          <th style="border-bottom: 2px solid #ccc; text-align: left;" class="bg-[#854D94] text-white">
+            Quantity
+          </th>
+          <th style="border-bottom: 2px solid #ccc; text-align: left;" class="bg-[#854D94] text-white">Avaiable Stock</th>
+          <th style="border-bottom: 2px solid #ccc; text-align: left;" class="bg-[#854D94] text-white">Action</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-product>
+        <tr
+          [ngClass]="{ 'hover-row': selectedProduct === product }"
+          style="border-bottom: 1px solid #ddd;" class="bg-gray-100"
+        >
+          <td  class="bg-gray-100">
+            <p-tableCheckbox [value]="product"></p-tableCheckbox>
+          </td>
+          <td  class="bg-gray-100 " style="padding: 10px;">{{ product.name }}</td>
+          <td  class="bg-gray-100 text-center" style="padding: 10px;">AED {{ product.price }}</td>
+          <td  class="bg-gray-100 text-center" style="padding: 10px;">{{ product.quantity }}</td>
+          <td  class="bg-gray-100 text-center" style="padding: 10px;">{{ product.stock }}</td>
+          <td class="w-full flex gap-5">
+  
+            <div
+              class="w-9 h-9 rounded-full flex justify-center items-center bg-[#FA3E62] cursor-pointer" >
+              <i class="pi pi-times text-white" style="font-size: 1.2rem"></i>
+            </div>
+  
+            <div
+              class="w-9 h-9 rounded-full flex justify-center items-center bg-[#05CA40] cursor-pointer">
+              <i class="pi pi-check text-white" style="font-size: 1.2rem"></i>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="flex gap-1 mx-auto w-full justify-center mt-5">
+    <button
+      class="text-[#825092] text-lg border border-[#825092] px-5 py-1 w-24 rounded-lg"
+      (click)="cancel()"
+    >
+      Cancel
+    </button>
+    <button
+      class="text-white bg-[#825092] text-lg px-5 py-1 w-24 rounded-lg"
+      (click)="confirmReturn()"
+      [disabled]="!selectedProduct"
+    >
+      Confirm
+    </button>
+  </div>
 </p-dialog>

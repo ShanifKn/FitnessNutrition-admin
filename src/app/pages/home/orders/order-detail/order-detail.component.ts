@@ -8,11 +8,22 @@ import { Order } from '../../../../shared/interfaces/orders.interface';
 import { OrdersService } from '../orders.service';
 import { ActivatedRoute } from '@angular/router';
 import { DialogModule } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
+import { FormsModule } from '@angular/forms';
+import { TableModule } from 'primeng/table';
 
 @Component({
   selector: 'app-order-detail',
   standalone: true,
-  imports: [CommonModule, OrderTrackingComponent, ButtonModule, DialogModule],
+  imports: [
+    CommonModule,
+    // OrderTrackingComponent,
+    ButtonModule,
+    DialogModule,
+    DropdownModule,
+    FormsModule,
+    TableModule,
+  ],
   templateUrl: './order-detail.component.html',
   styleUrl: './order-detail.component.scss',
   providers: [OrdersService],
@@ -34,6 +45,12 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
   totalAmount: number = 0;
   orderDetails: any = {};
   timeline: any = [];
+
+  selectedOption: any;
+  invoiceNumber: string = '';
+  reason: string = '';
+  returnDialogVisible = false;
+  selectedProduct: any = null;
 
   constructor() {}
 
@@ -58,6 +75,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
           price: product.price,
           image: product.image,
           amount: product.quantity * product.price,
+          stock: product.productId.stock_on_hand,
         }));
 
         // Calculate totals
@@ -71,6 +89,31 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
 
   showDialog() {
     this.orderUpdated = !this.orderUpdated;
+  }
+
+  orderUpdates = [
+    { name: 'Confirmed', code: 'confirmed' },
+    { name: 'Delivered', code: 'delivered' },
+    { name: 'Cancelled', code: 'cancelled' },
+    { name: 'Returned', code: 'returned' },
+  ];
+
+  cancel() {
+    this.orderUpdated = false;
+    this.returnDialogVisible = false;
+  }
+
+  updateOrder() {
+    if (this.selectedOption?.name === 'Confirmed') {
+      console.log('Invoice Number:', this.invoiceNumber);
+    } else if (this.selectedOption?.name === 'Returned') {
+      this.returnDialogVisible = true;
+    }
+  }
+
+  confirmReturn() {
+    console.log('Selected Product:', this.selectedProduct);
+    this.returnDialogVisible = false;
   }
 
   ngOnDestroy() {

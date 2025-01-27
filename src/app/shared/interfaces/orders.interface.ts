@@ -1,3 +1,5 @@
+import { Products } from "./product.interface";
+
 export interface OrderCount {
   pendingOrders: number;
   cancelledOrders: number;
@@ -13,13 +15,14 @@ interface BillingInfo {
 }
 
 interface Product {
-  productId: string;
+  productId: Products;
   quantity: string; // If this should be a number, change it to `number`.
   price: number;
   stock: number;
   image: string;
   name: string;
   _id: string;
+  status: string;
 }
 
 interface ShippingAddress {

@@ -1,0 +1,31 @@
+/* Table Borders and Padding */
+.custom-table .p-datatable-tbody > tr > td {
+  border: 1px solid #ddd;
+  padding: 10px;
+}
+
+/* Header Row Styling */
+.custom-table .p-datatable-thead > tr > th {
+  background-color: #f8f9fa;
+  border-bottom: 2px solid #ccc;
+  text-align: left;
+  padding: 10px;
+}
+
+/* Hover Effect */
+.custom-table .p-datatable-tbody > tr:hover {
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
+
+/* Highlight Selected Row */
+.custom-table .p-datatable-tbody > tr.hover-row {
+  background-color: #e7f4ff;
+  border: 1px solid #70a6ff;
+}
+
+/* Paginator Styling */
+.custom-table .p-paginator {
+  border-top: 1px solid #ddd;
+  padding: 10px;
+}

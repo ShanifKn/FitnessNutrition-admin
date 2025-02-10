@@ -10,4 +10,7 @@ import { Component, Input } from '@angular/core';
 })
 export class OrderTrackingComponent {
   @Input() timeline: Array<any> = [];
+
+  constructor() {
+  }
 }

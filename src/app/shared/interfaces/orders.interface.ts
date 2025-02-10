@@ -1,4 +1,4 @@
-import { Products } from "./product.interface";
+import { Products } from './product.interface';
 
 export interface OrderCount {
   pendingOrders: number;
@@ -56,6 +56,7 @@ export interface Order {
   orderNumber: string;
   __v: number;
   salesorderId: string;
-  invoiceNumber?: string;
+  invoiceId: string;
   totalOrder: number;
+  remark?: string;
 }

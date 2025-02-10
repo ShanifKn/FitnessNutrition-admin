@@ -2,16 +2,16 @@
       <li *ngFor="let item of timeline; let i = index" [ngClass]="{
       'after:w-full': i < timeline.length - 1,
       'after:w-0': i === timeline.length - 1,
-      'after:bg-[#AA62EC]  ': item.status === 'completed',
-      'after:bg-gray-300 ': item.status !== 'completed'
+      'after:bg-[#AA62EC]  ': item.completed === true,
+      'after:bg-gray-300 ': item.completed === true
     }"
             class="relative flex w-full justify-center text-base font-bold text-black after:absolute after:left-16 after:top-3 after:inline-block  after:w-full after:h-0.5  after:content-[''] sm:after:left-20 md:after:left-28 lg:after:left-24 lg:after:top-[2.8rem] 2xl:after:top-[3.2rem] 3xl:after:left-[7.5rem]">
             <div
                   class="z-10 flex flex-col items-center text-center sm:whitespace-nowrap gap-3 text-xs 2xl:text-sm">
-                  {{ item.step }}
-                  <span [ngClass]="item.status === 'completed' ? 'border-[#AA62EC] ' : item.status === 'cancelled' ? 'border-red-500' : 'border-gray-300' "
+                  {{ item.status }}
+                  <span [ngClass]="item.completed === true ? 'border-[#AA62EC] ' : item.status === 'Cancelled' ? 'border-red-500' : 'border-gray-300' "
                         class="z-1 shadow-1 flex h-3 w-3 items-center justify-center rounded-full border-4 p-3 2xl:p-4 text-white bg-white">
-                        <span [ngClass]="item.status === 'completed' ? 'bg-[#AA62EC]' : item.status === 'cancelled' ? 'bg-red-500' : 'bg-white' "
+                        <span [ngClass]="item.completed === true ? 'bg-[#AA62EC]' : item.status === 'Cancelled' ? 'bg-red-500' : 'bg-white' "
                               class="flex h-1 w-1 items-center justify-center rounded-full  p-2.5 2xl:p-3">
                               <i class="pi pi-check text-white"
                                     style="font-size: 0.9rem"></i>
@@ -19,10 +19,27 @@
                   </span>
                   <div class="flex flex-col items-end">
                         <span
-                              class="text-center text-xs 2xl:text-sm font-semibold text-black">{{
-                              item.date }}</span>
-                        <span class="text-xs font-bold text-[#B3B3B3]">{{ item.time
-                              }}</span>
+                        class="text-center text-xs 2xl:text-sm font-semibold text-black"
+                        *ngIf="item.date; else processingDate">
+                        {{ item.date | date }}
+                      </span>
+                      <ng-template #processingDate>
+                        <span class="text-center text-xs 2xl:text-sm font-semibold text-black">
+                          Processing...
+                        </span>
+                      </ng-template>
+                      
+                      <span
+                        class="text-xs font-bold text-[#B3B3B3]"
+                        *ngIf="item.time.trim() !== ''; else processingTime">
+                        {{ item.time }}
+                      </span>
+                      <ng-template #processingTime>
+                        <span class="text-xs font-bold text-[#B3B3B3]">
+                          Processing...
+                        </span>
+                      </ng-template>
+                      
                   </div>
             </div>
       </li>

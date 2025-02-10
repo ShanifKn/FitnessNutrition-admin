@@ -229,7 +229,7 @@
 
 
 
-<div class="grid mt-7">
+<div class="grid mt-7" *ngIf="wishlist.items">
   <h1 class="text-black text-[24px] font-bold pb-4">Wishlist</h1>
 
   <div class="bg-white rounded-md drop-shadow-lg">
@@ -262,7 +262,7 @@
 </div>
 
 
-<div class="grid mt-7">
+<div class="grid mt-7" *ngIf="cart.items">
   <h1 class="text-black text-[24px] font-bold pb-4">Cart</h1>
 
   <div class="bg-white rounded-md drop-shadow-lg">

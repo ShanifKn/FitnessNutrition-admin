@@ -80,7 +80,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
           price: product.price,
           image: product.image,
           amount: product.quantity * product.price,
-          stock: product.productId.stock_on_hand,
+          stock: product.stock,
           status: product.status,
         }));
 
@@ -95,9 +95,10 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
 
         if (statusResponse.data) {
           this.orderTimeline = statusResponse.data.orderTimeline;
-
         }
         // Store or use the status data
+
+        this.returnDialogVisible = false;
       })
     );
   }

@@ -27,7 +27,6 @@ export class CustomersListComponent implements OnDestroy {
   getData() {
     this.subscription.add(
       this.service.getCustomers().subscribe(({ data }) => {
-        console.log(data);
         this.users = data;
       })
     );

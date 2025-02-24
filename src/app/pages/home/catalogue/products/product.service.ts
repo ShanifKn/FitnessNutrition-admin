@@ -6,9 +6,18 @@ import {
   Variant,
 } from '../../../../shared/interfaces/product.interface';
 
+interface Response {
+  totalProducts: number;
+  product: Products[];
+  totalPages: number;
+}
+
 const routes = {
   getCount: '/get-count',
-  getProducts: '/get-products',
+  // getProducts: '/get-products',
+
+  getProducts: (pageIndex: number, itemsPerPage: number) =>
+    `/get-products?page=${pageIndex}&limit=${itemsPerPage}`,
   getPendingProducts: '/get-pending',
   getDetails: (id: string) => `/product/${id}`,
   updatedProduct: '/updateProduct',
@@ -27,8 +36,13 @@ export class ProductService {
     return this.httpClient.get<{ data: string }>(routes.getCount);
   }
 
-  getProduct(): Observable<{ data: Products[] }> {
-    return this.httpClient.get<{ data: Products[] }>(routes.getProducts);
+  getProduct(
+    pageIndex: number,
+    itemsPerPage: number
+  ): Observable<{ data: Response }> {
+    return this.httpClient.get<{ data: Response }>(
+      routes.getProducts(pageIndex, itemsPerPage)
+    );
   }
 
   getPendingProduct(): Observable<{ data: Products[] }> {
@@ -57,8 +71,9 @@ export class ProductService {
     );
   }
 
-
   getVariantDetails(_id: string): Observable<{ data: Variant }> {
-    return this.httpClient.get<{ data: Variant }>(routes.getVaraintDetails(_id));
+    return this.httpClient.get<{ data: Variant }>(
+      routes.getVaraintDetails(_id)
+    );
   }
 }

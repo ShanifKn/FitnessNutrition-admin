@@ -33,12 +33,23 @@ export class ProductListComponent implements OnDestroy {
   sidebarVisible: boolean = false;
   products: Products[] = [];
   searchText: string = '';
+  pageIndex: number = 1; // For tracking the current page
+  itemsPerPage: number = 5; // Number of items per page
+  first = 0;
+  totalProducts: number = 0;
+  pageLinkSize: number = 5;
 
   private subscriptions = new Subscription();
 
   services = inject(ProductService);
 
   constructor() {
+    const storedPageIndex = localStorage.getItem('pageIndex');
+
+    if (storedPageIndex) {
+      this.first = parseInt(storedPageIndex, 10) * this.itemsPerPage;
+    }
+
     this.getData();
   }
 
@@ -46,12 +57,25 @@ export class ProductListComponent implements OnDestroy {
     this.subscriptions.add(
       forkJoin({
         pendingCount: this.services.getCount(),
-        products: this.services.getProduct(),
+        products: this.services.getProduct(this.pageIndex, this.itemsPerPage),
       }).subscribe(({ pendingCount, products }) => {
         this.pendingNumber = pendingCount.data;
-        this.products = products.data;
+        this.products = products.data.product;
+        this.totalProducts = products.data.totalProducts;
+
+        console.log(this.totalProducts);
       })
     );
+  }
+
+  onPageChange(event: any) {
+    this.first = event.first; // Update the first row index
+    const currentPage = event.first / event.rows; // Calculate current page index
+    localStorage.setItem('pageIndex', currentPage.toString()); // Store page index
+  }
+
+  navigateToDetail() {
+    localStorage.setItem('pageIndex', this.pageIndex.toString());
   }
 
   ngOnDestroy() {

@@ -1,0 +1,35 @@
+::ng-deep .custom-confirm-dialog {
+      .p-dialog-footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 1rem; // This adds a 1rem gap between the buttons
+      }
+    
+      .p-button {
+        border-radius: 4px;
+        padding: 0.5rem 1rem;
+        transition: all 0.3s ease;
+      }
+    
+      .p-button-danger {
+        background-color: #ffffff;
+        color: #dc3545;
+        border: 1px solid #dc3545;
+    
+        &:hover {
+          background-color: #dc3545;
+          color: #ffffff;
+        }
+      }
+    
+      .p-button-primary {
+        background-color: #854d94;
+        color: #ffffff;
+        border: 1px solid #854d94;
+    
+        &:hover {
+          background-color: #6a3d76;
+          border-color: #6a3d76;
+        }
+      }
+    }

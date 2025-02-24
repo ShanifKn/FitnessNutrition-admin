@@ -64,7 +64,6 @@ export class DriverListComponent implements OnDestroy {
   getData() {
     this.subscriptions.add(
       this.services.getList().subscribe(({ data }) => {
-        console.log(data);
         this.driverList = data;
       })
     );

@@ -27,12 +27,15 @@
     </div>
 
     <p-table
-      [value]="products | search: searchText : 'name'"
-      [rowsPerPageOptions]="[5, 10, 20]"
-      [rows]="10"
-      [paginator]="true"
-      class="drop-shadow-lg"
-    >
+    [value]="products | search : searchText : 'name'"
+    [first]="(pageIndex - 1) * itemsPerPage"
+    [rows]="itemsPerPage"
+    [totalRecords]="totalProducts"
+    [rowsPerPageOptions]="[5, 10, 20, 50, 100]"
+    [paginator]="true"
+    class="drop-shadow-lg"
+    (onPage)="onPageChange($event)"
+  >
       <ng-template pTemplate="header">
         <tr class="flex">
           <th
@@ -128,6 +131,7 @@
           </td>
 
           <td
+            (click)="navigateToDetail()"
             class="w-72 flex justify-center cursor-pointer"
             [routerLink]="['/catalogue/products/detail', product._id]"
           >

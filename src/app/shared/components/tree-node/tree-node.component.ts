@@ -1,20 +1,25 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ToastModule } from 'primeng/toast';
 
 interface TreeNode {
   title: string;
   subCategory: TreeNode[];
   level: number;
   selected?: boolean;
+  visible?: boolean;
 }
 
 @Component({
   selector: 'app-tree-node',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ConfirmDialogModule],
   templateUrl: './tree-node.component.html',
   styleUrl: './tree-node.component.scss',
+  providers: [ConfirmationService],
 })
 export class TreeNodeComponent {
   @Input() node!: TreeNode;
@@ -23,12 +28,17 @@ export class TreeNodeComponent {
     parentNode: TreeNode;
     childName: string;
   }>();
-  @Output() deleteParent = new EventEmitter<any>();
+  @Output() deleteParent = new EventEmitter<TreeNode>(); // Updated to emit the current node
 
   isExpanded = false;
   isEditing = false;
   showAddChildInput = false;
   newChildName = '';
+
+  constructor(
+    private confirmationService: ConfirmationService,
+    private messageService: MessageService
+  ) {}
 
   // Expand or collapse subCategory
   toggleExpand() {
@@ -56,21 +66,47 @@ export class TreeNodeComponent {
     this.isEditing = false;
   }
 
-  deleteNode() {
-    this.deleteParent.emit(this.node); // Emit the current node to the parent for deletion
+  // Emit delete event to parent
+  removeNode(data: any) {
+    this.deleteParent.emit(this.node); // Emit event so the parent can handle deletion
   }
 
-  deleteChildNode(childNode: any) {
-    const index = this.node.subCategory.indexOf(childNode);
-    if (index !== -1) {
-      this.node.subCategory.splice(index, 1); // Remove the child node from the subCategory array
-    }
+  confirm12(event: Event, childNode: TreeNode) {
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Do you want to delete this Category?',
+      header: 'Delete Confirmation',
+      icon: 'pi pi-info-circle',
+      acceptButtonStyleClass: 'p-button-danger p-button-text',
+      rejectButtonStyleClass: 'p-button-text p-button-text',
+      acceptIcon: 'none',
+      rejectIcon: 'none',
+
+      accept: () => {
+        childNode.visible = false;
+
+        if (childNode.subCategory && Array.isArray(childNode.subCategory)) {
+          childNode.subCategory = childNode.subCategory.map((sub) => ({
+            ...sub,
+            visible: false,
+          }));
+        }
+      },
+      reject: () => {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Rejected',
+          detail: 'You have rejected',
+        });
+      },
+    });
   }
+
+  hideChildNode(childNode: TreeNode) {}
 
   saveParentNode() {
-    this.saveNode.emit(this.node); // Emit updated node to the parent
-
-    this.isEditing = false; // Exit edit mode
+    this.saveNode.emit(this.node);
+    this.isEditing = false;
   }
 
   allData: any[] = [];

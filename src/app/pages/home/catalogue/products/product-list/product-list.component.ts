@@ -10,6 +10,8 @@ import { PendingListComponent } from '../pending-list/pending-list.component';
 import { Products } from '../../../../../shared/interfaces/product.interface';
 import { SearchPipe } from '../../../../../shared/pipes/search.pipe';
 import { FormsModule } from '@angular/forms';
+import { PaginatorModule } from 'primeng/paginator';
+import { Router, NavigationStart } from '@angular/router';
 
 @Component({
   selector: 'app-product-list',
@@ -23,6 +25,7 @@ import { FormsModule } from '@angular/forms';
     PendingListComponent,
     SearchPipe,
     FormsModule,
+    PaginatorModule,
   ],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss',
@@ -34,22 +37,25 @@ export class ProductListComponent implements OnDestroy {
   products: Products[] = [];
   searchText: string = '';
   pageIndex: number = 1; // For tracking the current page
-  itemsPerPage: number = 5; // Number of items per page
+  itemsPerPage: number = 7; // Number of items per page
   first = 0;
   totalProducts: number = 0;
   pageLinkSize: number = 5;
 
   private subscriptions = new Subscription();
 
+
   services = inject(ProductService);
 
-  constructor() {
-    const storedPageIndex = localStorage.getItem('pageIndex');
+  constructor(private router: Router) {
 
-    if (storedPageIndex) {
-      this.first = parseInt(storedPageIndex, 10) * this.itemsPerPage;
+    const savedPage = localStorage.getItem('currentPage');
+    if (savedPage) {
+      setTimeout(() => {
+        this.first = +savedPage; // Set to the saved page
+      });
     }
-
+  
     this.getData();
   }
 
@@ -57,21 +63,16 @@ export class ProductListComponent implements OnDestroy {
     this.subscriptions.add(
       forkJoin({
         pendingCount: this.services.getCount(),
-        products: this.services.getProduct(this.pageIndex, this.itemsPerPage),
+        products: this.services.getProduct(),
       }).subscribe(({ pendingCount, products }) => {
         this.pendingNumber = pendingCount.data;
-        this.products = products.data.product;
-        this.totalProducts = products.data.totalProducts;
-
-        console.log(this.totalProducts);
+        this.products = products.data;
       })
     );
   }
 
   onPageChange(event: any) {
-    this.first = event.first; // Update the first row index
-    const currentPage = event.first / event.rows; // Calculate current page index
-    localStorage.setItem('pageIndex', currentPage.toString()); // Store page index
+    localStorage.setItem('currentPage', event.first.toString());
   }
 
   navigateToDetail() {

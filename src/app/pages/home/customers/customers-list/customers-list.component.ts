@@ -1,7 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TableModule } from 'primeng/table';
+import { CustomerService } from '../customer.service';
+import { Subscription } from 'rxjs';
+import { Customer } from '../../../../shared/interfaces/data.interface';
 
 @Component({
   selector: 'app-customers-list',
@@ -9,168 +12,27 @@ import { TableModule } from 'primeng/table';
   imports: [TableModule, CommonModule, RouterModule],
   templateUrl: './customers-list.component.html',
   styleUrl: './customers-list.component.scss',
+  providers: [CustomerService],
 })
-export class CustomersListComponent {
-  users: any[] = [
-    {
-      _id: '45784',
-      name: 'Shuaib',
-      email: 'abcd@gmail.com',
-      registered: '16-08-2024',
-      total: 'AED 1050.00',
-      status: true,
-    },
-    {
-      _id: '45890',
-      name: 'Ayesha',
-      email: 'ayesha@example.com',
-      registered: '20-09-2024',
-      total: 'AED 890.50',
-      status: true,
-    },
-    {
-      _id: '45987',
-      name: 'Omar',
-      email: 'omar123@yahoo.com',
-      registered: '05-10-2024',
-      total: 'AED 760.00',
-      status: false,
-    },
-    {
-      _id: '46045',
-      name: 'Fatima',
-      email: 'fatima.khan@outlook.com',
-      registered: '12-07-2024',
-      total: 'AED 1200.00',
-      status: true,
-    },
-    {
-      _id: '46123',
-      name: 'Ahmed',
-      email: 'ahmed.al@xyz.com',
-      registered: '28-06-2024',
-      total: 'AED 540.75',
-      status: false,
-    },
-    {
-      _id: '45784',
-      name: 'Shuaib',
-      email: 'abcd@gmail.com',
-      registered: '16-08-2024',
-      total: 'AED 1050.00',
-      status: true,
-    },
-    {
-      _id: '45890',
-      name: 'Ayesha',
-      email: 'ayesha@example.com',
-      registered: '20-09-2024',
-      total: 'AED 890.50',
-      status: true,
-    },
-    {
-      _id: '45987',
-      name: 'Omar',
-      email: 'omar123@yahoo.com',
-      registered: '05-10-2024',
-      total: 'AED 760.00',
-      status: false,
-    },
-    {
-      _id: '46045',
-      name: 'Fatima',
-      email: 'fatima.khan@outlook.com',
-      registered: '12-07-2024',
-      total: 'AED 1200.00',
-      status: true,
-    },
-    {
-      _id: '46123',
-      name: 'Ahmed',
-      email: 'ahmed.al@xyz.com',
-      registered: '28-06-2024',
-      total: 'AED 540.75',
-      status: false,
-    },
-    {
-      _id: '45784',
-      name: 'Shuaib',
-      email: 'abcd@gmail.com',
-      registered: '16-08-2024',
-      total: 'AED 1050.00',
-      status: true,
-    },
-    {
-      _id: '45890',
-      name: 'Ayesha',
-      email: 'ayesha@example.com',
-      registered: '20-09-2024',
-      total: 'AED 890.50',
-      status: true,
-    },
-    {
-      _id: '45987',
-      name: 'Omar',
-      email: 'omar123@yahoo.com',
-      registered: '05-10-2024',
-      total: 'AED 760.00',
-      status: false,
-    },
-    {
-      _id: '46045',
-      name: 'Fatima',
-      email: 'fatima.khan@outlook.com',
-      registered: '12-07-2024',
-      total: 'AED 1200.00',
-      status: true,
-    },
-    {
-      _id: '46123',
-      name: 'Ahmed',
-      email: 'ahmed.al@xyz.com',
-      registered: '28-06-2024',
-      total: 'AED 540.75',
-      status: false,
-    },
-    {
-      _id: '45784',
-      name: 'Shuaib',
-      email: 'abcd@gmail.com',
-      registered: '16-08-2024',
-      total: 'AED 1050.00',
-      status: true,
-    },
-    {
-      _id: '45890',
-      name: 'Ayesha',
-      email: 'ayesha@example.com',
-      registered: '20-09-2024',
-      total: 'AED 890.50',
-      status: true,
-    },
-    {
-      _id: '45987',
-      name: 'Omar',
-      email: 'omar123@yahoo.com',
-      registered: '05-10-2024',
-      total: 'AED 760.00',
-      status: false,
-    },
-    {
-      _id: '46045',
-      name: 'Fatima',
-      email: 'fatima.khan@outlook.com',
-      registered: '12-07-2024',
-      total: 'AED 1200.00',
-      status: true,
-    },
-    {
-      _id: '46123',
-      name: 'Ahmed',
-      email: 'ahmed.al@xyz.com',
-      registered: '28-06-2024',
-      total: 'AED 540.75',
-      status: false,
-    },
-  ];
+export class CustomersListComponent implements OnDestroy {
+  private service = inject(CustomerService);
+  private subscription = new Subscription();
+
+  users: Customer[] = [];
+
+  constructor() {
+    this.getData();
+  }
+
+  getData() {
+    this.subscription.add(
+      this.service.getCustomers().subscribe(({ data }) => {
+        this.users = data;
+      })
+    );
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
 }

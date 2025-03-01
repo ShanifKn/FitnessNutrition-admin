@@ -57,8 +57,9 @@ export class ProductService {
     );
   }
 
-
   getVariantDetails(_id: string): Observable<{ data: Variant }> {
-    return this.httpClient.get<{ data: Variant }>(routes.getVaraintDetails(_id));
+    return this.httpClient.get<{ data: Variant }>(
+      routes.getVaraintDetails(_id)
+    );
   }
 }

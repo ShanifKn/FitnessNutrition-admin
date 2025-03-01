@@ -1,7 +1,14 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { TableModule } from 'primeng/table';
+import { Subscription } from 'rxjs';
+import {
+  Cart,
+  User,
+  Wishlist,
+} from '../../../../shared/interfaces/data.interface';
+import { CustomerService } from '../customer.service';
 
 @Component({
   selector: 'app-customer-detail',
@@ -9,58 +16,29 @@ import { TableModule } from 'primeng/table';
   imports: [TableModule, CommonModule, RouterModule],
   templateUrl: './customer-detail.component.html',
   styleUrl: './customer-detail.component.scss',
+  providers: [CustomerService],
 })
-export class CustomerDetailComponent {
-  users: any[] = [
-    {
-      orderId: '#45890',
-      date: '10-10-2024',
-      paid: 'Yes',
-      status: 'Delivered',
-      items: 3,
-      total: 'AED 750.00',
-    },
-    {
-      orderId: '#45921',
-      date: '05-10-2024',
-      paid: 'No',
-      status: 'Cancelled',
-      items: 1,
-      total: 'AED 250.00',
-    },
-    {
-      orderId: '#45815',
-      date: '02-10-2024',
-      paid: 'Yes',
-      status: 'Delivered',
-      items: 5,
-      total: 'AED 1500.00',
-    },
-    {
-      orderId: '#45798',
-      date: '30-09-2024',
-      paid: 'No',
-      status: 'Pending',
-      items: 2,
-      total: 'AED 1050.00',
-    },
-    {
-      orderId: '#45945',
-      date: '12-10-2024',
-      paid: 'Yes',
-      status: 'Delivered',
-      items: 4,
-      total: 'AED 890.00',
-    },
-    {
-      orderId: '#45978',
-      date: '11-10-2024',
-      paid: 'No',
-      status: 'Pending',
-      items: 3,
-      total: 'AED 500.00',
-    },
-  ];
+export class CustomerDetailComponent implements OnDestroy, OnInit {
+  private subscriptions = new Subscription();
+  private service = inject(CustomerService);
+  private route = inject(ActivatedRoute);
+
+  wishlist!: Wishlist;
+  cart!: Cart;
+  user!: User;
+  userId: string | null = '';
+  order: any = [];
+  redeem: any[] = [];
+
+  constructor() {
+    this.userId = this.route.snapshot.paramMap.get('id');
+  }
+
+  ngOnInit(): void {
+    if (this.userId) {
+      this.getData(this.userId);
+    }
+  }
 
   redeemCard: any[] = [
     {
@@ -72,4 +50,19 @@ export class CustomerDetailComponent {
       invoice: '#458901231',
     },
   ];
+
+  getData(_id: string) {
+    this.subscriptions.add(
+      this.service.getCustomerDetails(_id).subscribe(({ data }) => {
+        this.wishlist = data.wishlist;
+        this.cart = data.cart;
+        this.user = data.user;
+      })
+    );
+  }
+
+  ngOnDestroy() {
+    // Unsubscribe from all subscriptions when the component is destroyed
+    this.subscriptions.unsubscribe();
+  }
 }

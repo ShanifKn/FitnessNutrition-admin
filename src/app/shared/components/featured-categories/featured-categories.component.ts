@@ -28,7 +28,9 @@ export class FeaturedCategoriesComponent {
   confirmationService = inject(ConfirmationService);
 
   private subscriptions = new Subscription();
-  @Input() featuredCategory: CategoryData[] = [];
+  @Input() featuredCategory: any[] = [];
+
+  constructor() {}
 
   deleteCategory(_id: string) {
     this.subscriptions.add;

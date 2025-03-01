@@ -11,6 +11,7 @@ import { forkJoin } from 'rxjs';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ButtonModule } from 'primeng/button';
+import { DietaryComponent } from '../../../../../shared/components/dietary/dietary.component';
 
 @Component({
   selector: 'app-category-list',
@@ -22,6 +23,7 @@ import { ButtonModule } from 'primeng/button';
     CommonModule,
     RouterModule,
     ConfirmPopupModule,
+    DietaryComponent,
     ButtonModule,
   ],
   templateUrl: './category-list.component.html',
@@ -36,6 +38,7 @@ export class CategoryListComponent implements OnInit, OnDestroy {
   private subscriptions = new Subscription();
   categories: CategoryData[] = [];
   featuredCategory: CategoryData[] = [];
+  dietary: any = [];
 
   ngOnInit(): void {
     this.getData();
@@ -47,11 +50,13 @@ export class CategoryListComponent implements OnInit, OnDestroy {
       forkJoin({
         nonFeatured: this.services.getData(),
         featured: this.services.getFeaturedCategory(),
+        dietary: this.services.getDietary(),
       }).subscribe({
-        next: ({ nonFeatured, featured }) => {
+        next: ({ nonFeatured, featured, dietary }) => {
           // Assign the results to respective variables
           this.categories = nonFeatured.data;
           this.featuredCategory = featured.data;
+          this.dietary = dietary.data;
         },
         error: (err) => {
           console.error('Error fetching data:', err);

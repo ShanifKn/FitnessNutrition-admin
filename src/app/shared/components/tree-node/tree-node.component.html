@@ -1,59 +1,94 @@
-<div class="flex items-center space-x-2">
+<div class="flex items-center space-x-2" *ngIf="node.visible">
   <!-- Expand/Collapse Button -->
   <button class="text-xl focus:outline-none" (click)="toggleExpand()">
     {{ isExpanded ? "▾" : "▸" }}
   </button>
 
   <!-- Checkbox -->
-  <input type="checkbox" [(ngModel)]="node.selected"
-    class="ml-10 border border-red-500" />
-
-  <!-- delete button -->
+  <input
+    type="checkbox"
+    [(ngModel)]="node.selected"
+    class="ml-10 border border-red-500"
+  />
 
   <!-- Editable Node Name -->
-  <span *ngIf="!isEditing; else editTemplate" (click)="editNode()" class="text-black w-64">
+  <span
+    *ngIf="!isEditing; else editTemplate"
+    (click)="editNode()"
+    class="text-black w-64"
+  >
     {{ node.title }}
   </span>
 
   <!-- Edit Node Name -->
   <ng-template #editTemplate>
-    <input [(ngModel)]="node.title"
-      class="border p-1 rounded focus:outline-blue-500 text-black w-64" />
+    <input
+      [(ngModel)]="node.title"
+      class="border p-1 rounded focus:outline-blue-500 text-black w-64"
+    />
 
-    <button (click)="editParent()"
-      class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 ml-2">
+    <button
+      (click)="editParent()"
+      class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 ml-2"
+    >
       Save
     </button>
   </ng-template>
 
-  <!-- Add Child Button -->
+  <!-- Add & Remove Child Buttons -->
   <div class="flex gap-5 items-center mr-4" *ngIf="node.level < 2">
-    <button class="text-green-500 hover:text-green-700 text-2xl"
-      (click)="showAddChildInput = !showAddChildInput">
+    <button
+      class="text-green-500 hover:text-green-700 text-2xl"
+      (click)="showAddChildInput = !showAddChildInput"
+    >
       +
     </button>
 
-    <button (click)="saveParentNode()"
-      class="mt-2 px-4 py-1 text-base font-semibold text-white bg-purple-500 rounded-lg hover:bg-purple-600 ml-20">
+    <p-confirmDialog styleClass="custom-confirm-dialog" />
+    <i class="pi pi-trash text-red-500 hover:text-red-700 text-xl ml-4 cursor-pointer"
+      (click)="confirm12($event,node)" style="color: red"></i>
+
+    <button
+      (click)="saveParentNode()"
+      class="mt-2 px-4 py-1 text-base font-semibold text-white bg-purple-500 rounded-lg hover:bg-purple-600 ml-20"
+    >
       view
     </button>
   </div>
 </div>
 
+
 <!-- Input to Add Child -->
 <div *ngIf="showAddChildInput" class="ml-6 mt-2">
-  <input [(ngModel)]="newChildName"
+  <input
+    [(ngModel)]="newChildName"
     class="border p-1 rounded focus:outline-blue-500 text-black ml-16 mt-3"
-    placeholder="New Item..." />
-  <button (click)="addChilds()"
-    class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 ml-2">
+    placeholder="New Item..."
+  />
+  <button
+    (click)="addChilds()"
+    class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 ml-2"
+  >
     Save
   </button>
 </div>
 
-<!-- Recursive Rendering of Children -->
 <ul *ngIf="isExpanded" class="pl-6 mt-4 space-y-3">
-  <li *ngFor="let child of node.subCategory" class="space-y-4 ml-16">
-    <app-tree-node [node]="child" (addChild)="addChild.emit($event)"></app-tree-node>
-  </li>
+  <ng-container *ngFor="let child of node.subCategory">
+
+    <li *ngIf="child.visible" class="space-y-4 ml-16 flex items-center">
+      <!-- Child Node Component -->
+      <app-tree-node [node]="child" (deleteParent)="hideChildNode($event)"></app-tree-node>
+
+      <!-- Hide Button for Child Node -->
+      <!-- <p-toast /> -->
+      <p-confirmDialog styleClass="custom-confirm-dialog" />
+      <i class="pi pi-trash text-red-500 hover:text-red-700 text-xl ml-4 cursor-pointer"
+      (click)="confirm12($event,child)" style="color: red"></i>
+
+    </li>
+  </ng-container>
 </ul>
+
+
+

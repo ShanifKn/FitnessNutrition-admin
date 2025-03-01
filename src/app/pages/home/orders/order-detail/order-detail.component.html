@@ -1,5 +1,11 @@
 <div class="flex justify-between items-start">
   <h1 class="text-black text-[24px] font-bold">Orders Details</h1>
+
+  <button
+    class="get-data-button bg-[#825092] text-white px-4 py-2 rounded mb-4 float-right"
+    pButton (click)="showDialog()">
+    Update Order
+  </button>
 </div>
 
 <div class="grid grid-cols-3 gap-3 mt-7">
@@ -9,28 +15,45 @@
       <div class="flex gap-5 items-center pb-2">
         <h1 class="text-black font-bold text-xl">
           Order ID
-          <span class="text-[#007EF2] text-lg font-semibold ml-1">#45785</span>
+          <span class="text-[#007EF2] text-lg font-semibold ml-1">#{{ order.orderNumber
+            }}</span>
         </h1>
         <h5 class="text-[#00B03B] text-lg font-semibold">
-          Expected Delivery Date :
-          <span class="text-[#7E7E7E] font-bold text-xl"> 19 Sep 2024 </span>
+          Ordered Date:
+          <span class="text-[#7E7E7E] font-bold text-xl">{{
+            order.createdAt | date : "MMM d yyyy"
+            }}</span>
         </h5>
       </div>
 
-      <!--  -->
-
       <div class="flex gap-2 items-center">
-        <h1 class="text-[#000000] font-medium text-lg">16-08-2024</h1>
+        <h1 class="text-[#000000] font-medium text-lg">
+          {{ order.product?.length }} Items
+        </h1>
         |
-        <h1 class="text-[#000000] font-medium text-lg">2 Items</h1>
+        <h1 class="text-[#000000] font-medium text-lg">
+          Total AED {{ order.total }}
+        </h1>
         |
-        <h1 class="text-[#000000] font-medium text-lg">Total AED 1050.00</h1>
+        <h1 class="text-[#000000] font-medium text-lg">
+          Offer Applied AED {{ order.discountAmount }}
+        </h1>
         |
-        <h1 class="text-[#000000] font-medium text-lg">Offer Applied 30%</h1>
+        <h1 *ngIf="order?.paymentMethod === 'COD'"
+          class="text-[#000000] font-medium text-lg">
+          Cash on Delivery
+        </h1>
+        <h1 *ngIf="order?.paymentMethod === 'Online'"
+          class="text-[#000000] font-medium text-lg">
+          Online Payment
+        </h1>
         |
-        <h1 class="text-[#000000] font-medium text-lg">Cash on delivery</h1>
-        |
-        <p class="bg-red-100 text-red-500 px-4 py-1 rounded text-sm w-fit">
+        <p *ngIf="order?.payment === true"
+          class="bg-green-100 text-green-500 px-4 py-1 rounded text-sm w-fit">
+          Paid
+        </p>
+        <p *ngIf="order?.payment === false"
+          class="bg-red-100 text-red-500 px-4 py-1 rounded text-sm w-fit">
           Not paid
         </p>
       </div>
@@ -44,34 +67,37 @@
           <tr class="bg-[#825092] text-white">
             <th class="px-4 py-3 text-left w-[50%]">Items</th>
             <th class="px-4 py-3 text-center">Quantity</th>
-            <th class="px-4 py-3 text-center">Applied Offer</th>
+            <th class="px-4 py-3 text-right">Price</th>
             <th class="px-4 py-3 text-right">Amount</th>
+            <th class="px-4 py-3 text-center">Status</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let item of items" class="border-b">
             <td class="px-4 py-4 flex items-center space-x-4">
-              <img src="/assets/images/order/order2.svg" alt="Product Image"
-                class="w-12 h-12" />
+              <img [src]="item.image" alt="Product Image" class="w-12 h-12" />
               <span class="line-clamp-2 tracking-wide">{{ item.name }}</span>
             </td>
             <td class="px-4 py-4 text-center">{{ item.quantity }}</td>
-            <td class="px-4 py-4 text-center">{{ item.offer }}%</td>
+            <td class="px-4 py-4 text-right">AED {{ item.price }}</td>
             <td class="px-4 py-4 text-right">AED {{ item.amount }}</td>
+            <th class="px-4 py-3 text-center capitalize font-semibold text-green-500" [ngClass]="{
+              'text-red-400': item.status === 'cancelled',
+              'text-green-500': item.status === 'delivered',
+              'text-yellow-500': item.status === 'pending'
+            }">
+              {{ item.status }}
+            </th>
           </tr>
         </tbody>
-        <tfoot class="">
-          <tr class="">
+        <tfoot>
+          <tr>
             <td colspan="3" class="px-4 py-2 font-bold">Subtotal</td>
             <td class="px-4 py-2 text-right">AED {{ subtotal }}</td>
           </tr>
           <tr>
             <td colspan="3" class="px-4 py-2 font-bold">VAT (5%)</td>
             <td class="px-4 py-2 text-right">AED {{ vat }}</td>
-          </tr>
-          <tr>
-            <td colspan="3" class="px-4 py-2 font-bold">Offer Applied</td>
-            <td class="px-4 py-2 text-right">AED {{ offerApplied }}</td>
           </tr>
           <tr>
             <td colspan="3" class="px-4 py-2 font-bold">Delivery Charge</td>
@@ -86,7 +112,7 @@
         </tfoot>
       </table>
 
-      <div class="flex justify-center items-center gap-3 my-5">
+      <div class="flex justify-center items-center gap-3 my-5" *ngIf="">
         <button class="text-white bg-[#825092] text-lg px-5 py-2 rounded-lg">
           Download Invoice
         </button>
@@ -103,12 +129,16 @@
       <h1 class="text-black font-bold text-xl">Customer</h1>
 
       <div class="flex gap-3 mt-4 items-center">
-        <img class="w-20 h-20 rounded-full" src="/assets/images/customer/user.svg"
+        <img class="w-20 h-20 rounded-full"
+          [src]="order.user?.image || '/assets/images/customer/user.svg'"
           alt="Customer avatar" />
 
         <div class="">
-          <h1 class="text-base font-semibold text-black">Customer name</h1>
-          <span class="text-black text-sm font-medium">27 orders</span>
+          <h1 class="text-base font-semibold text-black">
+            {{ order.user?.name }}
+          </h1>
+          <span class="text-black text-sm font-medium">{{ order.totalOrder }}
+            orders</span>
         </div>
       </div>
     </div>
@@ -118,13 +148,13 @@
 
       <div class="p-1 pt-3 flex flex-col items-start">
         <h1 class="text-lg font-medium text-black tracking-normal">
-          Customer name
+          {{ order.user?.name }}
         </h1>
-        <h4 class="text-[#007EF2] text-base font-medium tracking-normal">
-          useremail.com
-        </h4>
+        <h1 class="text-lg font-medium text-black tracking-normal">
+          {{ order.user?.email }}
+        </h1>
         <h4 class="text-black text-base font-medium tracking-normal">
-          +971 98945623
+          +{{ order.user?.phone }}
         </h4>
       </div>
     </div>
@@ -133,12 +163,20 @@
       <div class="py-4 px-5">
         <h1 class="text-black font-bold text-xl">Shipping Address</h1>
 
-        <div class="p-1 pt-3 flex flex-col items-start">
-          <h1 class="text-base font-medium text-black tracking-normal">
-            skyline villas 124, Karama,Uae
+        <div class="p-1 pt-2 flex flex-col items-start">
+          <h1 class="text-base font-semibold text-black tracking-normal">
+            {{ order.shippingAddress?.type }}
           </h1>
           <h1 class="text-base font-medium text-black tracking-normal">
-            near lulmall, 789456
+            {{ order.shippingAddress?.flatname }},
+            {{ order.shippingAddress?.flatno }},
+          </h1>
+          <h1 class="text-base font-medium text-black tracking-normal">
+            {{ order.shippingAddress?.street }},
+            {{ order.shippingAddress?.landMark }},
+            {{ order.shippingAddress?.city }},
+            {{ order.shippingAddress?.country }},
+            {{ order.shippingAddress?.pin }},
           </h1>
         </div>
       </div>
@@ -153,12 +191,13 @@
     <div class="bg-white drop-shadow-lg rounded-md h-fit py-4 px-5">
       <h1 class="text-black font-bold text-xl">Billing Address</h1>
 
-      <div class="p-1 pt-3 flex flex-col items-start">
+      <div class="p-1 pt-2 flex flex-col items-start">
         <h1 class="text-base font-medium text-black tracking-normal">
-          skyline villas 124, Karama,Uae
+          {{ order.billingInfo?.name }}
         </h1>
         <h1 class="text-base font-medium text-black tracking-normal">
-          near lulmall, 789456
+          {{ order.billingInfo?.addresss }}, {{ order.billingInfo?.city }},
+          {{ order.billingInfo?.phone }}
         </h1>
       </div>
     </div>
@@ -168,22 +207,17 @@
 <div class="grid mt-7">
   <h1 class="text-black text-[24px] font-bold pb-4">Order Progress</h1>
 
-  <div class="grid grid-cols-3 gap-3">
+  <div class="grid grid-cols-3 gap-3" *ngIf="orderTimeline.length !== 0"> 
     <div class="bg-white col-span-2 drop-shadow-lg rounded-md py-10">
-      <app-order-tracking [timeline]="orderTimeline"></app-order-tracking>
+      <app-order-tracking  [timeline]="orderTimeline"></app-order-tracking>
     </div>
 
     <div class="bg-white drop-shadow-lg py-4 px-5 rounded-md h-fit">
-
       <div class="flex justify-between items-center">
-
-
         <h1 class="text-black font-bold text-xl">Driver Details</h1>
-
 
         <p-button label="share location" icon="pi pi-map-marker"
           class="bg-[#854D94] text-white px-3 py-1 rounded" />
-
       </div>
 
       <div class="p-1 pt-3 flex flex-col items-start">
@@ -201,10 +235,7 @@
   </div>
 </div>
 
-
-
-<div class=" mt-7">
-
+<div class="mt-7 hidden">
   <h1 class="text-black text-[24px] font-bold pb-4">Order Progress</h1>
 
   <div class="grid grid-cols-3">
@@ -247,3 +278,113 @@
     </div>
   </div>
 </div>
+
+<!-- Main Update Order Dialog -->
+<p-dialog header="Update Order" [(visible)]="orderUpdated" [style]="{ width: '40rem' }"
+  class="p-0">
+  <div class="flex flex-col justify-center w-full gap-4 mt-2">
+    <!-- Status Dropdown -->
+    <div>
+      <h1 class="text-black text-lg font-medium pb-1">Status</h1>
+      <p-dropdown [options]="orderUpdates" [(ngModel)]="selectedOption" [showClear]="true"
+        placeholder="Select status"
+        styleClass="bg-[#F6F7F9] w-full h-12 border border-gray-200 rounded-lg no-focus-ring"
+        appendTo="body" class="w-full" optionValue="code" optionLabel="name">
+      </p-dropdown>
+    </div>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="flex gap-1 mx-auto w-full justify-center mt-5">
+    <button
+      class="text-[#825092] text-lg border border-[#825092] px-5 py-1 w-24 rounded-lg"
+      (click)="cancel()">
+      Cancel
+    </button>
+    <button class="text-white bg-[#825092] text-lg px-5 py-1 w-24 rounded-lg"
+      (click)="updateOrder()">
+      Sure
+    </button>
+  </div>
+</p-dialog>
+
+<!-- Return Product Dialog -->
+<p-dialog header="Select Product to Return" [(visible)]="returnDialogVisible"
+  [style]="{ width: '70rem' }" class="p-0">
+
+
+  <!-- Product Table -->
+  <div class="flex flex-col justify-center w-full gap-4 mt-4">
+    <p-table [value]="items" [rows]="10" [paginator]="true" [showCurrentPageReport]="true"
+      currentPageReportTemplate="Showing {first} to {last} of {totalRecords} products"
+      class="custom-table bg-gray-500">
+      <ng-template pTemplate="header">
+        <tr>
+          <th class="bg-[#854D94] text-white text-left p-4">Name</th>
+          <th class="bg-[#854D94] text-white text-left p-4">Price</th>
+          <th class="bg-[#854D94] text-white text-left p-4">Quantity</th>
+          <th class="bg-[#854D94] text-white text-left p-4">Available Stock</th>
+          <th class="bg-[#854D94] text-white text-left p-4">Action</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-product>
+        <tr [ngClass]="{ 'hover-row': selectedProduct === product }"
+          class="bg-gray-100 border-b">
+          <td class="p-4">{{ product.name }}</td>
+          <td class="p-4 text-center">AED {{ product.price }}</td>
+          <td class="p-4 text-center">{{ product.quantity }}</td>
+          <td class="p-4 text-center">{{ product.stock }}</td>
+
+          <td class="p-4">
+            <div *ngIf="product.status === 'pending'; else showStatus" class="flex gap-3">
+              <div
+                class="w-9 h-9 rounded-full flex justify-center items-center bg-[#FA3E62] cursor-pointer"
+                (click)="removeProduct(product)">
+                <i class="pi pi-times text-white text-lg"></i>
+              </div>
+
+              <div
+                class="w-9 h-9 rounded-full flex justify-center items-center bg-[#05CA40] cursor-pointer"
+                (click)="selectProduct(product)">
+                <i class="pi pi-check text-white text-lg"></i>
+              </div>
+            </div>
+
+            <!-- Show status if it's not 'pending' -->
+            <ng-template #showStatus>
+              <span class="text-gray-600 font-semibold capitalize">{{
+                product.status
+                }}</span>
+            </ng-template>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+
+  <!-- Invoice Input Section -->
+  <div class="flex flex-col w-full mt-2">
+    <label for="invoiceNumber" class="text-lg font-semibold text-gray-700 pb-2">
+      Invoice Number
+    </label>
+    <input id="invoiceNumber" type="text" [(ngModel)]="invoiceNumber"
+      class="border border-gray-400 rounded-lg p-2 w-full focus:outline-[#825092]"
+      placeholder="Enter Invoice Number" />
+    <small class="text-red-500 mt-1">
+      Once the invoice number is added, it cannot be changed.
+    </small>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="flex gap-2 mx-auto w-full justify-center mt-5">
+    <button
+      class="text-[#825092] text-lg border border-[#825092] px-5 py-1 w-24 rounded-lg"
+      (click)="cancel()">
+      Cancel
+    </button>
+    <button class="text-white bg-[#825092] text-lg px-5 py-1 w-24 rounded-lg"
+      (click)="confirmReturn()" [disabled]="!invoiceNumber" *ngIf="!invoiceLocked">
+      Confirm
+    </button>
+  </div>
+</p-dialog>

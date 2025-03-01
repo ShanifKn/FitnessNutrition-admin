@@ -26,6 +26,7 @@ interface TreeNode {
   subCategory: TreeNode[];
   featuredCategory?: false;
   description?: string;
+  visible?: boolean;
 }
 
 @Component({
@@ -83,6 +84,7 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
       subCategory: [],
       level: 1,
       featuredCategory: false,
+      visible: true,
     };
     this.tree.push(newNode);
   }
@@ -94,6 +96,7 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
         title: event.childName,
         level: event.parentNode.level + 1, // Child level is 1 higher than parent level
         subCategory: [],
+        visible: true,
       };
       event.parentNode.subCategory.push(newChild);
     } else {
@@ -104,7 +107,7 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
   // ---------create categories ------------------//
   buildFrom() {
     this.categoryForm = this.fb.group({
-      image: ['', [Validators.required]],
+      image: [null, [Validators.required]],
       _id: [this.categoryId],
       title: ['', [Validators.required]],
       tag: ['', [Validators.required]],
@@ -126,6 +129,7 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
       tag: [''],
       description: [''],
       featuredCategory: [false],
+      visible: [true],
     });
   }
 
@@ -240,9 +244,19 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
     const nodeData = {
       title: node.title,
       level: node.level,
+      visible: node.visible,
       subCategory: node.subCategory.map((child) =>
-        this.getAllDataFromNode(child)
+        this.getAllDataFromChildNode(child)
       ), // Recursively get subCategory data
+    };
+    return nodeData;
+  }
+
+  getAllDataFromChildNode(node: TreeNode): any {
+    const nodeData = {
+      title: node.title,
+      level: node.level,
+      visible: node.visible,
     };
     return nodeData;
   }
@@ -254,6 +268,7 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
     this.categoryForm.patchValue({
       subCategory: allData,
     });
+
 
     const sub = this.service
       .createCategory(this.categoryForm.value)
@@ -302,7 +317,6 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
   }
 
   patchData(data: any) {
-
     this.categoryForm.patchValue({
       _id: data._id || '',
       image: data.image || '',
@@ -377,6 +391,7 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
     if (this.subCategoryForm.invalid) {
       return;
     }
+
 
     const sub = this.service
       .updateSubCategory(this.subCategoryForm.value)

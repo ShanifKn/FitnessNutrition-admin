@@ -72,6 +72,10 @@ export class VariantDialogComponentComponent implements OnInit, OnDestroy {
       }).subscribe(({ variantDetails, allProducts }) => {
         this.productOptions = allProducts.data;
 
+        this.productOptions = this.productOptions.filter(
+          (product) => product._id !== this.config.data
+        );
+
         if (variantDetails.data) {
           this.productForm.patchValue({ item_id: this.config.data });
           this.patchVariants(variantDetails.data.products ?? []);

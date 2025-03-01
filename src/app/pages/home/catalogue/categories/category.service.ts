@@ -8,8 +8,9 @@ const routes = {
   getCategory: '/category',
   getDetails: (id: string) => `/category/${id}`,
   deleteCategory: (id: string) => `/category/${id}`,
-  getFeatured: '/featured-category',
+  getFeatured: '/featured-category-admin',
   getNonFeatured: '/non-category',
+  dietary: '/dietary',
 };
 
 @Injectable({
@@ -51,5 +52,13 @@ export class CategoryService {
     return this.httpClient.delete<{ message: string }>(
       routes.deleteCategory(_id)
     );
+  }
+
+  getDietary(): Observable<{ data: any[] }> {
+    return this.httpClient.get<{ data: any[] }>(routes.dietary);
+  }
+
+  creeateDietary(data: any): Observable<{ data: any }> {
+    return this.httpClient.post<{ data: any }>(routes.dietary,data);
   }
 }

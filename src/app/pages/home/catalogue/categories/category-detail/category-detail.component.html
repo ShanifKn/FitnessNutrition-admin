@@ -51,13 +51,11 @@
         <div class="relative w-32 h-32 border rounded-lg overflow-hidden">
           <!-- Display uploaded image or placeholder -->
           <img
-            [src]="
-              categoryForm.get('image')?.value ||
-              'https://via.placeholder.com/550x240'
-            "
-            alt="Main Image"
-            class="w-full h-full object-cover"
-          />
+          [src]="categoryForm.get('image')?.value ?? 'assets/images/OIP.jpeg'"
+          alt="Main Image"
+          class="w-full h-full object-cover"
+        />
+        
           <!-- Show "No Image" text when no image is uploaded -->
           <div
             *ngIf="!uploadedImage"

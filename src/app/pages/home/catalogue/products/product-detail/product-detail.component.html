@@ -440,14 +440,14 @@
         <p-multiSelect
           [options]="dietary"
           placeholder="Select Dietary"
-          optionLabel="name"
+          optionLabel="title"
           display="chip"
           class="bg-[#F6F7F9] w-full"
           styleClass=" w-full bg-[#F6F7F9] pl-3 pt-2 h-14 rounded-lg placeholder:text-gray-500 border border-gray-200"
           appendTo="body"
           [showClear]="true"
           formControlName="dietary"
-          optionValue="code"
+          optionValue="title"
         />
 
         <div
@@ -467,7 +467,7 @@
     <div class="">
       <h1 class="text-black text-xl font-bold pb-4">Product Category</h1>
 
-      <div class="flex gap-4">
+      <div class="flex gap-4 flex-wrap">
         <!-- Parent Category Dropdown -->
         <div class="grid">
           <h1 class="text-lg pb-3 text-black">Category</h1>
@@ -523,6 +523,9 @@
             appendTo="body"
             optionValue="_id"
           ></p-dropdown>
+          <small *ngIf="hasError('subCategory')" class="text-red-500">
+            Name is required.
+          </small>
         </div>
       </div>
     </div>

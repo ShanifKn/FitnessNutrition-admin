@@ -89,7 +89,6 @@ export class ImageUploadComponent {
         summary: 'Image uploaded successfully',
       });
 
-      console.log('Uploaded URL:', response.url);
 
       // Return the uploaded URL
       return response.url;

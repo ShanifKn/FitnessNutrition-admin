@@ -39,13 +39,14 @@ export class CategoryListComponent implements OnInit, OnDestroy {
   categories: CategoryData[] = [];
   featuredCategory: CategoryData[] = [];
   dietary: any = [];
+  loading: boolean = false;
 
   ngOnInit(): void {
     this.getData();
   }
 
   getData() {
-    // Use forkJoin to combine the two API calls
+    this.loading = true;
     this.subscriptions.add(
       forkJoin({
         nonFeatured: this.services.getData(),
@@ -57,9 +58,11 @@ export class CategoryListComponent implements OnInit, OnDestroy {
           this.categories = nonFeatured.data;
           this.featuredCategory = featured.data;
           this.dietary = dietary.data;
+          this.loading = false;
         },
         error: (err) => {
           console.error('Error fetching data:', err);
+          this.loading = false;
         },
       })
     );

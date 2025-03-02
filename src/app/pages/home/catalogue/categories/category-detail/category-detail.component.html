@@ -4,6 +4,9 @@
   class="p-button-sm rounded-full text-xs px-3 py-2 bg-white text-black border-2 border-black mb-3"
   label="BACK"
   (click)="_location.back()"
+  (keydown.enter)="_location.back()"
+  (keydown.space)="_location.back()"
+  tabindex="0"
 ></button>
 
 <div class="grid grid-cols-3 gap-4">
@@ -13,6 +16,9 @@
         <button
           class="bg-blue-500 text-white px-4 py-2 rounded mb-4 float-right"
           (click)="addRootNode()"
+          (keydown.enter)="addRootNode()"
+          (keydown.space)="addRootNode()"
+          tabindex="0"
         >
           Add Sub-Category
         </button>
@@ -20,8 +26,11 @@
         <!-- Button to get all data from nodes -->
         <button
           (click)="getAllData()"
+          (keydown.enter)="getAllData()"
+          (keydown.space)="getAllData()"
           class="get-data-button bg-green-500 text-white px-4 py-2 rounded mb-4 float-right"
           pButton
+          tabindex="0"
         >
           Save
         </button>
@@ -51,10 +60,10 @@
         <div class="relative w-32 h-32 border rounded-lg overflow-hidden">
           <!-- Display uploaded image or placeholder -->
           <img
-          [src]="categoryForm.get('image')?.value ?? 'assets/images/OIP.jpeg'"
-          alt="Main Image"
-          class="w-full h-full object-cover"
-        />
+            [src]="categoryForm.get('image')?.value ?? 'assets/images/OIP.jpeg'"
+            alt="Main Image"
+            class="w-full h-full object-cover"
+          />
         
           <!-- Show "No Image" text when no image is uploaded -->
           <div
@@ -77,10 +86,13 @@
         <!-- Trigger the file input on button click -->
         <button
           (click)="triggerFileInput()"
+          (keydown.enter)="triggerFileInput()"
+          (keydown.space)="triggerFileInput()"
           type="button"
           pButton
           icon="pi pi-camera"
           class="mt-2 px-4 py-1 text-sm font-semibold text-white bg-purple-500 rounded-lg hover:bg-purple-600"
+          tabindex="0"
         >
           Change Image
         </button>
@@ -244,50 +256,11 @@
             </div>
           </div>
 
-          <!-- Product Count Input -->
-          <!-- <div>
-            <h1 class="text-black text-lg pb-3 font-medium">Product Count</h1>
-
-            <p-inputNumber
-              inputId="integeronly"
-              class="bg-[#F6F7F9] h-12 w-full rounded-lg placeholder:text-gray-500 border border-gray-200"
-              formControlName="productCount"
-              placeholder="Count"
-              styleClass="w-full  bg-[#F6F7F9]"
-              inputStyleClass="w-full bg-[#F6F7F9] pl-5 "
-            /> -->
-
-          <!-- Error Message -->
-          <!-- <div
-              *ngIf="
-                categoryForm.get('productCount')?.invalid &&
-                categoryForm.get('productCount')?.touched
-              "
-              class="text-red-500 text-sm"
-            >
-              <div
-                *ngIf="categoryForm.get('productCount')?.errors?.['required']"
-              >
-                Product count is required.
-              </div>
-              <div
-                *ngIf="categoryForm.get('productCount')?.errors?.['pattern']"
-              >
-                Product count must be a number.
-              </div>
-            </div>
-          </div> -->
-
           <!-- Maximum Discount Input -->
           <div>
             <h1 class="text-black text-lg pb-3 font-medium">
               Maximum Discount %
             </h1>
-            <!-- <input
-                  type="text"
-    
-                /> -->
-
             <p-inputNumber
               formControlName="maximumDiscount"
               inputId="percent"
@@ -339,18 +312,25 @@
 
           <!-- Submit Buttons -->
           <div class="flex justify-end space-x-3 w-full mt-5">
-            <button
+            <!-- <button
               class="border border-[#854D94] text-[#854D94] font-bold px-4 py-2 rounded-lg"
               type="button"
               pButton
+              (click)="cancel()"
+              (keydown.enter)="cancel()"
+              (keydown.space)="cancel()"
+              tabindex="0"
             >
               Cancel
-            </button>
+            </button> -->
             <button
               class="bg-[#854D94] text-white font-bold px-4 py-2 rounded-lg"
               type="submit"
               pButton
               [disabled]="categoryForm.invalid"
+              (keydown.enter)="onSubmit()"
+              (keydown.space)="onSubmit()"
+              tabindex="0"
             >
               Save
             </button>
@@ -396,10 +376,13 @@
         <!-- Trigger the file input on button click -->
         <button
           (click)="triggerFileInput()"
+          (keydown.enter)="triggerFileInput()"
+          (keydown.space)="triggerFileInput()"
           type="button"
           pButton
           icon="pi pi-camera"
           class="mt-2 px-4 py-1 text-sm font-semibold text-white bg-purple-500 rounded-lg hover:bg-purple-600"
+          tabindex="0"
         >
           Change Image
         </button>
@@ -500,6 +483,9 @@
               type="button"
               pButton
               (click)="subCategory = false"
+              (keydown.enter)="subCategory = false"
+              (keydown.space)="subCategory = false"
+              tabindex="0"
             >
               Cancel
             </button>
@@ -508,6 +494,9 @@
               type="submit"
               pButton
               [disabled]="subCategoryForm.invalid"
+              (keydown.enter)="onSubmitTwo()"
+              (keydown.space)="onSubmitTwo()"
+              tabindex="0"
             >
               Save
             </button>
@@ -532,6 +521,6 @@
 
     <h4 class="my-8">There is no Sub Categories available!</h4>
 
-    <i class="pi pi-spin pi-spinner text-3xl"></i>
+    <!-- <i class="pi pi-spin pi-spinner text-3xl"></i> -->
   </div>
 </ng-template>

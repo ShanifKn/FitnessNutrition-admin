@@ -53,7 +53,7 @@ export class OrderDetailComponent implements OnInit, OnDestroy {
   invoiceLocked: boolean = false;
   orderTimeline: Array<any> = [];
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit() {
     this.orderId = this.route.snapshot.paramMap.get('id');

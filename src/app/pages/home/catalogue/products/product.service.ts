@@ -15,13 +15,14 @@ const routes = {
   getAllProduct: '/allProducts',
   createVariant: '/createVaraint',
   getVaraintDetails: (id: string) => `/variants/${id}`,
+  getProductZoho: `/get-ZohoProducts`
 };
 
 @Injectable()
 export class ProductService {
   httpClient = inject(HttpClient);
 
-  constructor() {}
+  constructor() { }
 
   getCount(): Observable<{ data: string }> {
     return this.httpClient.get<{ data: string }>(routes.getCount);
@@ -60,6 +61,12 @@ export class ProductService {
   getVariantDetails(_id: string): Observable<{ data: Variant }> {
     return this.httpClient.get<{ data: Variant }>(
       routes.getVaraintDetails(_id)
+    );
+  }
+
+  getProductZoho(): Observable<{ message: string }> {
+    return this.httpClient.get<{ message: string }>(
+      routes.getProductZoho
     );
   }
 }

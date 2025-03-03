@@ -58,5 +58,8 @@ export interface Order {
   salesorderId: string;
   invoiceId: string;
   totalOrder: number;
+  itemsTotal: number;
+  vat: number;
+  deliveryCharge: number;
   remark?: string;
 }

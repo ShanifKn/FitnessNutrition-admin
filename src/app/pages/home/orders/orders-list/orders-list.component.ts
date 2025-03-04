@@ -12,6 +12,7 @@ import {
 import { forkJoin, Subscription } from 'rxjs';
 import { SearchPipe } from '../../../../shared/pipes/search.pipe';
 import { FormsModule } from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-orders-list',
@@ -24,6 +25,7 @@ import { FormsModule } from '@angular/forms';
     DropdownModule,
     SearchPipe,
     FormsModule,
+    ButtonModule
   ],
   templateUrl: './orders-list.component.html',
   styleUrl: './orders-list.component.scss',
@@ -32,9 +34,11 @@ import { FormsModule } from '@angular/forms';
 export class OrdersListComponent implements OnDestroy {
   returnDialog: boolean = false;
   returnMessageDialog: boolean = false;
+  deliveryCharge: boolean = false;
+
+  deliveryChargeValue: number = 0;
   searchText: string = '';
   searchText2: string = '';
-
 
   orderCount: Partial<OrderCount> = {};
   products: Order[] = [];
@@ -53,11 +57,13 @@ export class OrdersListComponent implements OnDestroy {
         count: this.service.getCount(),
         orders: this.service.getOrders(),
         returnOrders: this.service.getReturnOrders(),
-      }).subscribe(({ count, orders, returnOrders }) => {
+        deliveryCharge: this.service.deliveryCharge()
+      }).subscribe(({ count, orders, returnOrders, deliveryCharge }) => {
         // Assign the respective data
         this.orderCount = count.data; // Assuming count has a 'data' field
         this.products = orders.data; // Assuming orders has a 'data' field
         this.returnRequest = returnOrders.data; // Assuming returnOrders has a 'data' field
+        this.deliveryChargeValue = deliveryCharge.data;
       })
     );
   }
@@ -73,8 +79,22 @@ export class OrdersListComponent implements OnDestroy {
     this.returnDialog = true;
   }
 
+
+  showDialogs() {
+    this.deliveryCharge = !this.deliveryCharge;
+  }
+
   showMessageDialog() {
     this.returnMessageDialog = true;
+  }
+
+
+  addDeliveryCharge() {
+    this.subscriptions.add(
+      this.service.addDeliveryCharge(this.deliveryChargeValue).subscribe(({ message }) => { 
+        
+      })
+    )
   }
 
   ngOnDestroy() {

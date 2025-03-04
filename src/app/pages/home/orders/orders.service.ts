@@ -10,13 +10,14 @@ const routes = {
   getOrder: (_id: string) => `/order/${_id}`,
   update: '/order-update',
   orderStatus: (_id: string) => `/orderStatus/${_id}`,
+  deliveryCharge: '/deliveryCharge'
 };
 
 @Injectable()
 export class OrdersService {
   httpClient = inject(HttpClient);
 
-  constructor() {}
+  constructor() { }
 
   getCount(): Observable<{ data: OrderCount }> {
     return this.httpClient.get<{ data: OrderCount }>(routes.getCount);
@@ -40,5 +41,12 @@ export class OrdersService {
 
   orderStatus(_id: string): Observable<{ data: any }> {
     return this.httpClient.get<{ data: any }>(routes.orderStatus(_id));
+  }
+
+  deliveryCharge(): Observable<{ data: number }> {
+    return this.httpClient.get<{ data: number }>(routes.deliveryCharge);
+  }
+  addDeliveryCharge(deliveryCharge: number): Observable<{ message: string }> {
+    return this.httpClient.post<{ message: string }>(routes.deliveryCharge, deliveryCharge);
   }
 }

@@ -10,6 +10,7 @@ import { ProductDetailComponent } from './products/product-detail/product-detail
 import { Component } from '@angular/core';
 import { CategoryListComponent } from './categories/category-list/category-list.component';
 import { CategoryDetailComponent } from './categories/category-detail/category-detail.component';
+import { ComboProductComponent } from './combo-product/combo-product.component';
 
 export const catalogueRoutes: Route[] = [
   {
@@ -40,5 +41,9 @@ export const catalogueRoutes: Route[] = [
       { path: '', component: ProductListComponent },
       { path: 'detail/:id', component: ProductDetailComponent },
     ],
+  },
+  {
+    path: 'combo-products',
+    component: ComboProductComponent,
   },
 ];

@@ -1,8 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, inject, Inject, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
+import { Subscription } from 'rxjs';
+import { DriverService } from '../driver.service';
+import { Driver } from '../../../../shared/interfaces/driver.interface';
 
 @Component({
   selector: 'app-driver-detail',
@@ -11,10 +15,38 @@ import { TableModule } from 'primeng/table';
   templateUrl: './driver-detail.component.html',
   styleUrl: './driver-detail.component.scss',
 })
-export class DriverDetailComponent {
+export class DriverDetailComponent implements OnDestroy {
+  private route = inject(ActivatedRoute)
+  private subscriptions = new Subscription();
+  services = inject(DriverService);
+
+  driver!: Driver
+
   returnDailog: boolean = false;
   editDriverDailog: boolean = false;
   editLocationDailog: boolean = false;
+  driverId: string | null = ''
+
+
+  constructor() {
+    this.driverId = this.route.snapshot.paramMap.get('id')
+
+    if (this.driverId) {
+      this.getDriverId(this.driverId)
+    }
+  }
+
+
+
+  getDriverId(_id: string) {
+    this.subscriptions.add(
+      this.services.getDetails(_id).subscribe(({ data }) => {
+        this.driver = data
+      }))
+  }
+
+
+
 
   showDialog() {
     this.returnDailog = true;
@@ -59,4 +91,9 @@ export class DriverDetailComponent {
       invoiceNo: '#65421',
     },
   ];
+
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
+  }
 }

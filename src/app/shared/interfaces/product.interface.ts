@@ -81,3 +81,19 @@ interface VariantProduct {
   variantType: string;
   variants: string;
 }
+
+
+
+export interface ComboProduct {
+  _id: string;
+  __v: number;
+  createdAt: string;
+  updatedAt: string;
+  title: string;
+  description: string;
+  discount: number;
+  image: string;
+  price: number;
+  rating: number;
+  products: Products[];
+}

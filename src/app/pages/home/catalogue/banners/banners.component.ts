@@ -33,6 +33,8 @@ import { CategoryService } from '../categories/category.service';
 import { FileUploadService } from '../../../../shared/services/file-upload.service';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ProductService } from '../products/product.service';
+import { Products } from '../../../../shared/interfaces/product.interface';
 
 @Component({
   selector: 'app-banners',
@@ -55,11 +57,11 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
   ],
   templateUrl: './banners.component.html',
   styleUrl: './banners.component.scss',
-  providers: [BannerService, ConfirmationService, ConfirmationService],
+  providers: [BannerService, ConfirmationService, ConfirmationService, ProductService],
 })
 export class BannersComponent implements OnInit, OnDestroy {
+  productList: Products[] = [];
   banners!: Banners;
-
   visible: boolean = false;
   selectedVisibility: string = 'hidden';
   type!: any[];
@@ -68,7 +70,6 @@ export class BannersComponent implements OnInit, OnDestroy {
   selectedCategory: any; // Track selected category
   selectedSubCategory: any; // Track selected sub-category
   subCategories: any = [];
-  productList: any = [];
   sidebarVisible: boolean = false;
   imagePreview: string | ArrayBuffer | null = null;
   date: Date | undefined;
@@ -83,13 +84,15 @@ export class BannersComponent implements OnInit, OnDestroy {
 
   services = inject(BannerService);
   confirmationService = inject(ConfirmationService);
+  productServices = inject(ProductService);
+
 
   constructor(
     private fb: FormBuilder,
     private messageService: MessageService,
     private categoryService: CategoryService,
     private imageService: FileUploadService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.addData();
@@ -224,10 +227,13 @@ export class BannersComponent implements OnInit, OnDestroy {
       forkJoin({
         banner: this.services.getBanners(),
         categories: this.categoryService.getData(),
+        products: this.productServices.getProduct(),
       }).subscribe({
-        next: ({ banner, categories }) => {
+        next: ({ banner, categories, products }) => {
           // Assign the results to respective variables
           this.banners = banner.data;
+          this.productList = products.data;
+
 
           if (
             this.banners &&

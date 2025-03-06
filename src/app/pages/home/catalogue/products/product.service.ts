@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
+  ComboProduct,
   Products,
   Variant,
 } from '../../../../shared/interfaces/product.interface';
@@ -15,7 +16,11 @@ const routes = {
   getAllProduct: '/allProducts',
   createVariant: '/createVaraint',
   getVaraintDetails: (id: string) => `/variants/${id}`,
-  getProductZoho: `/get-ZohoProducts`
+  getProductZoho: `/get-ZohoProducts`,
+  comboProdcut: '/products/create-combo',
+  getCombos: '/products/combos',
+  getComboProducts: (id: string) => `/products/combos/${id}`
+
 };
 
 @Injectable()
@@ -67,6 +72,28 @@ export class ProductService {
   getProductZoho(): Observable<{ message: string }> {
     return this.httpClient.get<{ message: string }>(
       routes.getProductZoho
+    );
+  }
+
+
+  CreateComboProduct(data: any): Observable<{ data: ComboProduct }> {
+    return this.httpClient.post<{ data: ComboProduct }>(
+      routes.comboProdcut,
+      data
+    );
+  }
+
+
+  getComboProducts(): Observable<{ data: ComboProduct[] }> {
+    return this.httpClient.get<{ data: ComboProduct[] }>(
+      routes.getCombos
+    );
+  }
+
+
+  getComboProduct(_id: string): Observable<{ data: ComboProduct }> {
+    return this.httpClient.get<{ data: ComboProduct }>(
+      routes.getComboProducts(_id)
     );
   }
 }

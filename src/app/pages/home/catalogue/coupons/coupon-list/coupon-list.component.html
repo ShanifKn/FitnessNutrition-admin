@@ -144,3 +144,25 @@
     </ng-template>
   </p-table>
 </div>
+
+<p-dialog
+  header="Notice"
+  [(visible)]="displayDialog"
+  [modal]="true"
+  [closable]="false"
+  [draggable]="false"
+  [resizable]="false"
+  [dismissableMask]="false"
+>
+  <p>This page is under development.</p>
+  <div class="flex justify-end mt-4">
+    <button
+      (click)="displayDialog = false"
+      class="bg-[#007EF2] text-white px-4 py-2 rounded-md"
+    >
+      OK
+    </button>
+  </div>
+</p-dialog>
+
+

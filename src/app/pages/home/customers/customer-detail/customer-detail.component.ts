@@ -2,9 +2,10 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { TableModule } from 'primeng/table';
-import { Subscription } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import {
   Cart,
+  CustomerDataCount,
   User,
   Wishlist,
 } from '../../../../shared/interfaces/data.interface';
@@ -25,16 +26,19 @@ export class CustomerDetailComponent implements OnDestroy, OnInit {
 
   wishlist!: Wishlist;
   cart!: Cart;
-  user!: User;
+  user: Partial<User> = {};  // Avoids undefined reference errors
   userId: string | null = '';
   order: any = [];
   redeem: any[] = [];
+  count!: CustomerDataCount
 
   constructor() {
-    this.userId = this.route.snapshot.paramMap.get('id');
+
   }
 
   ngOnInit(): void {
+    this.userId = this.route.snapshot.paramMap.get('id');
+
     if (this.userId) {
       this.getData(this.userId);
     }
@@ -51,15 +55,30 @@ export class CustomerDetailComponent implements OnDestroy, OnInit {
     },
   ];
 
+
   getData(_id: string) {
+    const customerDetails$ = this.service.getCustomerDetails(_id);
+    const orders$ = this.service.getOrders(_id);
+    const counts$ = this.service.getOrdersCounts(_id);
+
     this.subscriptions.add(
-      this.service.getCustomerDetails(_id).subscribe(({ data }) => {
-        this.wishlist = data.wishlist;
-        this.cart = data.cart;
-        this.user = data.user;
+      forkJoin({
+        customerDetails: customerDetails$,
+        orders: orders$,
+        counts: counts$
+      }).subscribe(({ customerDetails, orders, counts }) => {
+        this.wishlist = customerDetails.data.wishlist;
+        this.cart = customerDetails.data.cart;
+        this.user = customerDetails.data.user;
+        this.order = orders.data;
+        this.count = counts.data;
+
+
       })
     );
   }
+
+
 
   ngOnDestroy() {
     // Unsubscribe from all subscriptions when the component is destroyed

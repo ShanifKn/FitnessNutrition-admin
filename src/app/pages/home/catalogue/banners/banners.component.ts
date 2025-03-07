@@ -234,7 +234,6 @@ export class BannersComponent implements OnInit, OnDestroy {
           this.banners = banner.data;
           this.productList = products.data;
 
-
           if (
             this.banners &&
             this.banners.mainBanners?.length === 0 &&

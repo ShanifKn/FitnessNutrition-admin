@@ -204,13 +204,14 @@ export class ComboProductComponent implements OnDestroy {
     this.calculateFinalPrice();
   }
 
-
-
+  showVisible() {
+    this.comboForm.reset()
+    this.sidebarVisible = true;
+  }
 
   onSubmit() {
-
     if (this.comboForm.invalid) {
-      return
+      return;
     }
 
     this.subscriptions.add(

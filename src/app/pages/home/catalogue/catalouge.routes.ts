@@ -28,7 +28,7 @@ export const catalogueRoutes: Route[] = [
   },
   {
     path: 'coupons',
-    component: CouponDetailComponent,
+    component: CouponListComponent,
     children: [
       { path: '', component: CouponListComponent },
       { path: 'detail/:id', component: CouponDetailComponent },

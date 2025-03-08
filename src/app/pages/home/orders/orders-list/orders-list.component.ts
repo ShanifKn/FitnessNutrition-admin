@@ -64,6 +64,8 @@ export class OrdersListComponent implements OnDestroy {
         this.products = orders.data; // Assuming orders has a 'data' field
         this.returnRequest = returnOrders.data; // Assuming returnOrders has a 'data' field
         this.deliveryChargeValue = deliveryCharge.data;
+
+        console.log(this.orderCount)
       })
     );
   }
@@ -91,8 +93,8 @@ export class OrdersListComponent implements OnDestroy {
 
   addDeliveryCharge() {
     this.subscriptions.add(
-      this.service.addDeliveryCharge(this.deliveryChargeValue).subscribe(({ message }) => { 
-        
+      this.service.addDeliveryCharge(this.deliveryChargeValue).subscribe(({ message }) => {
+
       })
     )
   }

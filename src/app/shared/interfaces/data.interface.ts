@@ -34,6 +34,13 @@ export interface CustomerDataCount {
   value: number;
 }
 
+export interface DriverCountData {
+  "Pick-up": number;
+  Dispatched: number;
+  Delivered: number;
+  totalOrders: number;
+}
+
 export interface Customer {
   _id: string; // Optional for new documents
   email: string;

@@ -9,7 +9,7 @@
 
       <div class="flex flex-col items-start">
         <h1 class="text-[#A3AED0] font-medium text-2xl">Received Orders</h1>
-        <p class="text-black text-2xl font-semibold">358</p>
+        <p class="text-black text-2xl font-semibold">{{count.totalOrders}}</p>
       </div>
     </div>
   </div>
@@ -24,7 +24,7 @@
 
       <div class="flex flex-col items-start">
         <h1 class="text-[#A3AED0] font-medium text-2xl">Pending Orders</h1>
-        <p class="text-black text-2xl font-semibold">25</p>
+        <p class="text-black text-2xl font-semibold">{{ count['Pick-up'] }}</p>
       </div>
     </div>
   </div>
@@ -38,9 +38,10 @@
       </div>
 
       <div class="flex flex-col items-start">
-        <h1 class="text-[#A3AED0] font-medium text-2xl">Delivered Orders</h1>
-        <p class="text-black text-2xl font-semibold">30</p>
+        <h1 class="text-[#A3AED0] font-medium text-2xl">Dispatched Orders</h1>
+        <p class="text-black text-2xl font-semibold">{{count.Dispatched}}</p>
       </div>
+
     </div>
   </div>
 
@@ -53,8 +54,8 @@
       </div>
 
       <div class="flex flex-col items-start">
-        <h1 class="text-[#A3AED0] font-medium text-2xl">Cash to be paid</h1>
-        <p class="text-black text-2xl font-semibold">30</p>
+        <h1 class="text-[#A3AED0] font-medium text-2xl">Delivered Orders</h1>
+        <p class="text-black text-2xl font-semibold">{{count.Delivered}}</p>
       </div>
     </div>
   </div>
@@ -69,13 +70,13 @@
       <div class="bg-[#825092] p-4 text-white flex items-center justify-between">
         <div class="flex items-center">
           <div class="w-14 h-14 flex items-center justify-center text-gray-500">
-            <img class="w-full h-full rounded-full" src="/assets/images/customer/user.svg"
+            <img class="w-full h-full rounded-full" [src]="driver.image || '/assets/images/customer/user.svg'"
               alt="Customer avatar" />
           </div>
           <div class="ml-3">
-            <h2 class="text-lg font-semibold text-white">Driver name</h2>
-            <p class="text-base tracking-wide text-[#F0E6FA]">Usergmail.com</p>
-            <p class="text-base tracking-wide text-[#F0E6FA]">+971 98945623</p>
+            <h2 class="text-lg font-semibold text-white">{{driver.name}}</h2>
+            <p class="text-base tracking-wide text-[#F0E6FA]">{{driver.email}}</p>
+            <p class="text-base tracking-wide text-[#F0E6FA]">+971 {{driver.phone}}</p>
           </div>
         </div>
 
@@ -90,26 +91,27 @@
       <div class="p-4 space-y-3">
         <div class="flex justify-between">
           <span class="font-medium text-black text-base">Total Orders</span>
-          <span class="text-[#736D6D] text-base">54</span>
+          <span class="text-[#736D6D] text-base">{{count.totalOrders}}</span>
         </div>
         <div class="flex justify-between">
           <span class="font-medium text-black text-base">Registered</span>
-          <span class="text-[#736D6D] text-base">13 Sep 2024</span>
+          <span class="text-[#736D6D] text-base"> {{ driver.createdAt | date :
+            "dd/MM/yyyy" }}</span>
         </div>
         <div class="flex justify-between">
           <span class="font-medium text-black text-base">WhatsApp Number</span>
           <span class="flex items-center gap-1 text-[#736D6D] text-base">
-            <i class="pi pi-whatsapp text-green-500"></i> +971 87915624
+            <i class="pi pi-whatsapp text-green-500"></i> +971 {{driver.whatappPhone}}
           </span>
         </div>
         <div class="flex justify-between">
-          <span class="font-medium text-black text-base">Total Distance Covered</span>
-          <span class="text-blue-500 cursor-pointer">371 KM</span>
+          <span class="font-medium text-black text-base">Total Orders Delivered</span>
+          <span class="text-blue-500 cursor-pointer">{{count.Delivered}}</span>
         </div>
       </div>
 
       <!-- Footer -->
-      <div class="border-t p-4">
+      <!-- <div class="border-t p-4 hidden">
         <p class="mb-2 font-medium text-black text-base">Average rating</p>
         <div class="flex items-center gap-1">
           <span class="text-lg font-semibold text-[#545F71]">4.0</span>
@@ -122,7 +124,7 @@
           </div>
           <a href="#" class="text-blue-500 text-sm">(658 ratings)</a>
         </div>
-      </div>
+      </div> -->
     </div>
 
     <div class="grid gap-3">
@@ -135,19 +137,19 @@
         <!-- Total Collected Amount -->
         <div class="flex justify-between py-2 border-b border-gray-200">
           <span class="text-black font-medium text-base">Total collected amount</span>
-          <span class="font-medium text-[#3F3F3F]">AED 1845.00</span>
+          <span class="font-medium text-[#3F3F3F]">AED 00.00</span>
         </div>
 
         <!-- Total Paid Amount -->
         <div class="flex justify-between py-2 border-b border-gray-200">
           <span class="text-black font-medium text-base">Total paid amount</span>
-          <span class="font-medium text-[#3F3F3F]">AED 1640.00</span>
+          <span class="font-medium text-[#3F3F3F]">AED 00.00</span>
         </div>
 
         <!-- Remaining Amount -->
         <div class="flex justify-between py-2">
           <span class="text-black font-medium text-base">Remaining amount</span>
-          <span class="font-medium text-red-500">AED 205.00</span>
+          <span class="font-medium text-red-500">AED 00.00</span>
         </div>
       </div>
 
@@ -160,13 +162,13 @@
         <!-- Total Collected Amount -->
         <div class="flex justify-between py-2 border-b border-gray-200">
           <span class="text-black font-medium text-base">Branch name</span>
-          <span class="font-medium text-[#3F3F3F]">Town centre Al Ain</span>
+          <span class="font-medium text-[#3F3F3F]">{{driver.branch}}</span>
         </div>
 
         <!-- Total Paid Amount -->
         <div class="flex justify-between py-2 border-b border-gray-200">
           <span class="text-black font-medium text-base">Contact info</span>
-          <span class="font-medium text-[#3F3F3F]">+971 98945623</span>
+          <span class="font-medium text-[#3F3F3F]">+971 {{driver.phone}}</span>
         </div>
       </div>
     </div>

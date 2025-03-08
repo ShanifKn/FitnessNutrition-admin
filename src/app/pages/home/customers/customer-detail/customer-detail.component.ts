@@ -30,11 +30,9 @@ export class CustomerDetailComponent implements OnDestroy, OnInit {
   userId: string | null = '';
   order: any = [];
   redeem: any[] = [];
-  count!: CustomerDataCount
+  count: Partial<CustomerDataCount> = {}
 
-  constructor() {
-
-  }
+  constructor() {}
 
   ngOnInit(): void {
     this.userId = this.route.snapshot.paramMap.get('id');
@@ -73,7 +71,7 @@ export class CustomerDetailComponent implements OnDestroy, OnInit {
         this.order = orders.data;
         this.count = counts.data;
 
-
+        console.log(this.order)
       })
     );
   }

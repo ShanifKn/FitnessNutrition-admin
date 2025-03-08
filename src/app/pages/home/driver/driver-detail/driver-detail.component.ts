@@ -4,14 +4,16 @@ import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { TableModule } from 'primeng/table';
-import { Subscription } from 'rxjs';
+import { forkJoin, Subscription } from 'rxjs';
 import { DriverService } from '../driver.service';
 import { Driver } from '../../../../shared/interfaces/driver.interface';
+import { DriverCountData } from '../../../../shared/interfaces/data.interface';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-driver-detail',
   standalone: true,
-  imports: [ButtonModule, DialogModule, InputTextModule, TableModule],
+  imports: [ButtonModule, DialogModule, InputTextModule, TableModule, DatePipe],
   templateUrl: './driver-detail.component.html',
   styleUrl: './driver-detail.component.scss',
 })
@@ -20,12 +22,13 @@ export class DriverDetailComponent implements OnDestroy {
   private subscriptions = new Subscription();
   services = inject(DriverService);
 
-  driver!: Driver
+  driver: Partial<Driver> = {}
 
   returnDailog: boolean = false;
   editDriverDailog: boolean = false;
   editLocationDailog: boolean = false;
   driverId: string | null = ''
+  count: Partial<DriverCountData> = {}
 
 
   constructor() {
@@ -39,13 +42,22 @@ export class DriverDetailComponent implements OnDestroy {
 
 
   getDriverId(_id: string) {
+    const driverDetails$ = this.services.getDetails(_id);
+    const driverCount$ = this.services.getCount(_id);
+
     this.subscriptions.add(
-      this.services.getDetails(_id).subscribe(({ data }) => {
-        this.driver = data
-      }))
+      forkJoin({
+        driver: driverDetails$,
+        count: driverCount$
+      }).subscribe(({ driver, count }) => {
+        this.driver = driver.data;
+        this.count = count.data;
+
+
+        console.log(this.driver)
+      })
+    );
   }
-
-
 
 
   showDialog() {

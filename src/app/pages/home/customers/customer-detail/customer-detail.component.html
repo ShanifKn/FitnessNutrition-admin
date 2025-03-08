@@ -60,15 +60,21 @@
       <div class="py-4 px-10">
         <div class="mb-2">
           <p class="text-lg text-[#1A1A1A] font-medium">Last Order</p>
-          <!-- <p class="text-base text-gray-500">
-            2 Days Ago- <a href="#" class="text-blue-600">#45784</a>
-          </p> -->
 
-          <p class="text-base text-gray-500">No order yet</p>
+          <ng-container *ngIf="order?.length > 0; else noOrder">
+            <p class="text-base text-gray-500">
+              {{ order[order.length - 1]?.createdAt | date: 'MMM d, yyyy' }}
+            </p>
+          </ng-container>
+          
+          <ng-template #noOrder>
+            <p class="text-base text-gray-500">No order yet</p>
+          </ng-template>
+          
         </div>
         <div class="mb-4">
           <p class="text-lg text-[#1A1A1A] font-medium">Average Order Value</p>
-          <p class="text-base text-gray-500">AED 0.00</p>
+          <p class="text-base text-gray-500">AED {{ count.value | number: '1.2-2' }}</p>
         </div>
         <div class="mb-4">
           <p class="text-lg text-[#1A1A1A] font-medium">Registered</p>

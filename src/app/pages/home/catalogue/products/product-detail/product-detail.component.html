@@ -208,8 +208,6 @@
       <div
         class="col-span-1 bg-white rounded-lg shadow-md overflow-hidden p-5 flex flex-col gap-6 h-full"
       >
-
-
         <div class="">
           <h1 class="text-black text-lg pb-3">Visibility</h1>
           <div class="flex items-center space-x-4">
@@ -473,7 +471,7 @@
           <h1 class="text-lg pb-3 text-black">Category</h1>
           <p-dropdown
             [options]="categories"
-            optionLabel="description"
+            optionLabel="title"
             [(ngModel)]="selectedParentCategory"
             formControlName="parentCategory"
             placeholder="Select a Parent Category"

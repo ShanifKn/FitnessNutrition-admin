@@ -71,7 +71,6 @@ export class CustomerDetailComponent implements OnDestroy, OnInit {
         this.order = orders.data;
         this.count = counts.data;
 
-        console.log(this.order)
       })
     );
   }

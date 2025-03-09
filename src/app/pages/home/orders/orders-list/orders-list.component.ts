@@ -65,7 +65,6 @@ export class OrdersListComponent implements OnDestroy {
         this.returnRequest = returnOrders.data; // Assuming returnOrders has a 'data' field
         this.deliveryChargeValue = deliveryCharge.data;
 
-        console.log(this.orderCount)
       })
     );
   }

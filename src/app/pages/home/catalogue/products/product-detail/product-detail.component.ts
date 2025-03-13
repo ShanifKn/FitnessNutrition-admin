@@ -270,6 +270,7 @@ export class ProductDetailComponent implements OnDestroy {
           // Handle category data
           this.categories = categoryResponse.data;
           this.filteredCategories = categoryResponse.data;
+
           this.dietary = dietary.data;
 
           if (productVariant.data) {

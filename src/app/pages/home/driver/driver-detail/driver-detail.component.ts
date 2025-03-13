@@ -53,8 +53,6 @@ export class DriverDetailComponent implements OnDestroy {
         this.driver = driver.data;
         this.count = count.data;
 
-
-        console.log(this.driver)
       })
     );
   }

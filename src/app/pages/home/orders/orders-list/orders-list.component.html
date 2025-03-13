@@ -1,8 +1,6 @@
 <div class="flex justify-between items-start">
   <h1 class="text-black text-[24px] font-bold">Orders</h1>
 
-
-
   <p-button label="Delivery Charge" (onClick)="showDialogs()"
     styleClass="px-5 bg-[#825092] text-white py-3 font-semibold rounded-md" />
 </div>
@@ -206,7 +204,84 @@
     </div>
   </div>
 
-  <p-table [value]="products | search : searchText2 : 'orderNumber'"
+  <p-table *ngIf="returnRequest.length > 0"
+    [value]="returnRequest | search : searchText2 : 'orderNumber'"
+    [rowsPerPageOptions]="[5, 10, 20]" [rows]="7" [paginator]="true"
+    class="drop-shadow-lg">
+    <ng-template pTemplate="header">
+      <tr class="flex">
+        <th pSortableColumn="orderNumber"
+          class="flex items-center w-full text-white bg-[#825092] rounded-t-md">
+          Order Id <p-sortIcon field="orderNumber" />
+        </th>
+        <th pSortableColumn="invoiceNumber"
+          class="flex items-center w-full text-white bg-[#825092] rounded-t-md">
+          Invoice Id <p-sortIcon field="invoiceNumber" />
+        </th>
+        <th pSortableColumn="billingInfo.name"
+          class="flex items-center w-full text-white bg-[#825092]">
+          Customer <p-sortIcon field="billingInfo.name" />
+        </th>
+        <th pSortableColumn="createdAt"
+          class="flex items-center w-full text-white bg-[#825092]">
+          Date <p-sortIcon field="createdAt" />
+        </th>
+        <th pSortableColumn="total"
+          class="flex items-center w-full text-white bg-[#825092]">
+          Total<p-sortIcon field="total" />
+        </th>
+        <th pSortableColumn="status"
+          class="flex items-center w-full text-white bg-[#825092]">
+          Status<p-sortIcon field="status" />
+        </th>
+        <th class="flex items-center w-full text-white bg-[#825092] rounded-r-md">
+          Action
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product>
+      <tr class="flex">
+        <td class="w-full">{{ product.orderId.orderNumber }}</td>
+        <td class="w-full">{{ product.orderId.invoiceId }}</td>
+        <td class="w-full">{{ product.orderId.billingInfo.name }}</td>
+        <td class="w-full">{{ product.createdAt | date : "MMM d yyyy" }}</td>
+        <td class="w-full">AED {{ product.price | number: '1.2-2'}}</td>
+        <td class="w-full" [ngClass]="{
+          'text-red-500': product.status === 'Declined',
+          'text-yellow-500': product.status === 'Accepted',
+          'text-green-500': product.status === 'Returned'
+        }">
+          {{ product.status }}
+        </td>
+        <td class="w-full flex gap-5">
+          <button (click)="showMessageDialog(product)" pButton
+            class="px-3 py-1 text-sm font-medium text-white bg-red-400 rounded-md">
+            View
+          </button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <div *ngIf="returnRequest.length === 0" class="text-center flex justify-center items-center text-gray-500 mt-5 bg-white h-20 drop-shadow-lg rounded-lg">
+    No data available
+  </div>
+
+</div>
+
+
+<div class="mt-7">
+  <h1 class="text-black text-xl font-bold pb-4">Support Requests</h1>
+
+  <div class="bg-white rounded-lg p-5 mb-5 drop-shadow-lg">
+    <div class="flex items-center border border-gray-300 bg-white rounded-xl px-4 py-2">
+      <span class="pi pi-search"></span>
+      <input type="text" placeholder="Search Orders Id" [(ngModel)]="searchText2"
+        class="ml-3 w-full focus:outline-none text-gray-700" />
+    </div>
+  </div>
+
+  <p-table *ngIf="supportRequest.length > 0" [value]="supportRequest | search : searchText2 : 'orderNumber'"
     [rowsPerPageOptions]="[5, 10, 20]" [rows]="7" [paginator]="true"
     class="drop-shadow-lg">
     <ng-template pTemplate="header">
@@ -238,6 +313,11 @@
           Total<p-sortIcon field="total" />
         </th>
 
+        <th pSortableColumn="status"
+          class="flex items-center w-full text-white bg-[#825092]">
+          Status<p-sortIcon field="status" />
+        </th>
+
         <th class="flex items-center w-full text-white bg-[#825092] rounded-r-md">
           Action
         </th>
@@ -245,91 +325,62 @@
     </ng-template>
     <ng-template pTemplate="body" let-product>
       <tr class="flex">
-        <td class="w-full">{{ product.orderNumber }}</td>
-        <td class="w-full">{{ product.invoiceNumber }}</td>
-        <td class="w-full">{{ product.billingInfo.name }}</td>
+        <td class="w-full">{{ product.orderId.orderNumber }}</td>
+        <td class="w-full">{{ product.orderId.invoiceId }}</td>
+        <td class="w-full">{{ product.orderId.billingInfo.name }}</td>
         <td class="w-full">{{ product.createdAt | date : "MMM d yyyy" }}</td>
 
-        <td class="w-full">{{ product.total }}</td>
+        <td class="w-full">AED {{ product.price | number: '1.2-2'}}</td>
+
+        <td class="w-full"
+          [ngClass]="{ 'text-red-500': product.status === 'Declined', 'text-yellow-500': product.status === 'Accepted', 'text-green-500': product.status === 'Returned'}">
+          {{ product.status }}
+        </td>
+
         <td class="w-full flex gap-5">
-          <div
-            class="w-9 h-9 rounded-full flex justify-center items-center bg-[#20A1FF] cursor-pointer"
-            (click)="showMessageDialog()">
-            <i class="pi pi-comments text-white" style="font-size: 1.2rem"></i>
-          </div>
+          <button (click)="showSupportDialog(product)" pButton
+            class="px-3 py-1 text-sm font-medium text-white bg-red-400 rounded-md">
+            View
+          </button>
 
-          <div
-            class="w-9 h-9 rounded-full flex justify-center items-center bg-[#FA3E62] cursor-pointer">
-            <i class="pi pi-times text-white" style="font-size: 1.2rem"></i>
-          </div>
-
-          <div
-            class="w-9 h-9 rounded-full flex justify-center items-center bg-[#05CA40] cursor-pointer"
-            (click)="showDialog()">
-            <i class="pi pi-check text-white" style="font-size: 1.2rem"></i>
-          </div>
         </td>
       </tr>
     </ng-template>
   </p-table>
+
+
+  <div *ngIf="supportRequest.length === 0" class="text-center flex justify-center items-center text-gray-500 mt-5 bg-white h-20 drop-shadow-lg rounded-lg">
+    No data available
+  </div>
 </div>
 
 <!-- return dialog bx -->
-<p-dialog header="" [(visible)]="returnDialog" [style]="{ width: '25rem' }" class="p-0">
-  <h1 class="flex justify-center font-semibold text-center w-full text-black text-2xl">
-    Are You Sure to Accept the return?
-  </h1>
-
-  <div class="flex justify-center w-full mt-4">
-    <p-dropdown [options]="driverList" optionLabel="name" [filter]="true" filterBy="name"
-      [showClear]="true" placeholder="Select  Driver"
-      styleClass="bg-[#F6F7F9] w-full h-12 border border-gray-200 rounded-lg no-focus-ring"
-      appendTo="body" class="w-full mt-5">
-      <ng-template pTemplate="selectedItem" let-selectedOption>
-        <div class="flex align-items-center gap-2">
-          <div>{{ selectedOption.name }}</div>
-        </div>
-      </ng-template>
-    </p-dropdown>
-  </div>
-
-  <div class="flex gap-1 mx-auto w-full justify-center mt-5">
-    <button
-      class="text-[#825092] text-lg border border-[#825092] px-5 py-1 w-24 rounded-lg">
-      Cancel
-    </button>
-    <button class="text-white bg-[#825092] text-lg px-5 py-1 w-24 rounded-lg">
-      Sure
-    </button>
-  </div>
-</p-dialog>
-
-<!-- return message box -->
-<p-dialog header="" [(visible)]="returnMessageDialog"
-  [style]="{ width: '55rem', backgroundColor: 'red' }" styleClass="p-0 bg-red-500">
+<p-dialog header="" [(visible)]="dialogSupport" [style]="{ width: '55rem' }" class="p-0">
   <div class="grid grid-cols-2">
     <!-- Customer Information Card -->
     <div class="bg-white rounded-lg shadow p-6 w-full border">
       <div class="bg-[#825092] p-4 text-white rounded-t-lg">
         <div class="flex items-center space-x-4">
           <div class="w-12 h-12 bg-gray-200 rounded-full">
-            <img class="w-full h-full rounded-full" src="/assets/images/customer/user.svg"
+            <img class="w-full h-full rounded-full"
+              [src]="selectedSupport?.userId?.image ||'/assets/images/customer/user.svg'"
               alt="Customer avatar" />
           </div>
           <div>
-            <h3 class="font-bold">Customer name</h3>
-            <p class="text-sm">Usergmail.com</p>
-            <p class="text-sm">+971 98945623</p>
+            <h3 class="font-bold">{{ selectedSupport?.userId?.name }}</h3>
+            <p class="text-sm">{{ selectedSupport?.userId?.email }}</p>
+            <p class="text-sm">{{ selectedSupport?.userId?.phone }}</p>
           </div>
         </div>
       </div>
 
       <div class="flex items-center space-x-4 py-4">
-        <img src="/assets/images/customer/product1.svg" alt="Product Image"
-          class="w-14 h-14 object-cover rounded" />
+        <img
+          [src]="selectedSupport?.productId?.images?.[0] ||'/assets/images/customer/product1.svg'"
+          alt="Product Image" class="w-14 h-14 object-cover rounded" />
         <div>
-          <p class="font-semibold text-base">
-            Optimum Nutrition Gold Standard 100% Whey Protein
+          <p class="font-semibold text-base line-clamp-2">
+            {{selectedSupport?.productId?.name}}
           </p>
         </div>
       </div>
@@ -337,15 +388,15 @@
       <div class="space-y-2 text-gray-700">
         <div class="flex justify-between">
           <span>Order ID</span>
-          <a href="#" class="text-blue-500">#45784</a>
+          <a href="#" class="text-blue-500">#{{selectedSupport?.orderId?.orderNumber}}</a>
         </div>
         <div class="flex justify-between">
           <span>Order Date</span>
-          <span>16-08-2024</span>
+          <span>{{selectedSupport?.orderId?.createdAt | date : "MMM d yyyy"}}</span>
         </div>
         <div class="flex justify-between">
           <span>Return Date</span>
-          <span>20-08-2024</span>
+          <span>{{selectedSupport?.createdAt | date : "MMM d yyyy"}}</span>
         </div>
         <div class="flex justify-between">
           <span>Payment</span>
@@ -353,15 +404,19 @@
         </div>
         <div class="flex justify-between">
           <span>Items</span>
-          <span>1</span>
+          <span>{{selectedSupport?.quantity}}</span>
         </div>
         <div class="flex justify-between">
           <span>Payment method</span>
-          <span>Cash on delivery</span>
+          <span>
+            {{ selectedSupport?.orderId?.paymentMethod === 'COD' ? 'Cash on Delivery' :
+            'Online' }}
+          </span>
         </div>
         <div class="flex justify-between">
           <span>Total Amount</span>
-          <span class="text-blue-500">AED 128.00</span>
+          <span class="text-blue-500">AED {{selectedSupport?.price | number:
+            '1.2-2'}}</span>
         </div>
       </div>
     </div>
@@ -370,60 +425,148 @@
     <div class="bg-white rounded-lg shadow p-6 w-full space-y-4">
       <h3 class="font-bold text-gray-800">Customer Comment</h3>
       <p class="border border-[#854D94] p-3 rounded-lg text-gray-700">
-        Designed to meet the need for sustainable, high-quality products that
-        reduce environmental impact while offering great value.
+        {{selectedSupport?.messages || 'No message available'}}
       </p>
 
-      <div class="flex space-x-4">
-        <button class="bg-red-500 text-white font-bold px-4 py-2 rounded-lg">
+      <div class="space-y-2">
+        <h3 class="font-bold text-gray-800">Response</h3>
+        <div *ngIf="selectedSupport">
+          <textarea #replyBox [(ngModel)]="selectedSupport.response"
+            placeholder="Reply..."
+            class="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:border-[#854D94]"
+            [disabled]="selectedRequest?.status !== 'Request'">
+          </textarea>
+        </div>
+
+        <!-- Error Message -->
+        <p *ngIf="errorMessage" class="text-red-500 text-sm">{{ errorMessage }}</p>
+      </div>
+
+      <div class="flex justify-end space-x-4"
+        *ngIf="selectedSupport?.status === 'Request' ">
+        <button class="bg-red-500 text-white font-bold px-4 py-2 rounded-lg"
+          (click)="dialogSupport = false">
+          cancel
+        </button>
+
+        <button class="bg-green-500 text-white font-bold px-4 py-2 rounded-lg"
+          (click)="handleSendResponse()">
+          Send
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+</p-dialog>
+
+<!-- return message box -->
+<p-dialog header="" [(visible)]="returnMessageDialog" [style]="{ width: '55rem', backgroundColor: 'red' }" styleClass="p-0 bg-red-500">
+  <div class="grid grid-cols-2">
+    <!-- Customer Information Card -->
+    <div class="bg-white rounded-lg shadow p-6 w-full border">
+      <div class="bg-[#825092] p-4 text-white rounded-t-lg">
+        <div class="flex items-center space-x-4">
+          <div class="w-12 h-12 bg-gray-200 rounded-full">
+            <img class="w-full h-full rounded-full"
+              [src]="selectedRequest?.userId?.image ||'/assets/images/customer/user.svg'"
+              alt="Customer avatar" />
+          </div>
+          <div>
+            <h3 class="font-bold">{{ selectedRequest?.userId?.name }}</h3>
+            <p class="text-sm">{{ selectedRequest?.userId?.email }}</p>
+            <p class="text-sm">{{ selectedRequest?.userId?.phone }}</p>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-4 py-4">
+        <img
+          [src]="selectedRequest?.productId?.images?.[0] ||'/assets/images/customer/product1.svg'"
+          alt="Product Image" class="w-14 h-14 object-cover rounded" />
+        <div>
+          <p class="font-semibold text-base line-clamp-2">
+            {{selectedRequest?.productId?.name}}
+          </p>
+        </div>
+      </div>
+
+      <div class="space-y-2 text-gray-700">
+        <div class="flex justify-between">
+          <span>Order ID</span>
+          <a href="#" class="text-blue-500">#{{selectedRequest?.orderId?.orderNumber}}</a>
+        </div>
+        <div class="flex justify-between">
+          <span>Order Date</span>
+          <span>{{selectedRequest?.orderId?.createdAt | date : "MMM d yyyy"}}</span>
+        </div>
+        <div class="flex justify-between">
+          <span>Return Date</span>
+          <span>{{selectedRequest?.createdAt | date : "MMM d yyyy"}}</span>
+        </div>
+        <div class="flex justify-between">
+          <span>Payment</span>
+          <span class="text-green-500">Yes</span>
+        </div>
+        <div class="flex justify-between">
+          <span>Items</span>
+          <span>{{selectedRequest?.quantity}}</span>
+        </div>
+        <div class="flex justify-between">
+          <span>Payment method</span>
+          <span>
+            {{ selectedRequest?.orderId?.paymentMethod === 'COD' ? 'Cash on Delivery' :
+            'Online' }}
+          </span>
+
+        </div>
+        <div class="flex justify-between">
+          <span>Total Amount</span>
+          <span class="text-blue-500">AED {{selectedRequest?.price | number:
+            '1.2-2'}}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Comment and Reply Section -->
+    <div class="bg-white rounded-lg shadow p-6 w-full space-y-4">
+      <h3 class="font-bold text-gray-800">Customer Comment</h3>
+      <p class="border border-[#854D94] p-3 rounded-lg text-gray-700">
+        {{selectedRequest?.messages || 'No message available'}}
+      </p>
+
+
+
+      <div class="space-y-2">
+        <h3 class="font-bold text-gray-800">Reply</h3>
+        <div *ngIf="selectedRequest">
+          <textarea #replyBox [(ngModel)]="selectedRequest.response"
+            placeholder="Reply..."
+            class="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:border-[#854D94]"
+            [disabled]="selectedRequest?.status !== 'Request'">
+          </textarea>
+        </div>
+
+        <!-- Error Message -->
+        <p *ngIf="errorMessage" class="text-red-500 text-sm">{{ errorMessage }}</p>
+      </div>
+
+      <div class="flex justify-end space-x-4"
+        *ngIf="selectedRequest?.status === 'Request'">
+        <button class="bg-red-500 text-white font-bold px-4 py-2 rounded-lg"
+          (click)="handleReject()">
           Reject
         </button>
-        <button class="bg-green-500 text-white font-bold px-4 py-2 rounded-lg">
+
+        <button class="bg-green-500 text-white font-bold px-4 py-2 rounded-lg"
+          (click)="handleAccept()">
           Accept
         </button>
       </div>
 
-      <div class="space-y-2">
-        <h3 class="font-bold text-gray-800">Reply</h3>
-        <textarea placeholder="Reply..."
-          class="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:border-[#854D94]"></textarea>
-      </div>
-
-      <div class="flex justify-end space-x-4">
-        <button
-          class="border border-[#854D94] text-[#854D94] font-bold px-4 py-2 rounded-lg">
-          Cancel
-        </button>
-        <button class="bg-[#854D94] text-white font-bold px-4 py-2 rounded-lg">
-          Send
-        </button>
-      </div>
     </div>
   </div>
 </p-dialog>
 
 
-<p-dialog [modal]="true" [(visible)]="deliveryCharge" [style]="{ width: '25rem' }"
-  class="p-4">
-  <span class="text-gray-500 block mb-5">Update the delivery charge per kilometer</span>
-  <div class="w-full">
-    <input
-      type="text"
-      class="bg-[#F6F7F9] h-10 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
-      pInput
-      placeholder="Charge"
-      [(ngModel)]="deliveryChargeValue"
-    />
-
-  </div>
-
-  <div class="flex gap-1 mx-auto w-full justify-center mt-5">
-    <button (click)="deliveryCharge = false"
-      class="text-[#825092] text-lg border border-[#825092] px-5 py-1 w-24 rounded-lg">
-      Cancel
-    </button>
-    <button class="text-white bg-[#825092] text-lg px-5 py-1 w-24 rounded-lg" (click)="addDeliveryCharge()">
-      Sure
-    </button>
-  </div>
-</p-dialog>

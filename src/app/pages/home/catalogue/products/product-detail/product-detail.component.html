@@ -2,22 +2,16 @@
   <div class="grid mt-7 drop-shadow-lg">
     <div class="flex items-center justify-between">
       <h1 class="text-black text-[24px] font-bold pb-4">Edit Product</h1>
-      <button
-        pButton
-        icon="pi pi-angle-left"
+      <button pButton icon="pi pi-angle-left"
         class="p-button-sm rounded-full text-xs px-3 py-2 bg-white text-black border-2 border-black mb-3"
-        label="BACK"
-        type="button"
-        (click)="_location.back()"
-      ></button>
+        label="BACK" type="button" (click)="_location.back()"></button>
     </div>
 
     <div class="grid grid-cols-3 gap-3">
       <div class="col-span-2 grid gap-2 h-full">
         <div class="bg-white rounded-lg shadow-md overflow-hidden p-5">
           <app-image-uploader
-            [images]="productForm.get('images')?.value"
-          ></app-image-uploader>
+            [images]="productForm.get('images')?.value"></app-image-uploader>
 
           <small *ngIf="hasError('images')" class="text-red-500">
             Name is required.
@@ -27,13 +21,9 @@
             <!-- Name Field -->
             <div>
               <h1 class="text-black text-lg pb-3 font-medium">Name</h1>
-              <input
-                type="text"
-                formControlName="name"
+              <input type="text" formControlName="name"
                 class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
-                pInput
-                placeholder="Product Name"
-              />
+                pInput placeholder="Product Name" />
               <small *ngIf="hasError('name')" class="text-red-500">
                 Name is required.
               </small>
@@ -42,14 +32,9 @@
             <!-- Description Field -->
             <div>
               <h1 class="text-black text-lg pb-3 font-medium">Description</h1>
-              <textarea
-                rows="4"
-                cols="30"
-                formControlName="description"
+              <textarea rows="4" cols="30" formControlName="description"
                 class="bg-[#F6F7F9] w-full pl-3 pt-2 rounded-lg placeholder:text-gray-500 border border-gray-200"
-                pInputTextarea
-                placeholder="Product description"
-              ></textarea>
+                pInputTextarea placeholder="Product description"></textarea>
               <small *ngIf="hasError('description')" class="text-red-500">
                 Description is required.
               </small>
@@ -61,39 +46,27 @@
 
               <div class="w-full">
                 <h1 class="text-black text-lg font-medium pb-4">Size</h1>
-                <input
-                  type="text"
+                <input type="text"
                   class="bg-[#F6F7F9] h-14 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
-                  formControlName="size"
-                  pInput
-                  placeholder="Size"
-                />
+                  formControlName="size" pInput placeholder="Size" />
                 <small *ngIf="hasError('size')" class="text-red-500">
-                  Size  is required.
+                  Size is required.
                 </small>
               </div>
 
 
               <div class="w-full">
                 <h1 class="text-black text-lg font-medium pb-4">Flavour</h1>
-                <input
-                  type="text"
+                <input type="text"
                   class="bg-[#F6F7F9] h-14 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
-                  formControlName="flavour"
-                  pInput
-                  placeholder="flavour"
-                />
+                  formControlName="flavour" pInput placeholder="flavour" />
               </div>
 
               <div class="w-full">
                 <h1 class="text-black text-lg font-medium pb-4">Colour</h1>
-                <input
-                  type="text"
+                <input type="text"
                   class="bg-[#F6F7F9] h-14 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
-                  formControlName="colour"
-                  pInput
-                  placeholder="Colour"
-                />
+                  formControlName="colour" pInput placeholder="Colour" />
               </div>
             </div>
 
@@ -104,18 +77,11 @@
                 <h1 class="text-black text-lg pb-3 font-medium">
                   Purchase Company
                 </h1>
-                <input
-                  type="text"
+                <input type="text"
                   class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
-                  pInput
-                  placeholder="Select"
-                  formControlName="purchase_account_name"
-                  readonly="true"
-                />
-                <small
-                  *ngIf="hasError('purchase_account_name')"
-                  class="text-red-500"
-                >
+                  pInput placeholder="Select" formControlName="purchase_account_name"
+                  readonly="true" />
+                <small *ngIf="hasError('purchase_account_name')" class="text-red-500">
                   Brand selection is required.
                 </small>
               </div>
@@ -125,17 +91,10 @@
                   Product Brand
                 </h1>
 
-                <input
-                  type="text"
+                <input type="text"
                   class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
-                  pInput
-                  placeholder="Product Brand"
-                  formControlName="productBrand"
-                />
-                <small
-                  *ngIf="hasError('productBrand')"
-                  class="text-red-500"
-                >
+                  pInput placeholder="Product Brand" formControlName="productBrand" />
+                <small *ngIf="hasError('productBrand')" class="text-red-500">
                   Brand selection is required.
                 </small>
               </div>
@@ -143,31 +102,22 @@
 
             <div class="">
               <h1 class="text-black text-lg pb-3 font-medium">Add Tags</h1>
-    
+
               <div class="flex flex-wrap gap-2 mb-3">
-                <p-chip
-                  *ngFor="let chip of chipsControl.value; let i = index"
-                  [label]="chip"
-                  [removable]="true"
-                  (onRemove)="removeChip(i)"
-                ></p-chip>
+                <p-chip *ngFor="let chip of chipsControl.value; let i = index"
+                  [label]="chip" [removable]="true" (onRemove)="removeChip(i)"></p-chip>
               </div>
               <div class="flex gap-4 items-center">
-                <input
-                  type="text"
-                  #chipInput
+                <input type="text" #chipInput
                   class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
-                  placeholder="Type and press add"
-                />
-    
-                <button
-                  (click)="addChip()"
-                  type="button"
+                  placeholder="Type and press add" />
+
+                <button (click)="addChip()" type="button"
                   class="px-4 py-2  bg-blue-500 text-white font-medium hover:bg-blue-600 rounded-lg">
                   Add
                 </button>
               </div>
-    
+
               <small *ngIf="hasError('chips')" class="text-red-500">
                 Add tags is required.
               </small>
@@ -206,49 +156,36 @@
       </div>
 
       <div
-        class="col-span-1 bg-white rounded-lg shadow-md overflow-hidden p-5 flex flex-col gap-6 h-full"
-      >
+        class="col-span-1 bg-white rounded-lg shadow-md overflow-hidden p-5 flex flex-col gap-6 h-full">
         <div class="">
           <h1 class="text-black text-lg pb-3">Visibility</h1>
           <div class="flex items-center space-x-4">
-            <div
-              [ngClass]="
+            <div [ngClass]="
                 productForm.get('status')?.value === 'active'
                   ? 'border-2 border-[#854D94] text-[#854D94]'
                   : 'text-[#6E6E6E] bg-[#F6F7F9] border border-gray-200'
               "
-              class="inline-flex items-center px-4 py-[10px] text-sm font-medium rounded-md"
-            >
+              class="inline-flex items-center px-4 py-[10px] text-sm font-medium rounded-md">
               <label for="hidden" class="flex items-center cursor-pointer">
                 <span class="pr-2 text-base font-medium">Publish</span>
-                <input
-                  id="hidden"
-                  type="radio"
-                  formControlName="status"
+                <input id="hidden" type="radio" formControlName="status"
                   [value]="'active'"
                   [checked]="productForm.get('status')?.value === 'active'"
-                  class="appearance-none peer h-3 w-3 border-2 border-gray-300 rounded-full checked:bg-[#854D94] checked:border-2"
-                />
+                  class="appearance-none peer h-3 w-3 border-2 border-gray-300 rounded-full checked:bg-[#854D94] checked:border-2" />
               </label>
             </div>
-            <div
-              [ngClass]="
+            <div [ngClass]="
                 productForm.get('status')?.value === 'inactive'
                   ? 'border-2 border-[#854D94] text-[#854D94]'
                   : 'text-[#6E6E6E] bg-[#F6F7F9] border border-gray-200'
               "
-              class="inline-flex items-center px-4 py-[10px] text-sm font-medium rounded-md"
-            >
+              class="inline-flex items-center px-4 py-[10px] text-sm font-medium rounded-md">
               <label for="published" class="flex items-center cursor-pointer">
                 <span class="pr-2 text-base font-medium">Hidden</span>
-                <input
-                  id="published"
-                  type="radio"
-                  formControlName="status"
+                <input id="published" type="radio" formControlName="status"
                   [value]="'inactive'"
                   [checked]="productForm.get('status')?.value === 'inactive'"
-                  class="appearance-none peer h-3 w-3 border-2 border-gray-300 rounded-full checked:bg-[#854D94] checked:border-2"
-                />
+                  class="appearance-none peer h-3 w-3 border-2 border-gray-300 rounded-full checked:bg-[#854D94] checked:border-2" />
               </label>
             </div>
           </div>
@@ -257,54 +194,37 @@
         <div class="">
           <h1 class="text-black text-lg pb-3">Publish date</h1>
 
-          <input
-            type="date"
+          <input type="date"
             class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
-            formControlName="publishDate"
-            placeholder="16 Sep 2024"
-          />
+            formControlName="publishDate" placeholder="16 Sep 2024" />
           <!-- Error Message -->
-          <div
-            *ngIf="
+          <div *ngIf="
               productForm.get('publishDate')?.invalid &&
               productForm.get('publishDate')?.touched
-            "
-            class="text-red-500 text-sm"
-          >
+            " class="text-red-500 text-sm">
             <div *ngIf="productForm.get('publishDate')?.errors?.['required']">
               Publish date is required.
             </div>
           </div>
           <h3 class="text-[#6E6E6E] font-medium text-base pt-2">
-            The product will not be visible until the specified date
+            The product will be visible from the specified date
           </h3>
         </div>
 
         <div class="">
           <h1 class="text-black text-lg pb-3 font-medium">Payment</h1>
-          <p-multiSelect
-            [options]="payment"
-            placeholder="Select available payment methods"
-            optionLabel="name"
-            display="chip"
-            class="bg-[#F6F7F9] w-full"
+          <p-multiSelect [options]="payment"
+            placeholder="Select available payment methods" optionLabel="name"
+            display="chip" class="bg-[#F6F7F9] w-full"
             styleClass=" w-full bg-[#F6F7F9] pl-3 pt-2 h-14 rounded-lg placeholder:text-gray-500 border border-gray-200"
-            appendTo="body"
-            [showClear]="true"
-            formControlName="paymentMethods"
-            optionValue="code"
-          />
+            appendTo="body" [showClear]="true" formControlName="paymentMethods"
+            optionValue="code" />
 
-          <div
-            *ngIf="
+          <div *ngIf="
               productForm.get('paymentMethods')?.invalid &&
               productForm.get('paymentMethods')?.touched
-            "
-            class="text-red-500 text-sm"
-          >
-            <div
-              *ngIf="productForm.get('paymentMethods')?.errors?.['required']"
-            >
+            " class="text-red-500 text-sm">
+            <div *ngIf="productForm.get('paymentMethods')?.errors?.['required']">
               Payment method is required.
             </div>
           </div>
@@ -315,22 +235,14 @@
             Product price
           </h1>
 
-          <input
-            type="text"
+          <input type="text"
             class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
-            pInput
-            placeholder="AED"
-            formControlName="rate"
-            readonly="true"
-          />
+            pInput placeholder="AED" formControlName="rate" readonly="true" />
 
-          <div
-            *ngIf="
+          <div *ngIf="
               productForm.get('rate')?.invalid &&
               productForm.get('rate')?.touched
-            "
-            class="text-red-500 text-sm"
-          >
+            " class="text-red-500 text-sm">
             <div *ngIf="productForm.get('rate')?.errors?.['required']">
               Product price is required.
             </div>
@@ -342,25 +254,15 @@
             Purchase price
           </h1>
 
-          <input
-            type="text"
+          <input type="text"
             class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
-            pInput
-            placeholder="AED"
-            readonly="true"
-            formControlName="purchase_rate"
-          />
+            pInput placeholder="AED" readonly="true" formControlName="purchase_rate" />
 
-          <div
-            *ngIf="
+          <div *ngIf="
               productForm.get('purchase_rate')?.invalid &&
               productForm.get('purchase_rate')?.touched
-            "
-            class="text-red-500 text-sm"
-          >
-            <div
-              *ngIf="productForm.get('purchase_rate')?.errors?.['required']"
-            >
+            " class="text-red-500 text-sm">
+            <div *ngIf="productForm.get('purchase_rate')?.errors?.['required']">
               Product purchase rate is required.
             </div>
           </div>
@@ -371,21 +273,14 @@
             Maximum discount for the prodcut %
           </h1>
 
-          <input
-            type="text"
+          <input type="text"
             class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
-            pInput
-            placeholder="0"
-            formControlName="maxDiscount"
-          />
+            pInput placeholder="0" formControlName="maxDiscount" />
 
-          <div
-            *ngIf="
+          <div *ngIf="
               productForm.get('maxDiscount')?.invalid &&
               productForm.get('maxDiscount')?.touched
-            "
-            class="text-red-500 text-sm"
-          >
+            " class="text-red-500 text-sm">
             <div *ngIf="productForm.get('maxDiscount')?.errors?.['required']">
               Maximum product discount is required.
             </div>
@@ -407,26 +302,16 @@
     <div class="flex gap-4 w-full">
       <div class="grid w-full">
         <h1 class="text-black text-xl font-bold pb-4">Analytics</h1>
-        <p-multiSelect
-          [options]="analytics"
-          placeholder="Select Analytics"
-          optionLabel="name"
-          display="chip"
-          class="bg-[#F6F7F9] w-full"
+        <p-multiSelect [options]="analytics" placeholder="Select Analytics"
+          optionLabel="name" display="chip" class="bg-[#F6F7F9] w-full"
           styleClass=" w-full bg-[#F6F7F9] pl-3 pt-2 h-14 rounded-lg placeholder:text-gray-500 border border-gray-200"
-          appendTo="body"
-          [showClear]="true"
-          formControlName="analytics"
-          optionValue="code"
-        />
+          appendTo="body" [showClear]="true" formControlName="analytics"
+          optionValue="code" />
 
-        <div
-          *ngIf="
+        <div *ngIf="
             productForm.get('analytics')?.invalid &&
             productForm.get('analytics')?.touched
-          "
-          class="text-red-500 text-sm"
-        >
+          " class="text-red-500 text-sm">
           <div *ngIf="productForm.get('analytics')?.errors?.['required']">
             Publish date is required.
           </div>
@@ -435,26 +320,16 @@
 
       <div class="grid w-full">
         <h1 class="text-black text-xl font-bold pb-4">Dietary</h1>
-        <p-multiSelect
-          [options]="dietary"
-          placeholder="Select Dietary"
-          optionLabel="title"
-          display="chip"
-          class="bg-[#F6F7F9] w-full"
+        <p-multiSelect [options]="dietary" placeholder="Select Dietary"
+          optionLabel="title" display="chip" class="bg-[#F6F7F9] w-full"
           styleClass=" w-full bg-[#F6F7F9] pl-3 pt-2 h-14 rounded-lg placeholder:text-gray-500 border border-gray-200"
-          appendTo="body"
-          [showClear]="true"
-          formControlName="dietary"
-          optionValue="title"
-        />
+          appendTo="body" [showClear]="true" formControlName="dietary"
+          optionValue="title" />
 
-        <div
-          *ngIf="
+        <div *ngIf="
             productForm.get('analytics')?.invalid &&
             productForm.get('analytics')?.touched
-          "
-          class="text-red-500 text-sm"
-        >
+          " class="text-red-500 text-sm">
           <div *ngIf="productForm.get('analytics')?.errors?.['required']">
             Publish date is required.
           </div>
@@ -469,18 +344,12 @@
         <!-- Parent Category Dropdown -->
         <div class="grid">
           <h1 class="text-lg pb-3 text-black">Category</h1>
-          <p-dropdown
-            [options]="categories"
-            optionLabel="title"
-            [(ngModel)]="selectedParentCategory"
-            formControlName="parentCategory"
-            placeholder="Select a Parent Category"
-            class="bg-[#F6F7F9] w-full"
+          <p-dropdown [options]="categories" optionLabel="title"
+            [(ngModel)]="selectedParentCategory" formControlName="parentCategory"
+            placeholder="Select a Parent Category" class="bg-[#F6F7F9] w-full"
             styleClass="w-96 bg-[#F6F7F9] pl-3 pt-2 h-14 rounded-lg placeholder:text-gray-500 border border-gray-200"
-            (onChange)="onParentCategoryChange()"
-            appendTo="body"
-            optionValue="_id"
-          ></p-dropdown>
+            (onChange)="onParentCategoryChange()" appendTo="body"
+            optionValue="_id"></p-dropdown>
 
           <small *ngIf="hasError('parentCategory')" class="text-red-500">
             Select Category is required.
@@ -490,18 +359,12 @@
         <!-- Category Dropdown -->
         <div class="grid">
           <h1 class="text-lg pb-3 text-black">Sub Category</h1>
-          <p-dropdown
-            [options]="filteredCategories"
-            optionLabel="title"
-            [(ngModel)]="selectedCategory"
-            formControlName="category"
-            placeholder="Select a Sub Category"
-            class="bg-[#F6F7F9] w-full"
+          <p-dropdown [options]="filteredCategories" optionLabel="title"
+            [(ngModel)]="selectedCategory" formControlName="category"
+            placeholder="Select a Sub Category" class="bg-[#F6F7F9] w-full"
             styleClass="w-96 bg-[#F6F7F9] pl-3 pt-2 h-14 rounded-lg placeholder:text-gray-500 border border-gray-200"
-            (onChange)="onCategoryChange()"
-            appendTo="body"
-            optionValue="_id"
-          ></p-dropdown>
+            (onChange)="onCategoryChange()" appendTo="body"
+            optionValue="_id"></p-dropdown>
           <small *ngIf="hasError('category')" class="text-red-500">
             Name is required.
           </small>
@@ -510,17 +373,11 @@
         <!-- Sub Category Dropdown -->
         <div class="grid">
           <h1 class="text-lg pb-3 text-black">Child Category</h1>
-          <p-dropdown
-            [options]="filteredSubCategories"
-            optionLabel="title"
-            [(ngModel)]="selectedSubCategory"
-            formControlName="subCategory"
-            placeholder="Select a Child Category"
-            class="bg-[#F6F7F9] w-full"
+          <p-dropdown [options]="filteredSubCategories" optionLabel="title"
+            [(ngModel)]="selectedSubCategory" formControlName="subCategory"
+            placeholder="Select a Child Category" class="bg-[#F6F7F9] w-full"
             styleClass="w-96 bg-[#F6F7F9] pl-3 pt-2 h-14 rounded-lg placeholder:text-gray-500 border border-gray-200"
-            appendTo="body"
-            optionValue="_id"
-          ></p-dropdown>
+            appendTo="body" optionValue="_id"></p-dropdown>
           <small *ngIf="hasError('subCategory')" class="text-red-500">
             Name is required.
           </small>
@@ -534,64 +391,45 @@
       <h1 class="text-black text-[24px] font-bold">Available Variants</h1>
 
       <!-- Add New Variant Button -->
-      <button
-        (click)="showDialog()"
-        type="button"
-        class="mt-4 px-4 py-2 bg-blue-500 text-white font-medium hover:bg-blue-600 rounded-lg"
-      >
+      <button (click)="showDialog()" type="button"
+        class="mt-4 px-4 py-2 bg-blue-500 text-white font-medium hover:bg-blue-600 rounded-lg">
         Add Variant
       </button>
     </div>
 
-    <p-table
-      [value]="variants"
-      [rowsPerPageOptions]="[5, 10, 20]"
-      [rows]="7"
-      class="drop-shadow-lg h-full"
-    >
+    <p-table [value]="variants" [rowsPerPageOptions]="[5, 10, 20]" [rows]="7"
+      class="drop-shadow-lg h-full">
       <ng-template pTemplate="header">
         <tr class="flex">
-          <th
-            pSortableColumn="stock"
-            class="flex items-center w-full text-white bg-[#825092] justify-center"
-          >
+          <th pSortableColumn="stock"
+            class="flex items-center w-full text-white bg-[#825092] justify-center">
             Name
           </th>
 
-          <th
-            pSortableColumn="flavour"
-            class="flex items-center w-full text-white bg-[#825092] justify-center"
-          >
+          <th pSortableColumn="flavour"
+            class="flex items-center w-full text-white bg-[#825092] justify-center">
             Type <p-sortIcon field="flavour" />
           </th>
 
-          <th
-            pSortableColumn="price"
-            class="flex items-center w-full text-white bg-[#825092] rounded-t-md justify-center"
-          >
+          <th pSortableColumn="price"
+            class="flex items-center w-full text-white bg-[#825092] rounded-t-md justify-center">
             Variant <p-sortIcon field="price" />
           </th>
 
-          <th
-            pSortableColumn="size"
-            class="flex items-center w-full text-white bg-[#825092] justify-center"
-          >
+          <th pSortableColumn="size"
+            class="flex items-center w-full text-white bg-[#825092] justify-center">
             Price <p-sortIcon field="size" />
           </th>
 
-          <th
-            pSortableColumn="stock"
-            class="flex items-center w-full text-white bg-[#825092] justify-center"
-          >
+          <th pSortableColumn="stock"
+            class="flex items-center w-full text-white bg-[#825092] justify-center">
             Stock <p-sortIcon field="stock" />
           </th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-product>
         <tr class="flex">
-          <td
-            class="w-full text-black cursor-pointer flex justify-center line-clamp-2"
-          >
+          <td class="w-full text-black cursor-pointer flex justify-center line-clamp-2">
             {{ product.product_id.name }}
           </td>
 
@@ -620,10 +458,7 @@
 
     <p-tabView>
       <p-tabPanel header="Description">
-        <p-editor
-          [style]="{ height: '420px' }"
-          formControlName="additionalDescription"
-        />
+        <p-editor [style]="{ height: '420px' }" formControlName="additionalDescription" />
 
         <small *ngIf="hasError('additionalDescription')" class="text-red-500">
           Additional Description is required.
@@ -632,46 +467,30 @@
 
       <p-tabPanel header="Additional">
         <div formArrayName="additionals" class="flex flex-col gap-5">
-          <button
-            (click)="addAdditional()"
-            type="button"
-            class="border border-[#854D94] text-[#854D94] font-bold px-4 py-2 rounded-lg w-fit"
-          >
+          <button (click)="addAdditional()" type="button"
+            class="border border-[#854D94] text-[#854D94] font-bold px-4 py-2 rounded-lg w-fit">
             Add Field
           </button>
 
-          <div
-            *ngFor="let variant of additionals.controls; let i = index"
-            [formGroupName]="i"
-            class="flex gap-4 items-center"
-          >
+          <div *ngFor="let variant of additionals.controls; let i = index"
+            [formGroupName]="i" class="flex gap-4 items-center">
             <div class="grid">
               <h1 class="text-lg pb-3 text-black">Key</h1>
-              <input
-                type="text"
-                formControlName="key"
+              <input type="text" formControlName="key"
                 class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
-                pInput
-                placeholder="Type of packing"
-              />
+                pInput placeholder="Type of packing" />
             </div>
 
             <div class="grid">
               <h1 class="text-lg pb-3 text-black">Value</h1>
-              <input
-                type="text"
-                formControlName="value"
+              <input type="text" formControlName="value"
                 class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
-                pInput
-                placeholder="bottle"
-              />
+                pInput placeholder="bottle" />
             </div>
 
             <!-- Remove Variant Button -->
-            <button
-              (click)="removeAdditionals(i)"
-              class="text-red-500 hover:text-red-700 font-semibold mt-10"
-            >
+            <button (click)="removeAdditionals(i)"
+              class="text-red-500 hover:text-red-700 font-semibold mt-10">
               <i class="pi pi-trash" style="font-size: 1.4rem"></i>
             </button>
           </div>
@@ -681,15 +500,10 @@
   </div>
 
   <div class="flex justify-end space-x-3 w-full mt-5">
-    <button
-      class="border border-[#854D94] text-[#854D94] font-bold px-4 py-2 rounded-lg"
-    >
+    <button class="border border-[#854D94] text-[#854D94] font-bold px-4 py-2 rounded-lg">
       Cancel
     </button>
-    <button
-      class="bg-[#854D94] text-white font-bold px-4 py-2 rounded-lg"
-      type="submit"
-    >
+    <button class="bg-[#854D94] text-white font-bold px-4 py-2 rounded-lg" type="submit">
       Save
     </button>
   </div>

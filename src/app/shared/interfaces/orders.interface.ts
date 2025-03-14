@@ -58,5 +58,29 @@ export interface Order {
   salesorderId: string;
   invoiceId: string;
   totalOrder: number;
+  itemsTotal: number;
+  vat: number;
+  deliveryCharge: number;
   remark?: string;
 }
+
+
+
+export interface ReturnRequest {
+  _id: string;
+  userId: any // Nullable because it can be null
+  orderId: Order;
+  productId: Products;
+  quantity: number;
+  email: string;
+  price: number;
+  messages: string;
+  response: string;
+  request: string; // Enum based on possible values
+  status: string; // Enum based on schema
+  createdAt: string; // ISO date string
+  updatedAt: string; // ISO date string
+  __v: number;
+}
+
+

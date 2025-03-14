@@ -5,12 +5,17 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 
+
 interface TreeNode {
   title: string;
-  subCategory: TreeNode[];
+  tag?: string;
   level: number;
-  selected?: boolean;
+  subCategory: TreeNode[];
+  featuredCategory?: boolean;
+  description?: string;
   visible?: boolean;
+  image?: string;
+  selected?: any;
 }
 
 @Component({
@@ -21,6 +26,7 @@ interface TreeNode {
   styleUrl: './tree-node.component.scss',
   providers: [ConfirmationService],
 })
+
 export class TreeNodeComponent {
   @Input() node!: TreeNode;
   @Output() saveNode = new EventEmitter<any>();
@@ -38,7 +44,7 @@ export class TreeNodeComponent {
   constructor(
     private confirmationService: ConfirmationService,
     private messageService: MessageService
-  ) {}
+  ) { }
 
   // Expand or collapse subCategory
   toggleExpand() {
@@ -102,7 +108,7 @@ export class TreeNodeComponent {
     });
   }
 
-  hideChildNode(childNode: TreeNode) {}
+  hideChildNode(childNode: TreeNode) { }
 
   saveParentNode() {
     this.saveNode.emit(this.node);

@@ -81,7 +81,8 @@
             <td class="px-4 py-4 text-center">{{ item.quantity }}</td>
             <td class="px-4 py-4 text-right">AED {{ item.price }}</td>
             <td class="px-4 py-4 text-right">AED {{ item.amount }}</td>
-            <th class="px-4 py-3 text-center capitalize font-semibold text-green-500" [ngClass]="{
+            <th class="px-4 py-3 text-center capitalize font-semibold text-green-500"
+              [ngClass]="{
               'text-red-400': item.status === 'cancelled',
               'text-green-500': item.status === 'delivered',
               'text-yellow-500': item.status === 'pending'
@@ -93,20 +94,20 @@
         <tfoot>
           <tr>
             <td colspan="3" class="px-4 py-2 font-bold">Subtotal</td>
-            <td class="px-4 py-2 text-right">AED {{ subtotal }}</td>
+            <td class="px-4 py-2 text-right">AED {{ order.itemsTotal| number: '1.2-2' }}</td>
           </tr>
           <tr>
             <td colspan="3" class="px-4 py-2 font-bold">VAT (5%)</td>
-            <td class="px-4 py-2 text-right">AED {{ vat }}</td>
+            <td class="px-4 py-2 text-right">AED {{ order.vat | number: '1.2-2' }}</td>
           </tr>
           <tr>
             <td colspan="3" class="px-4 py-2 font-bold">Delivery Charge</td>
-            <td class="px-4 py-2 text-right">AED {{ deliveryCharge }}</td>
+            <td class="px-4 py-2 text-right">AED {{ order.deliveryCharge| number: '1.2-2' }}</td>
           </tr>
           <tr class="border-b">
             <td colspan="3" class="px-4 py-2 font-bold">Total Amount</td>
             <td class="px-4 py-2 text-right font-bold">
-              AED {{ totalAmount }}
+              AED {{ order.total | number: '1.2-2'}}
             </td>
           </tr>
         </tfoot>
@@ -207,9 +208,9 @@
 <div class="grid mt-7">
   <h1 class="text-black text-[24px] font-bold pb-4">Order Progress</h1>
 
-  <div class="grid grid-cols-3 gap-3" *ngIf="orderTimeline.length !== 0"> 
+  <div class="grid grid-cols-3 gap-3" *ngIf="orderTimeline.length !== 0">
     <div class="bg-white col-span-2 drop-shadow-lg rounded-md py-10">
-      <app-order-tracking  [timeline]="orderTimeline"></app-order-tracking>
+      <app-order-tracking [timeline]="orderTimeline"></app-order-tracking>
     </div>
 
     <div class="bg-white drop-shadow-lg py-4 px-5 rounded-md h-fit">

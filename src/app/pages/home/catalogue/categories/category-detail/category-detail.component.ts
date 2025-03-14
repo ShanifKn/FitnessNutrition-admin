@@ -24,9 +24,11 @@ interface TreeNode {
   tag?: string;
   level: number;
   subCategory: TreeNode[];
-  featuredCategory?: false;
+  featuredCategory?: boolean;
   description?: string;
   visible?: boolean;
+  image?: string;
+  selected?: any;
 }
 
 @Component({
@@ -67,7 +69,7 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
     private router: Router,
     public _location: Location,
     private imageService: FileUploadService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.buildFrom();
@@ -85,6 +87,9 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
       level: 1,
       featuredCategory: false,
       visible: true,
+      image: '',
+      tag: '',
+      description: '',
     };
     this.tree.push(newNode);
   }
@@ -241,10 +246,15 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
   }
 
   getAllDataFromNode(node: TreeNode): any {
+
     const nodeData = {
       title: node.title,
       level: node.level,
       visible: node.visible,
+      featuredCategory: node.featuredCategory,
+      image: node.image,
+      tag: node.tag,
+      description: node.description,
       subCategory: node.subCategory.map((child) =>
         this.getAllDataFromChildNode(child)
       ), // Recursively get subCategory data
@@ -277,6 +287,7 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
           severity: 'success',
           summary: 'Category has been Created',
         });
+
 
         this.categoryForm.patchValue({
           _id: data._id || '',
@@ -337,6 +348,7 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
     if (subCategoryValue && subCategoryValue.length > 0) {
       // If subCategory is not empty, assign it to another variable
       this.tree = subCategoryValue;
+
     } else {
       this.tree = []; // Assign empty array if subCategory is empty
     }
@@ -345,6 +357,7 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
   handleSubCategory(node: any) {
     // Save the current node data into the variable
     this.savedNodeData = { ...node };
+
 
     this.subCategoryForm.patchValue({
       parentId: this.categoryForm.get('_id')?.value,
@@ -355,6 +368,8 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
       featuredCategory: this.savedNodeData.featuredCategory,
       image: this.savedNodeData.image,
     });
+
+
 
     this.subCategory = true;
   }
@@ -392,6 +407,31 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
       return;
     }
 
+    const subCategories = this.categoryForm.get('subCategory')?.value || [];
+
+    const matchedIndex = subCategories.findIndex(
+      (item: any) => item._id === this.subCategoryForm.get('_id')?.value
+    );
+
+
+
+    if (matchedIndex !== -1) {
+      // Updating the matched subcategory
+      subCategories[matchedIndex] = {
+        ...subCategories[matchedIndex], // Keep existing properties
+        featuredCategory: this.subCategoryForm.get('featuredCategory')?.value,
+        title: this.subCategoryForm.get('title')?.value,
+        image: this.subCategoryForm.get('image')?.value,
+        visible: this.subCategoryForm.get('visible')?.value,
+        tag: this.subCategoryForm.get('tag')?.value,
+        description: this.subCategoryForm.get('description')?.value
+      };
+
+      // Update the form array with the modified subCategories list
+      this.categoryForm.patchValue({ subCategory: subCategories });
+
+    }
+
 
     const sub = this.service
       .updateSubCategory(this.subCategoryForm.value)
@@ -401,6 +441,7 @@ export class CategoryDetailComponent implements OnInit, OnDestroy {
           summary: message,
         });
       });
+
 
     this.subscriptions.add(sub);
   }

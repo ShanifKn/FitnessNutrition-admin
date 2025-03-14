@@ -1,129 +1,60 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { TableModule } from 'primeng/table';
+import { OrdersService } from '../orders/orders.service';
+import { forkJoin, Subscription } from 'rxjs';
+import { Order } from '../../../shared/interfaces/orders.interface';
+import { RouterModule } from '@angular/router';
+import { DialogModule } from 'primeng/dialog';
+import { DropdownModule } from 'primeng/dropdown';
+import { SearchPipe } from '../../../shared/pipes/search.pipe';
+import { FormsModule } from '@angular/forms';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [TableModule, CommonModule],
+  imports: [
+    TableModule,
+    CommonModule,
+    RouterModule,
+    DialogModule,
+    DropdownModule,
+    SearchPipe,
+    FormsModule,
+    ButtonModule
+  ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
+  providers: [OrdersService]
 })
-export class DashboardComponent {
-  products: any[] = [
-    {
-      orderId: '#45784',
-      customer: 'Shuaib',
-      date: '16-08-2024',
-      paid: 'No',
-      status: 'Pending',
-      items: 2,
-      paymentMode: 'Cash on delivery',
-      total: 'AED 1050.00',
-      action: 'View Details',
-    },
-    {
-      orderId: '#45784',
-      customer: 'Ajmal',
-      date: '18-08-2024',
-      paid: 'Yes',
-      status: 'Delivered',
-      items: 3,
-      paymentMode: 'Card on delivery',
-      total: 'AED 7500.00',
-      action: 'View Details',
-    },
-    {
-      orderId: '#45784',
-      customer: 'Ismail',
-      date: '26-08-2024',
-      paid: 'Yes',
-      status: 'Cancelled',
-      items: 1,
-      paymentMode: 'Online Payment',
-      total: 'AED 4500.00',
-      action: 'View Details',
-    },
-    {
-      orderId: '#45784',
-      customer: 'Musthafa',
-      date: '16-09-2024',
-      paid: 'Yes',
-      status: 'Delivered',
-      items: 1,
-      paymentMode: 'Online Payment',
-      total: 'AED 5500.00',
-      action: 'View Details',
-    },
-    {
-      orderId: '#45784',
-      customer: 'Jabir',
-      date: '01-09-2024',
-      paid: 'Yes',
-      status: 'Returned',
-      items: 3,
-      paymentMode: 'Card on delivery',
-      total: 'AED 1000.00',
-      action: 'View Details',
-    },
-    {
-      orderId: '#45784',
-      customer: 'Shuaib',
-      date: '16-08-2024',
-      paid: 'No',
-      status: 'Pending',
-      items: 2,
-      paymentMode: 'Cash on delivery',
-      total: 'AED 1050.00',
-      action: 'View Details',
-    },
-    {
-      orderId: '#45784',
-      customer: 'Ajmal',
-      date: '18-08-2024',
-      paid: 'Yes',
-      status: 'Delivered',
-      items: 3,
-      paymentMode: 'Card on delivery',
-      total: 'AED 7500.00',
-      action: 'View Details',
-    },
-    {
-      orderId: '#45784',
-      customer: 'Ismail',
-      date: '26-08-2024',
-      paid: 'Yes',
-      status: 'Cancelled',
-      items: 1,
-      paymentMode: 'Online Payment',
-      total: 'AED 4500.00',
-      action: 'View Details',
-    },
-    {
-      orderId: '#45784',
-      customer: 'Musthafa',
-      date: '16-09-2024',
-      paid: 'Yes',
-      status: 'Delivered',
-      items: 1,
-      paymentMode: 'Online Payment',
-      total: 'AED 5500.00',
-      action: 'View Details',
-    },
-    {
-      orderId: '#45784',
-      customer: 'Jabir',
-      date: '01-09-2024',
-      paid: 'Yes',
-      status: 'Returned',
-      items: 3,
-      paymentMode: 'Card on delivery',
-      total: 'AED 1000.00',
-      action: 'View Details',
-    },
-  ];
+export class DashboardComponent implements OnDestroy {
+  products: Order[] = [];
+  searchText: string = '';
 
-  constructor() {}
+  private subscriptions = new Subscription();
+  private orderService = inject(OrdersService);
 
-  ngOnInit() {}
+  constructor() {
+    this.fetchData()
+  }
+
+  ngOnInit() { }
+
+
+  fetchData() {
+    this.subscriptions.add(
+      forkJoin({
+        orders: this.orderService.getOrders(),
+      }).subscribe(({ orders }) => {
+        this.products = orders.data; // Assuming orders has a 'data' field
+      })
+    );
+  }
+
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
+  }
+
 }

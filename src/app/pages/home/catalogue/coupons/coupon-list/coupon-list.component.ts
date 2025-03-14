@@ -2,16 +2,20 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
 import { TableModule } from 'primeng/table';
 
 @Component({
   selector: 'app-coupon-list',
   standalone: true,
-  imports: [TableModule, CommonModule, RouterModule, ButtonModule],
+  imports: [TableModule, CommonModule, RouterModule, ButtonModule, DialogModule],
   templateUrl: './coupon-list.component.html',
   styleUrl: './coupon-list.component.scss',
 })
 export class CouponListComponent {
+
+  displayDialog: boolean = false;
+
   coupons: any[] = [
     {
       _id: '1234',
@@ -59,4 +63,8 @@ export class CouponListComponent {
       end: '25-nov-24 11:59pm',
     },
   ];
+
+  constructor() {
+    this.displayDialog = true;
+  }
 }

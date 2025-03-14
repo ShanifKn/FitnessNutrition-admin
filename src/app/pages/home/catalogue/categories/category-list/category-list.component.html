@@ -32,10 +32,7 @@
                   class="flex items-center justify-center w-full text-white bg-[#825092]">
                   Tag <p-sortIcon field="tag" />
                 </th>
-                <th pSortableColumn="maximumDiscount"
-                  class="flex items-center w-full justify-center text-white bg-[#825092]">
-                  Max Discount <p-sortIcon field="maximumDiscount" />
-                </th>
+
                 <th pSortableColumn="publishDate"
                   class="flex items-center w-full justify-center text-white bg-[#825092]">
                   Publish Date <p-sortIcon field="publishDate" />
@@ -58,10 +55,8 @@
                   <img src="{{ product.image }}" alt="{{ product.name }}"
                     class="w-10 h-10 mr-2 rounded" />{{ product.title }}
                 </td>
-                <td class="w-full flex justify-center">{{ product.tag }}</td>
-                <td class="w-full flex justify-center">
-                  {{ product.maximumDiscount }}
-                </td>
+                <td class="w-full flex justify-center items-center">{{ product.tag }}</td>
+
                 <td class="w-full flex justify-center">
                   {{ product.publishDate | date : "dd/MM/yyyy" }}
                 </td>

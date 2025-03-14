@@ -1,0 +1,226 @@
+<div class="flex justify-between items-start">
+  <h1 class="text-black text-[24px] font-bold">Combo Products</h1>
+
+  <div class="flex gap-4 items-center">
+    <p-button label="Create Combo" (onClick)="showVisible()"
+      styleClass="px-5 bg-[#20A1FF] text-white py-3 font-semibold rounded-md" />
+  </div>
+</div>
+
+
+
+<div class="mt-7">
+  <div class="" *ngIf="comboProduct.length > 0; else noDataTemplate">
+    <div class="bg-white rounded-lg p-5 mb-5 drop-shadow-lg">
+      <div class="flex items-center border border-gray-300 bg-white rounded-xl px-4 py-2">
+        <span class="pi pi-search"></span>
+        <input type="text" placeholder="Search Product by name" [(ngModel)]="searchText"
+          class="ml-3 w-full focus:outline-none text-gray-700" />
+      </div>
+    </div>
+
+    <p-table [value]="comboProduct | search : searchText : 'title'" [paginator]="true"
+      [rows]="itemsPerPage" [rowsPerPageOptions]="[15, 20, 25, 45, 50]"
+      class="drop-shadow-lg">
+      <ng-template pTemplate="header">
+        <tr class="flex">
+          <th class="flex items-center w-56 text-white bg-[#825092] rounded-t-md">
+            S.no <p-sortIcon />
+          </th>
+
+          <th pSortableColumn="title"
+            class="flex items-center w-full justify-center text-white bg-[#825092]">
+            Title <p-sortIcon field="title" />
+          </th>
+
+          <th pSortableColumn="description"
+            class="flex items-center w-full justify-center text-white bg-[#825092]">
+            Description<p-sortIcon field="description" />
+          </th>
+
+          <th pSortableColumn="discount"
+            class="flex items-center w-full justify-center text-white bg-[#825092]">
+            Discount<p-sortIcon field="discount" />
+          </th>
+
+          <th pSortableColumn="price"
+            class="flex items-center w-72 justify-center text-white bg-[#825092]">
+            Price<p-sortIcon field="price" />
+          </th>
+
+          <th class="flex items-center w-72 justify-center text-white bg-[#825092]">
+            Edit
+          </th>
+        </tr>
+      </ng-template>
+
+      <ng-template pTemplate="body" let-product let-rowIndex="rowIndex">
+        <tr class="flex">
+
+          <td class="w-56 text-black cursor-pointer flex justify-center">
+            {{ rowIndex + 1}}
+          </td>
+
+          <td class="w-full flex line-clamp-2 items-center gap-2 justify-center">
+            <img src="{{ product.image }}" alt="{{ product.title.slice(0,2) }}"
+              class="w-12 h-12 mr-2 rounded-full" />
+            {{ product.title }}
+          </td>
+
+          <td class="w-full flex justify-center line-clamp-1">{{ product.description }}
+          </td>
+
+          <td class="w-full flex justify-center">
+            {{product.discount}} %
+          </td>
+
+          <td class="w-72 flex justify-center">
+            {{product.price}}
+          </td>
+
+          <td class="w-72 flex justify-center cursor-pointer"> <i
+              (click)="patchData(product)" class="pi pi-pen-to-square text-[#007EF2]"
+              style="font-size: 1.4rem"></i>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>
+
+
+<ng-template #noDataTemplate>
+  <div class="flex flex-col items-center justify-center py-10 h-[700px]">
+    <img src="assets/no-po.png" alt="No purchase order" class="mx-auto w-56" />
+
+    <h4 class="my-8">There is no Products available!</h4>
+
+    <i class="pi pi-spin pi-spinner text-3xl"></i>
+  </div>
+</ng-template>
+
+
+
+
+
+
+
+<p-sidebar [(visible)]="sidebarVisible" position="right" [style]="{ width: '60rem' }">
+
+
+  <h3 class="text-black text-4xl pb-4">Add Combo</h3>
+  <form [formGroup]="comboForm" (ngSubmit)="onSubmit()">
+    <div class="grid gap-6 mt-3 p-2">
+      <div class="w-full">
+        <h1 class="text-black text-lg pb-3">Title</h1>
+
+        <input type="text"
+          class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
+          pInput placeholder="Title" formControlName="title" />
+      </div>
+
+
+      <div class="w-full">
+        <h1 class="text-black text-lg pb-3 font-medium">Description</h1>
+        <input type="text"
+          class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
+          pInput placeholder="Description" formControlName="description" />
+      </div>
+
+      <div class="mt-5">
+        <div class="flex justify-between mb-3">
+
+          <h1 class="text-black text-lg pb-3">Add Product</h1>
+
+          <button pButton class="px-3 py-1 bg-[#825092] text-base text-white"
+            label="Add product" (click)="addProduct()"></button>
+
+        </div>
+
+
+        <div formArrayName="products">
+          <div *ngFor="let product of products.controls; let i = index"
+            [formGroupName]="i" class="flex gap-3 items-center mb-3">
+
+            <!-- Product Dropdown -->
+            <p-dropdown [options]="productList" optionLabel="name" [filter]="true"
+              filterBy="name" placeholder="Select a Product" appendTo="body"
+              formControlName="productId" (onChange)="onProductSelect($event, i)"
+              styleClass="bg-[#F6F7F9] w-[600px] h-12 border border-gray-200 rounded-lg"
+              optionValue="_id" [panelStyle]="{ 'width': '500px' }">
+            </p-dropdown>
+
+            <!-- Price Input -->
+            <input type="text" formControlName="price"
+              class="bg-[#F6F7F9] h-12 w-32 pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
+              pInput placeholder="Price" />
+
+            <!-- Remove Product Button -->
+            <button pButton class="px-3 py-1 bg-red-500 text-white text-base"
+              label="Remove" type="button" (click)="removeProduct(i)"></button>
+
+          </div>
+        </div>
+      </div>
+
+
+      <div class="w-full">
+        <h1 class="text-black text-lg pb-3 font-medium">
+          Rating
+        </h1>
+        <p-rating [cancel]="false" formControlName="rating" />
+      </div>
+
+      <div class="flex gap-4">
+
+
+
+        <div class="w-full">
+          <h1 class="text-black text-lg pb-3">Product Total</h1>
+
+          <input type="text"
+            class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
+            pInput placeholder="Total" formControlName="productTotal" />
+        </div>
+
+
+        <div class="w-full">
+          <h1 class="text-black text-lg pb-3">Discount</h1>
+
+          <input type="text" formControlName="discount"
+            class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
+            pInput placeholder="Discount" (input)="calculateFinalPrice()" />
+        </div>
+
+
+        <div class="w-full">
+          <h1 class="text-black text-lg pb-3">Price</h1>
+
+          <input type="text" formControlName="price" Inp
+            class="bg-[#F6F7F9] h-12 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
+            pInput placeholder="Combo price" [disabled]="true" />
+        </div>
+      </div>
+
+      <div>
+        <h1 class="text-black text-lg pb-3">Upload image</h1>
+        <!-- Button to upload image -->
+        <input type="file" (change)="onFileSelected($event)" accept="image/*" />
+
+        <!-- Preview the uploaded image -->
+        <div *ngIf="imagePreview">
+          <img [src]="imagePreview" alt="Image Preview" class="w-96 h-44"
+            style="max-width: 500px; max-height: 500px; margin-top: 10px" />
+        </div>
+      </div>
+    </div>
+    <div class="flex gap-3 justify-end mt-5">
+      <button pButton class="px-5 py-2 bg-slate-400 text-lg text-white" label="cancel"
+        (click)="sidebarVisible = false"></button>
+      <button pButton class="px-5 py-2 bg-[#825092] text-lg text-white" label="Add"
+        [disabled]="comboForm.invalid" type="submit"></button>
+    </div>
+
+  </form>
+
+</p-sidebar>

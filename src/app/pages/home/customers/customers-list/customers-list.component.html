@@ -50,20 +50,25 @@
       <ng-template pTemplate="body" let-product>
         <tr class="flex">
 
-          <td class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium">
+          <td
+            class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium  line-clamp-1">
             {{ product.customerId }}
           </td>
 
-          <td class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium">
+          <td
+            class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium line-clamp-1">
             {{ product.name }}
           </td>
-          <td class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium">
+          <td
+            class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium line-clamp-1">
             {{ product.email }}
           </td>
-          <td class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium">
+          <td
+            class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium line-clamp-1">
             {{ product.createdAt | date : "dd/MM/yyyy" }}
           </td>
-          <td class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium">
+          <td
+            class="w-full text-[#1A1A1A] text-sm 2xl:text-base font-medium line-clamp-1">
             {{ product.total }}
           </td>
           <td class="w-full">
@@ -77,6 +82,8 @@
     </p-table>
   </div>
 </div>
+
+
 <ng-template #noDataTemplate>
   <div class="flex flex-col items-center justify-center py-10 h-[500px]">
     <img src="assets/no-po.png" alt="No purchase order" class="mx-auto w-56" />

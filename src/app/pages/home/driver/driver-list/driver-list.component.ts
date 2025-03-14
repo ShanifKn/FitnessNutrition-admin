@@ -17,6 +17,7 @@ import {
   Validators,
 } from '@angular/forms';
 
+
 @Component({
   selector: 'app-driver-list',
   standalone: true,
@@ -50,13 +51,14 @@ export class DriverListComponent implements OnDestroy {
 
   fromBuild() {
     this.driverForm = this.fb.group({
-      image: ['', [Validators.required]],
+      image: [''],
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       phone: ['', Validators.required],
-      whatsappPhone: ['', Validators.required],
+      whatappPhone: ['', Validators.required],
       branch: ['', Validators.required],
       location: ['', Validators.required],
+      dlNo: [''],
       status: [true, Validators.required],
     });
   }
@@ -70,9 +72,32 @@ export class DriverListComponent implements OnDestroy {
   }
 
   onSubmit(): void {
-    if (this.driverForm.valid) {
-      console.log(this.driverForm.value);
+
+    if (this.driverForm.invalid) {
+      this.driverForm.markAllAsTouched();
+      return;
     }
+
+    this.subscriptions.add(
+      this.services.create(this.driverForm.value).subscribe(({ data }) => {
+
+
+        const index = this.driverList.findIndex(driver => driver._id === data._id);
+
+        if (index !== -1) {
+          // If driver exists, update the record
+          this.driverList[index] = { ...this.driverList[index], ...data };
+        } else {
+          // If not found, add new driver
+          this.driverList = [...this.driverList, data];
+        }
+        
+
+        this.addNewDriver = false;
+      })
+    )
+
+
   }
 
   onCancel(): void {
@@ -81,6 +106,38 @@ export class DriverListComponent implements OnDestroy {
 
   showDialog() {
     this.addNewDriver = true;
+  }
+
+
+  editDriver(_id: string) {
+
+    this.subscriptions.add(
+      this.services.getDetails(_id).subscribe(({ data }) => {
+
+        this.driverForm.patchValue({
+          image: data.image || '',
+          name: data.name || '',
+          email: data.email || '',
+          phone: data.phone || '',
+          whatappPhone: data.whatappPhone || '',
+          branch: data.branch || '',
+          location: data.location || '',
+          dlNo: data.dlNo || '',
+          status: data.status || false,
+        });
+
+
+        this.showDialog()
+      })
+    );
+  }
+
+  hasError(controlName: string): boolean {
+    const control = this.driverForm.get(controlName);
+    // Ensure that we return false if the control is null or undefined
+    return control
+      ? control.invalid && (control.touched || control.dirty)
+      : false;
   }
 
   ngOnDestroy() {

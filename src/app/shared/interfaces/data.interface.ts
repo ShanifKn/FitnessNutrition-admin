@@ -28,6 +28,19 @@ export interface Address {
   delivery?: boolean; // Optional with default value
 }
 
+export interface CustomerDataCount {
+  orders: number;
+  invoice: number;
+  value: number;
+}
+
+export interface DriverCountData {
+  "Pick-up": number;
+  Dispatched: number;
+  Delivered: number;
+  totalOrders: number;
+}
+
 export interface Customer {
   _id: string; // Optional for new documents
   email: string;

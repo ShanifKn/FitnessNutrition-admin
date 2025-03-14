@@ -8,4 +8,6 @@ export interface Driver {
   branch: string;
   location: string;
   dlNo: string;
+  status: boolean;
+  createdAt: string;
 }

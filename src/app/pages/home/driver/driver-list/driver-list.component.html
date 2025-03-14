@@ -1,92 +1,62 @@
 <div class="flex justify-between items-start">
   <h1 class="text-black text-[24px] font-bold">Drivers</h1>
 
-  <p-button
-    label="Add Driver"
-    icon="pi pi-plus-circle"
+  <p-button label="Add Driver" icon="pi pi-plus-circle"
     styleClass="px-5 bg-[#20A1FF] text-white py-3 font-semibold rounded-md"
-    iconPos="right"
-    (onClick)="showDialog()"
-  />
+    iconPos="right" (onClick)="showDialog()" />
 </div>
 
 <div class="mt-7">
   <div class="bg-white rounded-lg p-5 mb-5 drop-shadow-lg">
-    <div
-      class="flex items-center border border-gray-300 bg-white rounded-xl px-4 py-2"
-    >
+    <div class="flex items-center border border-gray-300 bg-white rounded-xl px-4 py-2">
       <span class="pi pi-search"></span>
-      <input
-        type="text"
-        placeholder="Search Orders"
-        class="ml-3 w-full focus:outline-none text-gray-700"
-      />
+      <input type="text" placeholder="Search Orders"
+        class="ml-3 w-full focus:outline-none text-gray-700" />
     </div>
   </div>
 
-  <p-table
-    [value]="driverList"
-    [rowsPerPageOptions]="[5, 10, 20]"
-    [rows]="7"
-    [paginator]="true"
-    class="drop-shadow-lg"
-  >
+  <p-table [value]="driverList" [rowsPerPageOptions]="[5, 10, 20]" [rows]="7"
+    [paginator]="true" class="drop-shadow-lg">
     <ng-template pTemplate="header">
       <tr class="flex">
-        <th
-          pSortableColumn="name"
-          class="flex items-center w-full text-white bg-[#825092]"
-        >
+        <th pSortableColumn="name"
+          class="flex items-center w-full text-white bg-[#825092]">
           Name <p-sortIcon field="name" />
         </th>
 
         <!-- -->
-        <th
-          pSortableColumn="date"
-          class="flex items-center w-full text-white bg-[#825092]"
-        >
+        <th pSortableColumn="date"
+          class="flex items-center w-full text-white bg-[#825092]">
           Registered Date <p-sortIcon field="date" />
         </th>
-        <th
-          pSortableColumn="contact"
-          class="flex items-center w-full text-white bg-[#825092]"
-        >
+        <th pSortableColumn="contact"
+          class="flex items-center w-full text-white bg-[#825092]">
           Contact Number<p-sortIcon field="contact" />
         </th>
 
-        <th
-          pSortableColumn="branch"
-          class="flex items-center w-full text-white bg-[#825092]"
-        >
+        <th pSortableColumn="branch"
+          class="flex items-center w-full text-white bg-[#825092]">
           Assigned Branch<p-sortIcon field="branch" />
         </th>
 
-        <th
-          pSortableColumn="recivedOrders"
-          class="flex items-center w-full text-white bg-[#825092]"
-        >
+        <th pSortableColumn="recivedOrders"
+          class="flex items-center w-full text-white bg-[#825092]">
           Recived Orders<p-sortIcon field="recivedOrders" />
         </th>
 
-        <th
-          pSortableColumn="deliverdOrder"
-          class="flex items-center w-full text-white bg-[#825092]"
-        >
+        <th pSortableColumn="deliverdOrder"
+          class="flex items-center w-full text-white bg-[#825092]">
           Delivered Orders<p-sortIcon field="deliverdOrder" />
         </th>
-        <th
-          class="flex items-center w-full justify-center text-white bg-[#825092]"
-        >
+        <th class="flex items-center w-full justify-center text-white bg-[#825092]">
           Edit
         </th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-product>
       <tr class="flex">
-        <td
-          class="w-full text-[#007EF2] cursor-pointer"
-          [routerLink]="['/drivers/detail', product._id]"
-        >
+        <td class="w-full text-[#007EF2] cursor-pointer"
+          [routerLink]="['/drivers/detail', product._id]">
           {{ product.name }}
         </td>
         <td class="w-full flex justify-center">
@@ -96,179 +66,154 @@
         <td class="w-full flex justify-center">{{ product.branch }}</td>
         <td class="w-full flex justify-center">{{ product.recivedOrders }}</td>
         <td class="w-full flex justify-center">{{ product.deliverdOrder }}</td>
-        <td class="w-full flex justify-center cursor-pointer gap-5">
-          <i
-            class="pi pi-pen-to-square text-[#007EF2] cursor-pointer"
-            style="font-size: 1.4rem"
-          ></i>
+        <td class="w-full flex justify-center cursor-pointer gap-5" (click)="editDriver(product._id)">
+          <i class="pi pi-pen-to-square text-[#007EF2] cursor-pointer"
+            style="font-size: 1.4rem"></i>
         </td>
       </tr>
     </ng-template>
   </p-table>
 </div>
 
-<p-dialog
-  header="Add New Driver"
-  [modal]="true"
-  [(visible)]="addNewDriver"
-  [style]="{ width: '35rem' }"
->
+<p-dialog header="Add New Driver" [modal]="true" [(visible)]="addNewDriver"
+  [style]="{ width: '35rem' }">
   <form class="grid gap-4 w-full" [formGroup]="driverForm">
     <!-- Profile Image Container -->
     <div class="gird items-center">
       <!-- Profile Image Placeholder -->
       <div
-        class="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center ml-3"
-      >
-        <img
-          class="w-full h-full rounded-full"
-          [src]="
-            driverForm.get('image')?.value || '/assets/images/customer/user.svg'
-          "
-          alt="Customer avatar"
-        />
+        class="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center ml-3">
+        <img class="w-full h-full rounded-full" [src]="
+          driverForm.get('image')?.value || '/assets/images/customer/user.svg'
+        " alt="Customer avatar" />
       </div>
 
       <!-- Change Image Button -->
       <button
-        class="bg-[#825092] text-white text-sm px-3 py-1 rounded-full flex items-center space-x-1"
-      >
+        class="bg-[#825092] text-white text-sm px-3 py-1 rounded-full flex items-center space-x-1">
         <i class="pi pi-camera text-xs"></i>
         <span>Upload Image</span>
       </button>
     </div>
 
-    <div class="">
+    <!-- Name -->
+    <div>
       <h1 class="text-black text-lg pb-3">Name</h1>
-
-      <input
-        type="text"
+      <input type="text"
         class="bg-[#F6F7F9] h-11 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
-        pInput
-        placeholder="Driver name"
-        formControlName="name"
-      />
+        pInput placeholder="Driver name" formControlName="name" />
+      <small *ngIf="hasError('name')" class="text-red-500"> Name is required. </small>
     </div>
 
-    <div class="">
+    <!-- Email -->
+    <div>
       <h1 class="text-black text-lg pb-3">Email</h1>
-
-      <input
-        type="text"
+      <input type="text"
         class="bg-[#F6F7F9] h-11 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
-        pInput
-        placeholder="example@example.com"
-        formControlName="email"
-      />
+        pInput placeholder="example@example.com" formControlName="email" />
+      <small *ngIf="hasError('email')" class="text-red-500"> Email is required. </small>
     </div>
 
     <div class="grid grid-cols-2 gap-3">
-      <div class="">
+      <!-- Mobile Number -->
+      <div>
         <h1 class="text-black text-lg pb-3">Mobile number</h1>
-
-        <input
-          type="text"
+        <input type="text"
           class="bg-[#F6F7F9] h-11 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
-          pInput
-          placeholder="+123457890"
-          formControlName="phone"
-        />
+          pInput placeholder="+123457890" formControlName="phone" />
+        <small *ngIf="hasError('phone')" class="text-red-500"> Phone is required. </small>
       </div>
 
-      <div class="">
+      <!-- WhatsApp Number -->
+      <div>
         <h1 class="text-black text-lg pb-3">
-          <i class="pi pi-whatsapp text-green-500"></i> Whatapp number
+          <i class="pi pi-whatsapp text-green-500"></i> WhatsApp number
         </h1>
-
-        <input
-          type="text"
+        <input type="text"
           class="bg-[#F6F7F9] h-11 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
-          pInput
-          placeholder="+123457890"
-          formControlName="whatsappPhone"
-        />
+          pInput placeholder="+123457890" formControlName="whatappPhone" />
+        <small *ngIf="hasError('whatappPhone')" class="text-red-500"> WhatsApp number is
+          required. </small>
       </div>
     </div>
 
-    <div class="">
-      <h1 class="text-black text-lg pb-3">Assigning Branch</h1>
 
-      <input
-        type="text"
-        class="bg-[#F6F7F9] h-11 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
-        pInput
-        placeholder="Driver name"
-        formControlName="branch"
-      />
+    <div class="grid grid-cols-2 gap-3">
+      <!-- Assigning Branch -->
+      <div>
+        <h1 class="text-black text-lg pb-3">Assigning Branch</h1>
+        <input type="text"
+          class="bg-[#F6F7F9] h-11 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
+          pInput placeholder="Branch name" formControlName="branch" />
+        <small *ngIf="hasError('branch')" class="text-red-500"> Branch is required.
+        </small>
+      </div>
+
+      <!-- Location -->
+      <div>
+        <h1 class="text-black text-lg pb-3">Location</h1>
+        <input type="text"
+          class="bg-[#F6F7F9] h-11 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
+          pInput placeholder="Location" formControlName="location" />
+        <small *ngIf="hasError('location')" class="text-red-500"> Location is required.
+        </small>
+      </div>
     </div>
 
-    <div class="">
-      <h1 class="text-black text-lg pb-3">Location</h1>
-
-      <input
-        type="text"
+    <div>
+      <h1 class="text-black text-lg pb-3">Driving licence no</h1>
+      <input type="text"
         class="bg-[#F6F7F9] h-11 w-full pl-5 rounded-lg placeholder:text-gray-500 border border-gray-200"
-        pInput
-        placeholder="Driver name"
-        formControlName="location"
-      />
+        pInput placeholder="Location" formControlName="dlNo" />
+      <small *ngIf="hasError('dlNo')" class="text-red-500"> Location is required.
+      </small>
     </div>
 
+
+    <!-- Status -->
     <div class="flex items-center gap-3">
       <h1 class="text-black text-lg pb-3">Status</h1>
       <div class="flex items-center space-x-4">
-        <div
-          [ngClass]="
-            driverForm.get('status')?.value === true
-              ? 'border-2 border-[#854D94] text-[#854D94]'
-              : 'text-[#6E6E6E] bg-[#F6F7F9] border border-gray-200'
-          "
-          class="inline-flex items-center px-4 py-[10px] text-sm font-medium rounded-md"
-        >
-          <label for="hidden" class="flex items-center cursor-pointer">
+        <div [ngClass]="
+          driverForm.get('status')?.value === true
+            ? 'border-2 border-[#854D94] text-[#854D94]'
+            : 'text-[#6E6E6E] bg-[#F6F7F9] border border-gray-200'
+        " class="inline-flex items-center px-4 py-[10px] text-sm font-medium rounded-md">
+          <label for="active" class="flex items-center cursor-pointer">
             <span class="pr-2 text-base font-medium">Active</span>
-            <input
-              id="hidden"
-              type="radio"
-              formControlName="status"
-              [value]="true"
+            <input id="active" type="radio" formControlName="status" [value]="true"
               [checked]="driverForm.get('status')?.value === true"
-              class="appearance-none peer h-3 w-3 border-2 border-gray-300 rounded-full checked:bg-[#854D94] checked:border-2"
-            />
+              class="appearance-none peer h-3 w-3 border-2 border-gray-300 rounded-full checked:bg-[#854D94] checked:border-2" />
           </label>
         </div>
-        <div
-          [ngClass]="
-            driverForm.get('status')?.value === false
-              ? 'border-2 border-[#854D94] text-[#854D94]'
-              : 'text-[#6E6E6E] bg-[#F6F7F9] border border-gray-200'
-          "
-          class="inline-flex items-center px-4 py-[10px] text-sm font-medium rounded-md"
-        >
-          <label for="published" class="flex items-center cursor-pointer">
+
+        <div [ngClass]="
+          driverForm.get('status')?.value === false
+            ? 'border-2 border-[#854D94] text-[#854D94]'
+            : 'text-[#6E6E6E] bg-[#F6F7F9] border border-gray-200'
+        " class="inline-flex items-center px-4 py-[10px] text-sm font-medium rounded-md">
+          <label for="inactive" class="flex items-center cursor-pointer">
             <span class="pr-2 text-base font-medium">Inactive</span>
-            <input
-              id="published"
-              type="radio"
-              formControlName="status"
-              [value]="false"
+            <input id="inactive" type="radio" formControlName="status" [value]="false"
               [checked]="driverForm.get('status')?.value === false"
-              class="appearance-none peer h-3 w-3 border-2 border-gray-300 rounded-full checked:bg-[#854D94] checked:border-2"
-            />
+              class="appearance-none peer h-3 w-3 border-2 border-gray-300 rounded-full checked:bg-[#854D94] checked:border-2" />
           </label>
         </div>
       </div>
     </div>
+    <small *ngIf="hasError('status')" class="text-red-500"> Status is required. </small>
 
+    <!-- Buttons -->
     <div class="flex justify-end space-x-3 w-full mt-5">
       <button
-        class="border border-[#854D94] text-[#854D94] font-bold px-4 py-2 rounded-lg"
-      >
+        class="border border-[#854D94] text-[#854D94] font-bold px-4 py-2 rounded-lg">
         Cancel
       </button>
-      <button class="bg-[#854D94] text-white font-bold px-4 py-2 rounded-lg">
+      <button (click)="onSubmit()"
+        class="bg-[#854D94] text-white font-bold px-4 py-2 rounded-lg">
         Update
       </button>
     </div>
   </form>
+
 </p-dialog>

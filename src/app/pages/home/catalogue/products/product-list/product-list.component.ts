@@ -13,6 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { PaginatorModule } from 'primeng/paginator';
 import { Router, NavigationStart } from '@angular/router';
 
+
 @Component({
   selector: 'app-product-list',
   standalone: true,
@@ -25,7 +26,7 @@ import { Router, NavigationStart } from '@angular/router';
     PendingListComponent,
     SearchPipe,
     FormsModule,
-    PaginatorModule,
+    PaginatorModule
   ],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.scss',
@@ -34,6 +35,7 @@ import { Router, NavigationStart } from '@angular/router';
 export class ProductListComponent implements OnDestroy {
   pendingNumber: string = '0';
   sidebarVisible: boolean = false;
+  visible: boolean = false;
   products: Products[] = [];
   searchText: string = '';
   pageIndex: number = 1; // For tracking the current page
@@ -55,7 +57,7 @@ export class ProductListComponent implements OnDestroy {
         this.first = +savedPage; // Set to the saved page
       });
     }
-  
+
     this.getData();
   }
 
@@ -77,6 +79,16 @@ export class ProductListComponent implements OnDestroy {
 
   navigateToDetail() {
     localStorage.setItem('pageIndex', this.pageIndex.toString());
+  }
+
+  showDialog() {
+    this.visible = true;
+  }
+
+  fetchProduct() {
+    this.subscriptions.add(this.services.getProductZoho().subscribe(({ message }) => {
+      console.log(message);
+    }))
   }
 
   ngOnDestroy() {
